@@ -3,6 +3,7 @@ import Image from "next/image";
 import Card from "./Card";
 import Button from "@/components/ui/Button";
 import NoteCard from "./NoteCard";
+import EliCard from "./EliCard";
 import styles from "./BentoGrid.module.scss";
 
 export default function BentoGrid() {
@@ -12,6 +13,7 @@ export default function BentoGrid() {
       <MeHeroImgCard />
       <NoteCard />
       <PlayGameCard />
+      <EliCard />
     </div>
   );
 }
@@ -65,11 +67,19 @@ function PlayGameCard() {
       <div className={styles.playGameLeft}>
         <Gamepad2 size={22} className={styles.playGameIcon} />
         <h3 className={styles.playGameTitle}>Take a Break</h3>
-        <p className={styles.playGameSub}>Play a quick game and relax! Test your reaction speed and beat your high score.</p>
+        <p className={styles.playGameSub}>
+          Play a quick game and relax! Test your reaction speed and beat your
+          high score.
+        </p>
         <Button label="Play Game" icon={Play} variant="secondary" />
       </div>
       <div className={styles.playGamePoster}>
-        <Image src="/game-poster-1.png" alt="Reaction Speed Test" fill className={styles.playGamePosterImg} />
+        <Image
+          src="/game-poster-1.png"
+          alt="Reaction Speed Test"
+          fill
+          className={styles.playGamePosterImg}
+        />
       </div>
     </Card>
   );
