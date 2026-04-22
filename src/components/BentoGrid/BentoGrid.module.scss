@@ -4,7 +4,12 @@
 .grid {
   padding: 1rem;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gridRow {
+  display: flex;
   gap: 1rem;
 }
 
@@ -100,19 +105,6 @@
   color: $color-sage;
 }
 
-.noteCardViewAll {
-  background: none;
-  border: none;
-  font-size: $font-size-md;
-  color: $color-sage;
-  cursor: pointer;
-  padding: 0;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
 .noteCardInner {
   position: relative;
   background-color: $color-background-secondary;
@@ -183,7 +175,6 @@
   text-decoration: line-through;
   opacity: 0.5;
 }
-
 
 .noteCardInput {
   background: none;
@@ -402,7 +393,6 @@
   color: $color-sage;
 }
 
-
 .eliDesc {
   font-size: $font-size-md;
   color: $color-text-secondary;
@@ -412,10 +402,106 @@
   margin-bottom: 1rem;
 }
 
-
 .eliRobotSvg {
   width: 130px;
   height: auto;
   filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
 }
 
+// SKILLS CARD
+.skillsCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 560px;
+  max-width: 560px;
+  overflow: hidden;
+}
+
+.skillsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skillsTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: $font-size-lg;
+  font-weight: 500;
+  color: $color-text-primary;
+}
+
+.skillsTitleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: $border-radius-sm;
+  background-color: $color-background-secondary;
+  border: 1px solid $color-border;
+  color: $color-sage;
+}
+
+.skillsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.skillsItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.skillsItemTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skillsLabel {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+}
+
+.skillsPercent {
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+}
+
+.skillsTrack {
+  width: 100%;
+  height: 8px;
+  background-color: $color-background-secondary;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.skillsBar {
+  height: 100%;
+  background-color: $color-sage;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.skillsRocketWrap {
+  position: absolute;
+  bottom: -0.5rem;
+  right: -0.5rem;
+  pointer-events: none;
+}
+
+.skillsRocket {
+  width: 72px;
+  height: auto;
+  transform: rotate(15deg);
+  opacity: 0.85;
+}

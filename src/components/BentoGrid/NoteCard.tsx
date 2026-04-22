@@ -64,7 +64,6 @@ export default function NoteCard() {
           </span>
           <span>Notes</span>
         </div>
-        <button className={styles.noteCardViewAll}>View all</button>
       </div>
 
       <div className={styles.noteCardInner}>
