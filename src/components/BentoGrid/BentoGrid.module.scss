@@ -32,14 +32,14 @@
 }
 
 .cardTitle {
-  font-size: 0.85rem;
+  font-size: $font-size-base;
   margin-bottom: 1rem;
   color: $color-text-secondary;
 }
 
 .headline {
   font-family: $font-fraunces;
-  font-size: 2.4rem;
+  font-size: $font-size-display;
   font-weight: 700;
   line-height: 1.1;
   color: $color-text-primary;
@@ -51,7 +51,7 @@
 }
 
 .sub {
-  font-size: 0.9rem;
+  font-size: $font-size-base;
   color: $color-text-secondary;
   line-height: 1.5;
   margin: 0;
@@ -83,7 +83,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.1rem;
+  font-size: $font-size-lg;
   font-weight: 500;
   color: $color-text-primary;
 }
@@ -103,7 +103,7 @@
 .noteCardViewAll {
   background: none;
   border: none;
-  font-size: 1.05rem;
+  font-size: $font-size-md;
   color: $color-sage;
   cursor: pointer;
   padding: 0;
@@ -137,7 +137,7 @@
 }
 
 .noteCardNoteTitle {
-  font-size: 1.15rem;
+  font-size: $font-size-lg;
   font-weight: 600;
   color: $color-text-primary;
   margin: 0;
@@ -156,7 +156,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.05rem;
+  font-size: $font-size-md;
   color: $color-text-secondary;
   cursor: pointer;
   user-select: none;
@@ -184,20 +184,12 @@
   opacity: 0.5;
 }
 
-.noteCardSmiley {
-  position: absolute;
-  bottom: 0.6rem;
-  right: 0.75rem;
-  font-size: 1.1rem;
-  opacity: 0.5;
-  pointer-events: none;
-}
 
 .noteCardInput {
   background: none;
   border: none;
   outline: none;
-  font-size: 0.95rem;
+  font-size: $font-size-lg;
   color: $color-text-primary;
   width: 100%;
 
@@ -212,7 +204,7 @@
   gap: 0.35rem;
   background: none;
   border: none;
-  font-size: 1.05rem;
+  font-size: $font-size-md;
   color: $color-text-secondary;
   cursor: pointer;
   padding: 0;
@@ -286,7 +278,7 @@
 }
 
 .playGameTitle {
-  font-size: 1.5rem;
+  font-size: $font-size-xl;
   font-weight: 600;
   color: $color-text-primary;
   margin: 0;
@@ -294,7 +286,7 @@
 }
 
 .playGameSub {
-  font-size: 1rem;
+  font-size: $font-size-md;
   color: $color-text-secondary;
   margin: 0 0 0.4rem;
   line-height: 1.4;
@@ -364,7 +356,7 @@
 .eliSpark4 {
   position: absolute;
   color: $color-sage;
-  font-size: 0.75rem;
+  font-size: $font-size-sm;
   opacity: 0.5;
   pointer-events: none;
 }
@@ -375,13 +367,13 @@
 .eliSpark2 {
   bottom: 1.5rem;
   right: 15%;
-  font-size: 0.6rem;
+  font-size: $font-size-sm;
 }
 .eliSpark3 {
   top: 40%;
   right: 5%;
   color: #444;
-  font-size: 1rem;
+  font-size: $font-size-xl;
 }
 .eliSpark4 {
   top: 1.5rem;
@@ -398,7 +390,7 @@
 }
 
 .eliHeading {
-  font-size: 2.4rem;
+  font-size: $font-size-display;
   font-weight: 700;
   color: $color-text-primary;
   margin: 0;
@@ -410,15 +402,9 @@
   color: $color-sage;
 }
 
-.eliHeadingMark {
-  font-size: 2rem;
-  color: $color-sage;
-  margin-left: 0.1rem;
-  vertical-align: super;
-}
 
 .eliDesc {
-  font-size: 1rem;
+  font-size: $font-size-md;
   color: $color-text-secondary;
   line-height: 1.6;
   margin: 0;
@@ -426,56 +412,6 @@
   margin-bottom: 1rem;
 }
 
-.eliFeatures {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-.eliFeatureItem {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.95rem;
-  color: $color-text-secondary;
-}
-
-.eliFeatureIcon {
-  color: $color-sage;
-  flex-shrink: 0;
-}
-
-.eliCta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: $color-sage;
-  color: #111;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: $border-radius-sm;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  width: fit-content;
-  margin-top: 0.5rem;
-
-  &:hover {
-    background-color: darken($color-sage, 8%);
-  }
-}
-
-.eliRight {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  z-index: 1;
-  flex-shrink: 0;
-}
 
 .eliRobotSvg {
   width: 130px;
@@ -483,25 +419,3 @@
   filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
 }
 
-.eliSpeechBubble {
-  background-color: #1e1e1e;
-  border: 1px solid #2a2a2a;
-  border-radius: $border-radius-md;
-  padding: 0.85rem 1.1rem;
-  font-size: 0.95rem;
-  color: $color-text-primary;
-  line-height: 1.5;
-  max-width: 200px;
-  position: relative;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 8px solid transparent;
-    border-bottom-color: #2a2a2a;
-    border-top: none;
-  }
-}
