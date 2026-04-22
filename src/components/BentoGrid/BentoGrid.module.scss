@@ -3,6 +3,9 @@
 // GRID
 .grid {
   padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 // CARD
@@ -59,4 +62,203 @@
   gap: 0.75rem;
   flex-wrap: wrap;
   margin-top: 0.5rem;
+}
+
+// NOTE CARD
+.noteCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 400px;
+  max-width: 400px;
+}
+
+.noteCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.noteCardTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: $color-text-primary;
+}
+
+.noteCardTitleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: $border-radius-sm;
+  background-color: $color-background-secondary;
+  border: 1px solid $color-border;
+  color: $color-sage;
+}
+
+.noteCardViewAll {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  color: $color-sage;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.noteCardInner {
+  position: relative;
+  background-color: $color-background-secondary;
+  border: 1.5px dashed $color-border;
+  border-radius: $border-radius-sm;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.noteCardTape {
+  position: absolute;
+  top: -0.6rem;
+  right: 1.2rem;
+  width: 2.2rem;
+  height: 1.1rem;
+  background-color: $color-clay;
+  opacity: 0.6;
+  border-radius: 2px;
+  transform: rotate(-3deg);
+}
+
+.noteCardNoteTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $color-text-primary;
+  margin: 0;
+}
+
+.noteCardList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.noteCardItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: $color-text-secondary;
+  cursor: pointer;
+  user-select: none;
+}
+
+.noteCardCheck {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 1.5px solid $color-border;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.noteCardCheckDone {
+  background-color: $color-sage;
+  border-color: $color-sage;
+  color: #1e1e1e;
+}
+
+.noteCardItemDone {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.noteCardSmiley {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.75rem;
+  font-size: 1.1rem;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.noteCardInput {
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  color: $color-text-primary;
+  width: 100%;
+
+  &::placeholder {
+    color: $color-text-secondary;
+  }
+}
+
+.noteCardAddBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  color: $color-text-secondary;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    color: $color-text-primary;
+  }
+}
+
+// ME HERO IMG CARD
+.meHeroImgCard {
+  position: relative;
+  width: 320px;
+  max-width: 320px;
+  background-color: $color-sage;
+  overflow: hidden;
+  padding: 0;
+}
+
+.meHeroEditBtn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: $color-text-primary;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+}
+
+.meHeroImgWrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.meHeroImg {
+  object-fit: cover;
+  object-position: top center;
 }
