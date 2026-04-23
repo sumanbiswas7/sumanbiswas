@@ -1,6 +1,6 @@
 @use "variables" as *;
 
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&display=swap");
 
 *,
 *::before,
@@ -8,6 +8,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: $font-body;
 }
 
 html,
@@ -16,7 +17,6 @@ body {
   color: $color-text-primary;
   height: 100%;
   overflow: hidden;
-  font-family: $font-fraunces;
 }
 
 a {
@@ -24,13 +24,8 @@ a {
   text-decoration: none;
 }
 
-p {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
 button {
   cursor: pointer;
   border: none;
   background: none;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
