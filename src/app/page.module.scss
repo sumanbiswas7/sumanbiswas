@@ -1,4 +1,4 @@
-@use '@/styles/variables' as *;
+@use "@/styles/variables" as *;
 
 .layout {
   display: flex;
@@ -14,7 +14,7 @@
   scroll-behavior: smooth;
 }
 
-/* Section 1 — bento grid */
+/* ─── Section 1 — bento grid ─── */
 .section1 {
   height: 100vh;
   display: flex;
@@ -22,13 +22,369 @@
   overflow: hidden;
 }
 
-/* Section 2 — work / projects */
+/* ─── Section 2 — work ─── */
 .section2 {
-  min-height: 100vh;
-  padding: 5rem 4rem;
-  border-top: 1px solid $color-border;
+  display: flex;
+  flex-direction: column;
 }
 
+.projectRow {
+  // min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem;
+  box-sizing: border-box;
+}
+
+.projectCard {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  background: $color-card-bg;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  min-height: calc(100vh - 4rem);
+}
+
+/* ─── Left panel ─── */
+.projectLeft {
+  flex: 0 0 36%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem 2.75rem;
+  overflow-y: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.projectTop {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.projectMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.projectIndex {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  opacity: 0.35;
+  letter-spacing: 0.1em;
+}
+
+.projectOrg {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.projectTitle {
+  font-family: $font-display;
+  font-size: clamp(2.2rem, 3vw, 3.2rem);
+  color: $color-text-primary;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.projectDesc {
+  font-family: $font-body;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: 1.7;
+}
+
+.projectTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.tag {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-stone;
+  background: $color-background-secondary;
+  border-radius: 2rem;
+  padding: 0.25rem 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.projectLinks {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+/* ─── Bottom: reactions ─── */
+.projectBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 2rem;
+}
+
+.reactionsBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reactionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: $color-background-secondary;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+  color: $color-text-secondary;
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+
+  &:hover {
+    background: #383838;
+    color: $color-text-primary;
+  }
+
+  &.liked {
+    color: #e0606e;
+    background: rgba(224, 96, 110, 0.12);
+    &:hover {
+      background: rgba(224, 96, 110, 0.2);
+    }
+  }
+
+  &.active {
+    color: $color-text-primary;
+    background: #383838;
+  }
+}
+
+/* ─── Comments panel ─── */
+.commentsPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  animation: fadeSlide 0.16s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-height: 9rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: $color-border transparent;
+}
+
+.noComments {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  opacity: 0.45;
+  font-style: italic;
+}
+
+.commentItem {
+  display: flex;
+  gap: 0.55rem;
+  align-items: baseline;
+  font-family: $font-body;
+  font-size: $font-size-sm;
+}
+
+.commentAuthor {
+  color: $color-stone;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.commentText {
+  color: $color-text-secondary;
+  line-height: 1.5;
+}
+
+.commentInputRow {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.commentInput {
+  flex: 1;
+  background: $color-background-secondary;
+  border: none;
+  border-radius: $border-radius-sm;
+  padding: 0.55rem 0.9rem;
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  outline: none;
+  transition: background 0.15s ease;
+
+  &::placeholder {
+    color: $color-text-secondary;
+    opacity: 0.45;
+  }
+  &:focus {
+    background: #353535;
+  }
+}
+
+.commentSubmit {
+  background: $color-background-secondary;
+  border: none;
+  border-radius: $border-radius-sm;
+  padding: 0.55rem 1rem;
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: #383838;
+    color: $color-text-primary;
+  }
+}
+
+/* ─── Right panel: browser mockup ─── */
+.projectRight {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 2rem 2rem 0;
+}
+
+.browserMockup {
+  width: 100%;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  background: #141414;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $color-border;
+}
+
+.browserBar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: #1e1e1e;
+  flex-shrink: 0;
+}
+
+.trafficLights {
+  display: flex;
+  gap: 0.38rem;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.dotRed {
+  background: #ff5f57;
+}
+.dotYellow {
+  background: #febc2e;
+}
+.dotGreen {
+  background: #28c840;
+}
+
+.urlBar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #2a2a2a;
+  border-radius: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  font-family: $font-body;
+  font-size: 0.72rem;
+  color: $color-text-secondary;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.browserActions {
+  flex-shrink: 0;
+}
+
+.browserOpenBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 0.35rem;
+  background: #2a2a2a;
+  color: $color-text-secondary;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: #383838;
+    color: $color-text-primary;
+  }
+}
+
+.browserContent {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.projectCover {
+  object-fit: cover;
+  object-position: bottom left;
+}
+
+/* ─── Section 3 — contact ─── */
 .sectionHeader {
   margin-bottom: 3rem;
 }
@@ -50,79 +406,9 @@
   line-height: 1.1;
 }
 
-.projectsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
-  gap: 1.5rem;
-}
-
-.projectCard {
-  background: $color-card-bg;
-  border: 1px solid $color-border;
-  border-radius: $border-radius-md;
-  padding: 1.75rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-
-  &:hover {
-    border-color: $color-stone;
-    transform: translateY(-2px);
-  }
-}
-
-.projectMeta {
-  display: flex;
-  align-items: center;
-}
-
-.projectYear {
-  font-family: $font-body;
-  font-size: $font-size-sm;
-  color: $color-text-secondary;
-  letter-spacing: 0.05em;
-}
-
-.projectTitle {
-  font-family: $font-display;
-  font-size: $font-size-xl;
-  color: $color-text-primary;
-  font-weight: 600;
-  line-height: 1.2;
-}
-
-.projectDesc {
-  font-family: $font-body;
-  font-size: $font-size-base;
-  color: $color-text-secondary;
-  line-height: 1.6;
-  flex: 1;
-}
-
-.projectTags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-}
-
-.tag {
-  font-family: $font-body;
-  font-size: $font-size-sm;
-  color: $color-stone;
-  background: $color-background-secondary;
-  border: 1px solid $color-border;
-  border-radius: $border-radius-sm;
-  padding: 0.2rem 0.6rem;
-  letter-spacing: 0.03em;
-}
-
-/* Section 3 — contact */
 .section3 {
   min-height: 60vh;
-  padding: 5rem 4rem;
-  border-top: 1px solid $color-border;
+  padding: 5rem 4.5rem;
 }
 
 .contactContent {
@@ -156,7 +442,9 @@
   width: fit-content;
   border-bottom: 1px solid $color-border;
   padding-bottom: 0.15rem;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
 
   &:hover {
     color: $color-clay;
@@ -164,17 +452,31 @@
   }
 }
 
-@media (max-width: 640px) {
+/* ─── Mobile ─── */
+@media (max-width: 768px) {
   .layout {
     flex-direction: column;
   }
 
-  .section2,
-  .section3 {
-    padding: 3rem 1.5rem;
+  .projectRow {
+    padding: 1rem;
   }
 
-  .projectsGrid {
-    grid-template-columns: 1fr;
+  .projectCard {
+    flex-direction: column;
+    min-height: unset;
+  }
+
+  .projectLeft {
+    flex: none;
+    padding: 2rem 1.75rem;
+  }
+
+  .projectRight {
+    padding: 0 1rem 1.5rem;
+  }
+
+  .section3 {
+    padding: 3rem 1.5rem;
   }
 }

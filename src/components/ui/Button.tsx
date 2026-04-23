@@ -6,6 +6,10 @@ interface ButtonProps {
   icon?: LucideIcon;
   variant?: "primary" | "secondary";
   onClick?: () => void;
+  href?: string;
+  target?: string;
+  rel?: string;
+  className?: string;
 }
 
 export default function Button({
@@ -13,14 +17,30 @@ export default function Button({
   icon: Icon,
   variant = "primary",
   onClick,
+  href,
+  target,
+  rel,
+  className,
 }: ButtonProps) {
-  return (
-    <button
-      className={`${styles.btn} ${styles[variant]}`}
-      onClick={onClick}
-    >
+  const cls = `${styles.btn} ${styles[variant]}${className ? ` ${className}` : ""}`;
+  const content = (
+    <>
       {label}
       {Icon && <Icon size={16} strokeWidth={2} />}
+    </>
+  );
+
+  if (href) {
+    return (
+      <a className={cls} href={href} target={target} rel={rel}>
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <button className={cls} onClick={onClick}>
+      {content}
     </button>
   );
 }
