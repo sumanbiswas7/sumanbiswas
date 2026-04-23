@@ -2,10 +2,10 @@
 
 // GRID
 .grid {
-  padding: 1rem;
+  padding: $bento-gap;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: $bento-gap;
   overflow-x: auto;
   scrollbar-width: none;
 
@@ -16,7 +16,7 @@
 
 .gridRow {
   display: flex;
-  gap: 1rem;
+  gap: $bento-gap;
   width: max-content;
 }
 
@@ -24,7 +24,7 @@
 .card {
   background-color: $color-card-bg;
   border: 1px solid $color-border;
-  border-radius: $border-radius-md;
+  border-radius: $bento-radius;
   padding: 1.5rem;
   max-width: fit-content;
 }
