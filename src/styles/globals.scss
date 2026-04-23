@@ -29,3 +29,20 @@ button {
   border: none;
   background: none;
 }
+
+
+
+:global {
+  @keyframes cardShuffleA {
+    0%   { transform: scale(1)     translateY(0); }
+    30%  { transform: scale(0.93)  translateY(-12px); }
+    65%  { transform: scale(1.03)  translateY(-3px); }
+    100% { transform: scale(1)     translateY(0); }
+  }
+  @keyframes cardShuffleB {
+    0%   { transform: scale(1)     translateY(0); }
+    30%  { transform: scale(0.93)  translateY(-12px); }
+    65%  { transform: scale(1.03)  translateY(-3px); }
+    100% { transform: scale(1)     translateY(0); }
+  }
+}

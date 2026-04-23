@@ -12,24 +12,9 @@ import WorkCard from "./WorkCard";
 import NowPlayingCard from "./NowPlayingCard";
 import QuickLinksCard from "./QuickLinksCard";
 import styles from "./BentoGrid.module.scss";
-
-type CardId =
-  | "me"
-  | "meHero"
-  | "stacked"
-  | "gallery"
-  | "note"
-  | "bio"
-  | "playGame"
-  | "work"
-  | "eli";
+import { useBentoGrid, type CardId } from "./BentoGridContext";
 
 type Pos = { row: number; col: number };
-
-const INITIAL_ROWS: CardId[][] = [
-  ["me", "meHero", "stacked", "gallery", "note"],
-  ["bio", "playGame", "work", "eli"],
-];
 
 function reorder(rows: CardId[][], from: Pos, to: Pos): CardId[][] {
   const next = rows.map((r) => [...r]);
@@ -69,7 +54,7 @@ function renderCard(id: CardId) {
 }
 
 export default function BentoGrid() {
-  const [rows, setRows] = useState<CardId[][]>(INITIAL_ROWS);
+  const { rows, setRows, shuffleCount } = useBentoGrid();
   const [draggingId, setDraggingId] = useState<CardId | null>(null);
   const [overPos, setOverPos] = useState<Pos | null>(null);
 
@@ -115,7 +100,7 @@ export default function BentoGrid() {
       setOverPos(null);
       lastOver.current = null;
     },
-    [],
+    [setRows],
   );
 
   const handleDragEnd = useCallback(() => {
@@ -124,6 +109,9 @@ export default function BentoGrid() {
     setOverPos(null);
     lastOver.current = null;
   }, []);
+
+  // Alternate keyframe name so the browser replays the animation on every shuffle
+  const animName = shuffleCount % 2 === 0 ? "cardShuffleA" : "cardShuffleB";
 
   return (
     <div className={styles.grid}>
@@ -135,6 +123,15 @@ export default function BentoGrid() {
               overPos?.row === rowIdx &&
               overPos?.col === colIdx &&
               draggingId !== cardId;
+            const globalIdx =
+              rows.slice(0, rowIdx).reduce((s, r) => s + r.length, 0) + colIdx;
+            const shuffleStyle: React.CSSProperties =
+              shuffleCount > 0
+                ? {
+                    animation: `${animName} 0.55s ease-in-out ${globalIdx * 40}ms`,
+                    transition: "none",
+                  }
+                : {};
             return (
               <div
                 key={cardId}
@@ -143,6 +140,7 @@ export default function BentoGrid() {
                 onDragOver={(e) => handleDragOver(e, rowIdx, colIdx)}
                 onDrop={(e) => handleDrop(e, rowIdx, colIdx)}
                 onDragEnd={handleDragEnd}
+                style={shuffleStyle}
                 className={[
                   styles.draggableCard,
                   isDragging ? styles.dragging : "",

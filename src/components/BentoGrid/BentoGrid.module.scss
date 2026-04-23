@@ -668,7 +668,9 @@
   width: 9px;
   height: 9px;
   background: $color-clay;
-  box-shadow: 0 0 10px $color-clay, 0 0 20px rgba($color-clay, 0.4);
+  box-shadow:
+    0 0 10px $color-clay,
+    0 0 20px rgba($color-clay, 0.4);
   animation: targetPulse 2s ease-in-out infinite;
 }
 

@@ -1,14 +1,27 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
+import { Shuffle } from "lucide-react";
+import { useBentoGrid } from "@/components/BentoGrid/BentoGridContext";
 import styles from "./Navbar.module.scss";
 
 export default function Navbar() {
+  const { shuffle } = useBentoGrid();
+  const [spinning, setSpinning] = useState(false);
+
+  function handleShuffle() {
+    shuffle();
+    setSpinning(true);
+    setTimeout(() => setSpinning(false), 500);
+  }
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.left}>
         <Image src="/logo.svg" alt="Suman Biswas logo" width={40} height={40} />
         <div className={styles.identity}>
           <span className={styles.name}>Suman Biswas</span>
-          {/* <span className={styles.role}>FullStack Engineer</span> */}
         </div>
       </div>
       <div className={styles.right}>
@@ -17,6 +30,16 @@ export default function Navbar() {
           <a href="#about">about</a>
           <a href="#contact">contact</a>
         </div>
+        <button
+          className={styles.shuffleBtn}
+          aria-label="Shuffle cards"
+          onClick={handleShuffle}
+        >
+          <Shuffle
+            size={16}
+            className={spinning ? styles.shuffleIconSpin : ""}
+          />
+        </button>
         <button className={styles.botBtn} aria-label="Chat bot">
           <svg
             width="20"
