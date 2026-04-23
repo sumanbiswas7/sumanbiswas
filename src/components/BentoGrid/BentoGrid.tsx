@@ -4,7 +4,10 @@ import Card from "./Card";
 import Button from "@/components/ui/Button";
 import NoteCard from "./NoteCard";
 import EliCard from "./EliCard";
-import SkillsCard from "./SkillsCard";
+import GalleryCard from "./GalleryCard";
+import WorkCard from "./WorkCard";
+import NowPlayingCard from "./NowPlayingCard";
+import QuickLinksCard from "./QuickLinksCard";
 import styles from "./BentoGrid.module.scss";
 
 export default function BentoGrid() {
@@ -13,14 +16,19 @@ export default function BentoGrid() {
       <div className={styles.gridRow}>
         <MeCard />
         <MeHeroImgCard />
+        <div className={styles.stackedCards}>
+          <NowPlayingCard />
+          <QuickLinksCard />
+        </div>
+        <GalleryCard />
         <NoteCard />
       </div>
 
       <div className={styles.gridRow}>
         <BioCard />
         <PlayGameCard />
+        <WorkCard />
         <EliCard />
-        <SkillsCard />
       </div>
     </div>
   );
