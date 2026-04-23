@@ -67,6 +67,12 @@ const POSITIONS = [
   { top: "90%", left: "2.625rem", size: 20, color: COLORS.stone },
 ];
 
+const NAV_ITEMS = [
+  { label: "Home", id: "home" },
+  { label: "Work", id: "work" },
+  { label: "Contact", id: "contact" },
+];
+
 function renderIcon(set: IconSet, color: string, size: number) {
   switch (set) {
     case "star":  return <StarIcon color={color} size={size} />;
@@ -76,7 +82,11 @@ function renderIcon(set: IconSet, color: string, size: number) {
   }
 }
 
-export default function Sidebar() {
+function scrollToSection(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
+
+export default function Sidebar({ expanded = false }: { expanded?: boolean }) {
   const [iconSet, setIconSet] = useState<IconSet>("flower");
   const [spinning, setSpinning] = useState(false);
 
@@ -89,14 +99,31 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className={styles.sidebar}>
-      {POSITIONS.map((f, i) => (
-        <div key={i} className={styles.flower} style={{ top: f.top, left: f.left }}>
-          {renderIcon(iconSet, f.color, f.size)}
-        </div>
-      ))}
+    <aside className={`${styles.sidebar} ${expanded ? styles.expanded : ""}`}>
+      {/* Flowers — fade out when expanded */}
+      <div className={`${styles.flowersLayer} ${expanded ? styles.flowersHidden : ""}`}>
+        {POSITIONS.map((f, i) => (
+          <div key={i} className={styles.flower} style={{ top: f.top, left: f.left }}>
+            {renderIcon(iconSet, f.color, f.size)}
+          </div>
+        ))}
+      </div>
+
+      {/* Nav — fade in when expanded */}
+      <nav className={`${styles.nav} ${expanded ? styles.navVisible : ""}`}>
+        {NAV_ITEMS.map((item) => (
+          <button
+            key={item.id}
+            className={styles.navItem}
+            onClick={() => scrollToSection(item.id)}
+          >
+            {item.label}
+          </button>
+        ))}
+      </nav>
+
       <button
-        className={`${styles.shuffleBtn}${spinning ? ` ${styles.spinning}` : ""}`}
+        className={`${styles.shuffleBtn}${spinning ? ` ${styles.spinning}` : ""}${expanded ? ` ${styles.shuffleHidden}` : ""}`}
         aria-label="Shuffle"
         onClick={handleClick}
       >

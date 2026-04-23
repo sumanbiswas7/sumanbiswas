@@ -1,22 +1,180 @@
 @use '@/styles/variables' as *;
 
-.page {
-  height: 100vh;
+.layout {
   display: flex;
   flex-direction: row;
+  height: 100vh;
   overflow: hidden;
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
+.scrollArea {
   flex: 1;
   min-width: 0;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* Section 1 — bento grid */
+.section1 {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+}
+
+/* Section 2 — work / projects */
+.section2 {
+  min-height: 100vh;
+  padding: 5rem 4rem;
+  border-top: 1px solid $color-border;
+}
+
+.sectionHeader {
+  margin-bottom: 3rem;
+}
+
+.sectionLabel {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.sectionTitle {
+  font-family: $font-display;
+  font-size: $font-size-display;
+  color: $color-text-primary;
+  font-weight: 600;
+  margin-top: 0.4rem;
+  line-height: 1.1;
+}
+
+.projectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(22rem, 1fr));
+  gap: 1.5rem;
+}
+
+.projectCard {
+  background: $color-card-bg;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: $color-stone;
+    transform: translateY(-2px);
+  }
+}
+
+.projectMeta {
+  display: flex;
+  align-items: center;
+}
+
+.projectYear {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  letter-spacing: 0.05em;
+}
+
+.projectTitle {
+  font-family: $font-display;
+  font-size: $font-size-xl;
+  color: $color-text-primary;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.projectDesc {
+  font-family: $font-body;
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.projectTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.tag {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-stone;
+  background: $color-background-secondary;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  padding: 0.2rem 0.6rem;
+  letter-spacing: 0.03em;
+}
+
+/* Section 3 — contact */
+.section3 {
+  min-height: 60vh;
+  padding: 5rem 4rem;
+  border-top: 1px solid $color-border;
+}
+
+.contactContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 36rem;
+}
+
+.contactLead {
+  font-family: $font-body;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: 1.7;
+}
+
+.contactLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.contactLink {
+  font-family: $font-body;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  border-bottom: 1px solid $color-border;
+  padding-bottom: 0.15rem;
+  transition: color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    color: $color-clay;
+    border-color: $color-clay;
+  }
 }
 
 @media (max-width: 640px) {
-  .page {
+  .layout {
     flex-direction: column;
+  }
+
+  .section2,
+  .section3 {
+    padding: 3rem 1.5rem;
+  }
+
+  .projectsGrid {
+    grid-template-columns: 1fr;
   }
 }
