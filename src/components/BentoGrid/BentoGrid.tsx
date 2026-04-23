@@ -17,6 +17,7 @@ export default function BentoGrid() {
       </div>
 
       <div className={styles.gridRow}>
+        <BioCard />
         <PlayGameCard />
         <EliCard />
         <SkillsCard />
@@ -45,6 +46,30 @@ function MeCard() {
       <div className={styles.actions}>
         <Button label="View My Work" icon={ArrowRight} variant="primary" />
         <Button label="Download CV" icon={Download} variant="secondary" />
+      </div>
+    </Card>
+  );
+}
+
+function BioCard() {
+  return (
+    <Card className={styles.bioCard}>
+      <div className={styles.bioLeft}>
+        <span className={styles.cardTitle}>BIO</span>
+        <p className={`${styles.sub} ${styles.bioDesc}`}>
+          I’m a self-taught full-stack developer who loves building cool apps
+          and constantly leveling up. Outside coding, I’m into football (Hala
+          Madrid ⚽), photography, and exploring new places. a self-taught
+          full-stack developer, constantly on the journey of learning and all.
+        </p>
+      </div>
+      <div className={styles.bioParrotWrap}>
+        <Image
+          src="/photo-parrot.png"
+          alt="Parrot"
+          fill
+          className={styles.bioParrotImg}
+        />
       </div>
     </Card>
   );
