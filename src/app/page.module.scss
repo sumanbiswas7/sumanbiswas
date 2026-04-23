@@ -14,3 +14,9 @@
   min-width: 0;
   overflow: hidden;
 }
+
+@media (max-width: 640px) {
+  .page {
+    flex-direction: column;
+  }
+}

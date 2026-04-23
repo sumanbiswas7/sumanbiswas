@@ -915,3 +915,117 @@
   transform: rotate(15deg);
   opacity: 0.85;
 }
+
+// ─── MOBILE ───────────────────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .grid {
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex: 1;
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  .gridRow {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .draggableCard {
+    width: 100%;
+    align-self: auto;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.25rem;
+    box-sizing: border-box;
+  }
+
+  // ME card
+  .meGrid {
+    max-width: 100%;
+  }
+
+  .meGridTop {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .meHeroImgCard {
+    width: 100%;
+    max-width: 100%;
+    height: 260px;
+  }
+
+  .headline {
+    font-size: clamp(1.7rem, 7vw, 2.4rem);
+  }
+
+  // Stacked cards
+  .stackedCards {
+    > * {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  // Bio card
+  .bioCard {
+    flex-direction: column;
+    max-width: 100%;
+  }
+
+  .bioParrotWrap {
+    width: 100%;
+    height: 200px;
+    align-self: auto;
+  }
+
+  // Gallery
+  .galleryCard {
+    width: 100%;
+    max-width: 100%;
+    height: 240px;
+  }
+
+  // Note
+  .noteCard {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  // Work
+  .workCard {
+    max-width: 100%;
+  }
+
+  // Skills
+  .skillsCard {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  // Eli card
+  .eliCard {
+    flex-direction: column;
+    max-width: 100%;
+    gap: 1rem;
+  }
+
+  .eliRobotSvg {
+    width: 90px;
+  }
+
+  .eliDesc {
+    max-width: 100%;
+  }
+
+  // Play game
+  .playGameCard {
+    max-width: 100%;
+  }
+}

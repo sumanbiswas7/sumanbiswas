@@ -4,8 +4,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.05rem 1.75rem;
-  border-bottom: 0.0625rem solid $color-border;
+  padding: 1.05rem 1rem;
+  border-bottom: 1px solid $color-border;
   background-color: $color-bg;
   flex-shrink: 0;
 }
@@ -112,8 +112,12 @@
 }
 
 @keyframes spinOnce {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .botBtn {
@@ -130,5 +134,23 @@
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0.85rem 1rem;
+  }
+
+  .links {
+    display: none;
+  }
+
+  .role {
+    display: none;
+  }
+
+  .name {
+    font-size: 1.1rem;
   }
 }
