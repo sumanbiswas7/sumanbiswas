@@ -106,7 +106,7 @@ export default function Home() {
     }
   });
 
-  const [openComments, setOpenComments] = useState<Record<number, boolean>>({});
+  const [openComposer, setOpenComposer] = useState<Record<number, boolean>>({});
   const [commentInputs, setCommentInputs] = useState<Record<number, string>>({});
 
   useEffect(() => {
@@ -163,7 +163,7 @@ export default function Home() {
         <div id="work" className={styles.section2}>
           {PROJECTS.map((p, i) => {
             const r = reactions[p.id];
-            const isCommentsOpen = openComments[p.id] ?? false;
+            const isCommentsOpen = r.comments.length > 0;
             return (
               <div key={p.id} className={styles.projectRow}>
                 <div className={styles.projectCard}>
@@ -215,9 +215,6 @@ export default function Home() {
                       {/* Comment feed — above buttons */}
                       {isCommentsOpen && (
                         <div className={styles.commentsSection}>
-                          {r.comments.length === 0 && (
-                            <p className={styles.noComments}>No comments yet.</p>
-                          )}
                           {r.comments.map((c) => (
                             <div key={c.id} className={styles.commentBubble}>
                               <p className={styles.commentText}>{c.text}</p>
@@ -241,9 +238,9 @@ export default function Home() {
                         </button>
 
                         <button
-                          className={`${styles.commentToggle} ${isCommentsOpen ? styles.commentToggleActive : ""}`}
+                          className={`${styles.commentToggle} ${openComposer[p.id] ? styles.commentToggleActive : ""}`}
                           onClick={() =>
-                            setOpenComments((prev) => ({ ...prev, [p.id]: !prev[p.id] }))
+                            setOpenComposer((prev) => ({ ...prev, [p.id]: !prev[p.id] }))
                           }
                         >
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -251,39 +248,55 @@ export default function Home() {
                           </svg>
                           {r.comments.length > 0
                             ? `${r.comments.length} comment${r.comments.length > 1 ? "s" : ""}`
-                            : "Comment"}
+                            : "Add comment"}
                         </button>
-                      </div>
 
-                      {/* Composer — shown when comments open */}
-                      {isCommentsOpen && (
-                        <div className={styles.composerField}>
-                          <input
-                            className={styles.composerInput}
-                            placeholder="Add a comment…"
-                            value={commentInputs[p.id] ?? ""}
-                            onChange={(e) =>
-                              setCommentInputs((prev) => ({
-                                ...prev,
-                                [p.id]: e.target.value,
-                              }))
-                            }
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") addComment(p.id);
-                            }}
-                          />
-                          <button
-                            className={styles.sendBtn}
-                            onClick={() => addComment(p.id)}
-                            aria-label="Post comment"
-                          >
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                              <line x1="22" y1="2" x2="11" y2="13" />
-                              <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                            </svg>
-                          </button>
-                        </div>
-                      )}
+                        {/* Composer popup — floats above bar, zero layout shift */}
+                        {openComposer[p.id] && (
+                          <div className={styles.composerPopup}>
+                            <input
+                              autoFocus
+                              className={styles.composerInput}
+                              placeholder="Write a comment…"
+                              value={commentInputs[p.id] ?? ""}
+                              onChange={(e) =>
+                                setCommentInputs((prev) => ({ ...prev, [p.id]: e.target.value }))
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  addComment(p.id);
+                                  setOpenComposer((prev) => ({ ...prev, [p.id]: false }));
+                                }
+                                if (e.key === "Escape")
+                                  setOpenComposer((prev) => ({ ...prev, [p.id]: false }));
+                              }}
+                            />
+                            <button
+                              className={styles.sendBtn}
+                              onClick={() => {
+                                addComment(p.id);
+                                setOpenComposer((prev) => ({ ...prev, [p.id]: false }));
+                              }}
+                              aria-label="Post comment"
+                            >
+                              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <line x1="22" y1="2" x2="11" y2="13" />
+                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                              </svg>
+                            </button>
+                            <button
+                              className={styles.closeBtn}
+                              onClick={() => setOpenComposer((prev) => ({ ...prev, [p.id]: false }))}
+                              aria-label="Close"
+                            >
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                              </svg>
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
 

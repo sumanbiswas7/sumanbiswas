@@ -10,15 +10,13 @@ $color-background-secondary: #2f2f2f;
 $color-text-primary: #ececec;
 $color-text-secondary: #9f9f9f;
 
-// Available fonts — swap $font-body / $font-display to try each
-$font-fraunces:           "Fraunces", serif;
-$font-bricolage:          "Bricolage Grotesque", sans-serif;
-$font-space-grotesk:      "Space Grotesk", sans-serif;
-$font-dm-serif:           "DM Serif Display", serif;
-$font-instrument:         "Instrument Serif", serif;
+$font-bricolage: var(--font-bricolage), "Bricolage Grotesque", sans-serif;
+$font-dm-mono:   var(--font-dm-mono),   "DM Mono", monospace;
+$font-dm-sans:   var(--font-dm-sans),   "DM Sans", sans-serif;
 
-$font-body:    $font-space-grotesk;
+$font-body:    $font-dm-sans;
 $font-display: $font-bricolage;
+$font-mono:    $font-dm-mono;
 
 $font-size-sm: 0.8rem; // labels, badges, sparks
 $font-size-base: 0.95rem; // body text, captions

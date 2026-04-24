@@ -142,6 +142,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
 }
 
 /* Like button */
@@ -271,20 +272,31 @@
   letter-spacing: 0.02em;
 }
 
-/* Composer */
-.composerField {
+/* Composer popup — floats above the reactions bar, no layout shift */
+.composerPopup {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 20;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: $color-background-secondary;
+  background: $color-card-bg;
   border: 1px solid $color-border;
   border-radius: 2rem;
-  padding: 0.45rem 0.6rem 0.45rem 1rem;
-  transition: border-color 0.15s ease;
+  padding: 0.45rem 0.5rem 0.45rem 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  width: 18rem;
+  animation: popupIn 0.15s cubic-bezier(0.2, 0, 0, 1.2);
 
   &:focus-within {
     border-color: $color-text-secondary;
   }
+}
+
+@keyframes popupIn {
+  from { opacity: 0; transform: translateY(4px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .composerInput {
@@ -295,10 +307,32 @@
   font-family: $font-body;
   font-size: $font-size-sm;
   color: $color-text-primary;
+  min-width: 0;
 
   &::placeholder {
     color: $color-text-secondary;
     opacity: 0.5;
+  }
+}
+
+.closeBtn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  color: $color-text-secondary;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    opacity: 1;
+    color: $color-text-primary;
   }
 }
 
@@ -310,7 +344,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: $color-card-bg;
+  background: $color-background-secondary;
   border: 1px solid $color-border;
   color: $color-text-secondary;
   cursor: pointer;
