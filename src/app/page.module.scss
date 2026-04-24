@@ -12,6 +12,8 @@
   min-width: 0;
   overflow-y: auto;
   scroll-behavior: smooth;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
 }
 
 /* ─── Section 1 — bento grid ─── */
