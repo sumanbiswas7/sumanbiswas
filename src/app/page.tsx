@@ -8,6 +8,8 @@ import Image from "next/image";
 import { ExternalLink, GitFork } from "lucide-react";
 import Button from "@/components/ui/Button";
 import styles from "./page.module.scss";
+import { EliProvider } from "@/context/EliContext";
+import EliTerminal from "@/components/EliTerminal/EliTerminal";
 
 const PROJECTS = [
   {
@@ -149,6 +151,8 @@ export default function Home() {
   }
 
   return (
+    <EliProvider>
+    <EliTerminal />
     <div className={styles.layout}>
       <Sidebar expanded={sidebarExpanded} />
       <div ref={scrollAreaRef} className={styles.scrollArea}>
@@ -367,5 +371,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </EliProvider>
   );
 }

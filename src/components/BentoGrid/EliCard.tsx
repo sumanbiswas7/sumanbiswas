@@ -1,7 +1,9 @@
-import { ArrowRight, Sparkles } from "lucide-react";
+"use client";
+import { ArrowRight } from "lucide-react";
 import styles from "./BentoGrid.module.scss";
 import Card from "./Card";
 import Button from "@/components/ui/Button";
+import { useEli } from "@/context/EliContext";
 
 function EliRobot() {
   return (
@@ -51,6 +53,7 @@ function EliRobot() {
 }
 
 export default function EliCard() {
+  const { openEli } = useEli();
   return (
     <Card className={styles.eliCard}>
       {/* Background decorative circles */}
@@ -76,7 +79,7 @@ export default function EliCard() {
           tech. Get instant answers and helpful suggestions.
         </p>
 
-        <Button label="Try Eli" icon={ArrowRight} variant="primary" />
+        <Button label="Try Eli" icon={ArrowRight} variant="primary" onClick={openEli} />
       </div>
     </Card>
   );

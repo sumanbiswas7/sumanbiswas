@@ -4,10 +4,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { Shuffle } from "lucide-react";
 import { useBentoGrid } from "@/components/BentoGrid/BentoGridContext";
+import { useEli } from "@/context/EliContext";
 import styles from "./Navbar.module.scss";
 
 export default function Navbar() {
   const { shuffle } = useBentoGrid();
+  const { openEli } = useEli();
   const [spinning, setSpinning] = useState(false);
 
   function handleShuffle() {
@@ -40,7 +42,7 @@ export default function Navbar() {
             className={spinning ? styles.shuffleIconSpin : ""}
           />
         </button>
-        <button className={styles.botBtn} aria-label="Chat bot">
+        <button className={styles.botBtn} aria-label="Chat bot" onClick={openEli}>
           <svg
             width="20"
             height="20"

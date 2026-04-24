@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Home, Briefcase, Mail, Gamepad2, Bot } from "lucide-react";
+import { useEli } from "@/context/EliContext";
 import styles from "./Sidebar.module.scss";
 
 const COLORS = {
@@ -122,6 +123,7 @@ function scrollToSection(id: string) {
 export default function Sidebar({ expanded = false }: { expanded?: boolean }) {
   const [iconSet, setIconSet] = useState<IconSet>("flower");
   const [spinning, setSpinning] = useState(false);
+  const { openEli } = useEli();
 
   function handleClick() {
     if (spinning) return;
@@ -162,7 +164,7 @@ export default function Sidebar({ expanded = false }: { expanded?: boolean }) {
             <button
               key={label}
               className={styles.navItem}
-              onClick={() => scrollToSection(id)}
+              onClick={() => label === "Try Eli" ? openEli() : scrollToSection(id)}
             >
               <Icon size={15} className={styles.navIcon} />
               {label}
