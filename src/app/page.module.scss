@@ -134,7 +134,7 @@
 .projectBottom {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
   padding-top: 2rem;
 }
 
@@ -144,140 +144,182 @@
   gap: 0.5rem;
 }
 
-.reactionBtn {
+/* Like button */
+.likeBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: $color-background-secondary;
-  border: none;
+  gap: 0.55rem;
+  background: none;
+  border: 1px solid $color-border;
   border-radius: 2rem;
-  padding: 0.5rem 1rem;
+  padding: 0.55rem 1.1rem 0.55rem 0.9rem;
   color: $color-text-secondary;
   font-family: $font-body;
-  font-size: $font-size-sm;
+  font-size: $font-size-base;
   cursor: pointer;
-  transition:
-    color 0.15s ease,
-    background 0.15s ease;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
 
   &:hover {
-    background: #383838;
+    border-color: $color-text-secondary;
     color: $color-text-primary;
   }
 
   &.liked {
     color: #e0606e;
-    background: rgba(224, 96, 110, 0.12);
-    &:hover {
-      background: rgba(224, 96, 110, 0.2);
+    border-color: rgba(224, 96, 110, 0.4);
+    background: rgba(224, 96, 110, 0.07);
+
+    .likeHeart {
+      animation: heartPop 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
     }
   }
+}
 
-  &.active {
+.likeHeart {
+  display: flex;
+  align-items: center;
+}
+
+.likeCount {
+  font-variant-numeric: tabular-nums;
+  min-width: 0.8ch;
+}
+
+@keyframes heartPop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.5); }
+  70%  { transform: scale(0.85); }
+  100% { transform: scale(1); }
+}
+
+/* Comment toggle */
+.commentToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: none;
+  border: 1px solid $color-border;
+  border-radius: 2rem;
+  padding: 0.55rem 1.1rem;
+  color: $color-text-secondary;
+  font-family: $font-body;
+  font-size: $font-size-base;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    border-color: $color-text-secondary;
     color: $color-text-primary;
-    background: #383838;
+  }
+
+  &.commentToggleActive {
+    color: $color-text-primary;
+    border-color: $color-text-secondary;
+    background: $color-background-secondary;
   }
 }
 
-/* ─── Comments panel ─── */
-.commentsPanel {
+/* ─── Comments feed ─── */
+.commentsSection {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
-  animation: fadeSlide 0.16s ease;
-}
-
-@keyframes fadeSlide {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.commentsList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  max-height: 9rem;
+  gap: 0.5rem;
+  max-height: 12rem;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: $color-border transparent;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+  animation: expandIn 0.18s ease;
+}
+
+@keyframes expandIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .noComments {
   font-family: $font-body;
   font-size: $font-size-sm;
   color: $color-text-secondary;
-  opacity: 0.45;
+  opacity: 0.4;
   font-style: italic;
 }
 
-.commentItem {
-  display: flex;
-  gap: 0.55rem;
-  align-items: baseline;
-  font-family: $font-body;
-  font-size: $font-size-sm;
-}
-
-.commentAuthor {
-  color: $color-stone;
-  font-weight: 600;
-  flex-shrink: 0;
+.commentBubble {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: $color-background-secondary;
+  border-radius: $border-radius-md;
+  padding: 0.65rem 0.9rem;
+  align-self: flex-start;
+  max-width: 90%;
 }
 
 .commentText {
-  color: $color-text-secondary;
-  line-height: 1.5;
-}
-
-.commentInputRow {
-  display: flex;
-  gap: 0.45rem;
-}
-
-.commentInput {
-  flex: 1;
-  background: $color-background-secondary;
-  border: none;
-  border-radius: $border-radius-sm;
-  padding: 0.55rem 0.9rem;
   font-family: $font-body;
   font-size: $font-size-sm;
   color: $color-text-primary;
-  outline: none;
-  transition: background 0.15s ease;
+  line-height: 1.5;
+  margin: 0;
+}
 
-  &::placeholder {
-    color: $color-text-secondary;
-    opacity: 0.45;
-  }
-  &:focus {
-    background: #353535;
+.commentMeta {
+  font-family: $font-body;
+  font-size: 0.7rem;
+  color: $color-text-secondary;
+  opacity: 0.6;
+  letter-spacing: 0.02em;
+}
+
+/* Composer */
+.composerField {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: $color-background-secondary;
+  border: 1px solid $color-border;
+  border-radius: 2rem;
+  padding: 0.45rem 0.6rem 0.45rem 1rem;
+  transition: border-color 0.15s ease;
+
+  &:focus-within {
+    border-color: $color-text-secondary;
   }
 }
 
-.commentSubmit {
-  background: $color-background-secondary;
+.composerInput {
+  flex: 1;
+  background: none;
   border: none;
-  border-radius: $border-radius-sm;
-  padding: 0.55rem 1rem;
+  outline: none;
   font-family: $font-body;
   font-size: $font-size-sm;
+  color: $color-text-primary;
+
+  &::placeholder {
+    color: $color-text-secondary;
+    opacity: 0.5;
+  }
+}
+
+.sendBtn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: $color-card-bg;
+  border: 1px solid $color-border;
   color: $color-text-secondary;
   cursor: pointer;
-  white-space: nowrap;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 
   &:hover {
-    background: #383838;
-    color: $color-text-primary;
+    background: $color-text-primary;
+    color: $color-bg;
+    border-color: $color-text-primary;
   }
 }
 

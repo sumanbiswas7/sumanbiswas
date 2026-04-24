@@ -75,7 +75,15 @@ function getDomain(url: string) {
   }
 }
 
-type Comment = { id: number; text: string };
+type Comment = { id: number; text: string; ts: number };
+
+function timeAgo(ts: number): string {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return "just now";
+  if (s < 3600) return `${Math.floor(s / 60)}m ago`;
+  if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
+  return `${Math.floor(s / 86400)}d ago`;
+}
 type Reactions = Record<number, { liked: boolean; likes: number; comments: Comment[] }>;
 
 function initReactions(): Reactions {
@@ -134,7 +142,7 @@ export default function Home() {
       const r = prev[id];
       return {
         ...prev,
-        [id]: { ...r, comments: [...r.comments, { id: Date.now(), text }] },
+        [id]: { ...r, comments: [...r.comments, { id: Date.now(), text, ts: Date.now() }] },
       };
     });
     setCommentInputs((prev) => ({ ...prev, [id]: "" }));
@@ -203,69 +211,77 @@ export default function Home() {
 
                     {/* Bottom: reactions */}
                     <div className={styles.projectBottom}>
+
+                      {/* Comment feed — above buttons */}
+                      {isCommentsOpen && (
+                        <div className={styles.commentsSection}>
+                          {r.comments.length === 0 && (
+                            <p className={styles.noComments}>No comments yet.</p>
+                          )}
+                          {r.comments.map((c) => (
+                            <div key={c.id} className={styles.commentBubble}>
+                              <p className={styles.commentText}>{c.text}</p>
+                              <span className={styles.commentMeta}>anon · {timeAgo(c.ts)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
                       <div className={styles.reactionsBar}>
                         <button
-                          className={`${styles.reactionBtn} ${r.liked ? styles.liked : ""}`}
+                          className={`${styles.likeBtn} ${r.liked ? styles.liked : ""}`}
                           onClick={() => toggleLike(p.id)}
                         >
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill={r.liked ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                          </svg>
-                          <span>{r.likes > 0 ? r.likes : "Like"}</span>
+                          <span className={styles.likeHeart}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill={r.liked ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2.2">
+                              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                            </svg>
+                          </span>
+                          {r.likes > 0 && <span className={styles.likeCount}>{r.likes}</span>}
                         </button>
 
                         <button
-                          className={`${styles.reactionBtn} ${isCommentsOpen ? styles.active : ""}`}
+                          className={`${styles.commentToggle} ${isCommentsOpen ? styles.commentToggleActive : ""}`}
                           onClick={() =>
                             setOpenComments((prev) => ({ ...prev, [p.id]: !prev[p.id] }))
                           }
                         >
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                           </svg>
-                          <span>
-                            {r.comments.length > 0
-                              ? `${r.comments.length} comment${r.comments.length > 1 ? "s" : ""}`
-                              : "Comment"}
-                          </span>
+                          {r.comments.length > 0
+                            ? `${r.comments.length} comment${r.comments.length > 1 ? "s" : ""}`
+                            : "Comment"}
                         </button>
                       </div>
 
+                      {/* Composer — shown when comments open */}
                       {isCommentsOpen && (
-                        <div className={styles.commentsPanel}>
-                          <div className={styles.commentsList}>
-                            {r.comments.length === 0 && (
-                              <p className={styles.noComments}>No comments yet.</p>
-                            )}
-                            {r.comments.map((c) => (
-                              <div key={c.id} className={styles.commentItem}>
-                                <span className={styles.commentAuthor}>anon</span>
-                                <span className={styles.commentText}>{c.text}</span>
-                              </div>
-                            ))}
-                          </div>
-                          <div className={styles.commentInputRow}>
-                            <input
-                              className={styles.commentInput}
-                              placeholder="Leave a comment…"
-                              value={commentInputs[p.id] ?? ""}
-                              onChange={(e) =>
-                                setCommentInputs((prev) => ({
-                                  ...prev,
-                                  [p.id]: e.target.value,
-                                }))
-                              }
-                              onKeyDown={(e) => {
-                                if (e.key === "Enter") addComment(p.id);
-                              }}
-                            />
-                            <button
-                              className={styles.commentSubmit}
-                              onClick={() => addComment(p.id)}
-                            >
-                              Post
-                            </button>
-                          </div>
+                        <div className={styles.composerField}>
+                          <input
+                            className={styles.composerInput}
+                            placeholder="Add a comment…"
+                            value={commentInputs[p.id] ?? ""}
+                            onChange={(e) =>
+                              setCommentInputs((prev) => ({
+                                ...prev,
+                                [p.id]: e.target.value,
+                              }))
+                            }
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") addComment(p.id);
+                            }}
+                          />
+                          <button
+                            className={styles.sendBtn}
+                            onClick={() => addComment(p.id)}
+                            aria-label="Post comment"
+                          >
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                              <line x1="22" y1="2" x2="11" y2="13" />
+                              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                          </button>
                         </div>
                       )}
                     </div>
