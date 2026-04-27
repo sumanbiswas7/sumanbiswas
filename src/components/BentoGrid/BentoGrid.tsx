@@ -13,6 +13,7 @@ import NowPlayingCard from "./NowPlayingCard";
 import QuickLinksCard from "./QuickLinksCard";
 import styles from "./BentoGrid.module.scss";
 import { useBentoGrid, type CardId } from "./BentoGridContext";
+import { useGame } from "@/context/GameContext";
 
 type Pos = { row: number; col: number };
 
@@ -228,6 +229,7 @@ function MeHeroImgCard() {
 }
 
 function PlayGameCard() {
+  const { openGame } = useGame();
   return (
     <Card className={styles.playGameCard}>
       <div className={styles.playGameLeft}>
@@ -237,7 +239,7 @@ function PlayGameCard() {
           Play a quick game and relax! Test your reaction speed and beat your
           high score.
         </p>
-        <Button label="Play Game" icon={Play} variant="secondary" />
+        <Button label="Play Game" icon={Play} variant="secondary" onClick={openGame} />
       </div>
       <div className={styles.playGamePoster}>
         <div className={styles.gameTarget}>

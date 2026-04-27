@@ -3,6 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Home, Briefcase, Mail, Gamepad2, Bot } from "lucide-react";
 import { useEli } from "@/context/EliContext";
+import { useGame } from "@/context/GameContext";
 import styles from "./Sidebar.module.scss";
 
 const COLORS = {
@@ -124,6 +125,7 @@ export default function Sidebar({ expanded = false }: { expanded?: boolean }) {
   const [iconSet, setIconSet] = useState<IconSet>("flower");
   const [spinning, setSpinning] = useState(false);
   const { openEli } = useEli();
+  const { openGame } = useGame();
 
   function handleClick() {
     if (spinning) return;
@@ -164,7 +166,7 @@ export default function Sidebar({ expanded = false }: { expanded?: boolean }) {
             <button
               key={label}
               className={styles.navItem}
-              onClick={() => label === "Try Eli" ? openEli() : scrollToSection(id)}
+              onClick={() => label === "Try Eli" ? openEli() : label === "Playground" ? openGame() : scrollToSection(id)}
             >
               <Icon size={15} className={styles.navIcon} />
               {label}
