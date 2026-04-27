@@ -1,6 +1,7 @@
 "use client";
 
-import { Gamepad2, Glasses } from "lucide-react";
+import { useState } from "react";
+import { Gamepad2 } from "lucide-react";
 import Image from "next/image";
 import Card from "./Card";
 import styles from "./BentoGrid.module.scss";
@@ -28,7 +29,7 @@ const BARS = [
   { duration: "1.25s", delay: "0s", height: "70%" },
 ];
 
-function Equalizer() {
+function MusicVisualizer() {
   return (
     <div className={styles.equalizer}>
       {BARS.map((bar, i) => (
@@ -48,38 +49,93 @@ function Equalizer() {
   );
 }
 
-const song = {
+function GameVisualizer() {
+  return (
+    <div className={styles.gameVisualizer} aria-hidden="true">
+      <div className={styles.gamePitch}>
+        <span className={styles.gamePitchGrid} />
+        <span className={styles.gamePitchSweep} />
+        <span className={styles.gamePitchLine} />
+        <span className={styles.gamePitchBall} />
+        <span className={`${styles.gamePulse} ${styles.gamePulseOne}`} />
+        <span className={`${styles.gamePulse} ${styles.gamePulseTwo}`} />
+        <span className={styles.gameGoalLeft} />
+        <span className={styles.gameGoalRight} />
+      </div>
+    </div>
+  );
+}
+
+const music = {
   title: "DAISIES",
   artist: "Justin Bieber",
   art: "/now-listening.jpeg",
 };
 
 export default function NowPlayingCard() {
+  const [mode, setMode] = useState<"music" | "game">("music");
+  const isGameMode = mode === "game";
+
+  const nowPlaying = isGameMode
+    ? {
+        title: "FC 25",
+        artist: "PS5",
+        art: "/game-poster-1.png",
+      }
+    : music;
+
   return (
     <Card className={styles.nowPlayingCard}>
       <div className={styles.nowPlayingTop}>
-        <span className={styles.cardTitle}>NOW LISTENING</span>
+        <span className={styles.cardTitle}>
+          {isGameMode ? "NOW PLAYING" : "NOW LISTENING"}
+        </span>
         <div className={styles.nowPlayingIcons}>
-          <SpotifyIcon />
-          <Gamepad2 size={16} />
-          <Glasses size={16} />
+          <button
+            type="button"
+            className={[
+              styles.nowPlayingIconButton,
+              mode === "music" ? styles.nowPlayingIconButtonActive : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            aria-pressed={mode === "music"}
+            aria-label="Switch now playing card to Spotify"
+            onClick={() => setMode("music")}
+          >
+            <SpotifyIcon />
+          </button>
+          <button
+            type="button"
+            className={[
+              styles.nowPlayingIconButton,
+              isGameMode ? styles.nowPlayingIconButtonActive : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            aria-pressed={isGameMode}
+            aria-label="Switch now playing card to game mode"
+            onClick={() => setMode("game")}
+          >
+            <Gamepad2 size={19} />
+          </button>
         </div>
       </div>
 
       <div className={styles.nowPlayingBottom}>
         <div className={styles.nowPlayingAlbumWrap}>
           <Image
-            src={song.art}
-            alt={song.title}
+            src={nowPlaying.art}
+            alt={nowPlaying.title}
             fill
             className={styles.nowPlayingAlbum}
           />
         </div>
         <div className={styles.nowPlayingMeta}>
-          <p className={styles.nowPlayingTitle}>{song.title}</p>
-          <p className={styles.nowPlayingSub}>{song.artist}</p>
+          <p className={styles.nowPlayingTitle}>{nowPlaying.title}</p>
+          <p className={styles.nowPlayingSub}>{nowPlaying.artist}</p>
         </div>
-        <Equalizer />
+        {isGameMode ? <GameVisualizer /> : <MusicVisualizer />}
       </div>
     </Card>
   );
