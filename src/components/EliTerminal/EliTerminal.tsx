@@ -100,6 +100,8 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
   const [input, setInput] = useState("");
   const [showSlashMenu, setShowSlashMenu] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [streamingContent, setStreamingContent] = useState<string | null>(null);
+  const [isStreaming, setIsStreaming] = useState(false);
 
   const termRef    = useRef<HTMLDivElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -210,6 +212,41 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
     setShowSlashMenu(false);
   }, []);
 
+  async function sendChatMessage(text: string) {
+    const id1 = ++msgCounter.current;
+    const id2 = ++msgCounter.current;
+    setMessages(prev => [...prev, { id: id1, role: "user", lines: [text] }]);
+    setInput("");
+    setIsStreaming(true);
+    setStreamingContent("");
+
+    try {
+      const res = await fetch("/api/eli", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+      });
+
+      const { content, error } = await res.json();
+      if (error) throw new Error(error);
+
+      // Typewriter effect — stream the full response char by char
+      let displayed = "";
+      for (const char of content as string) {
+        displayed += char;
+        setStreamingContent(displayed);
+        await new Promise(r => setTimeout(r, 12));
+      }
+
+      setMessages(prev => [...prev, { id: id2, role: "eli", lines: (content as string).split("\n").filter(Boolean) }]);
+    } catch {
+      setMessages(prev => [...prev, { id: id2, role: "eli", lines: ["Something went wrong. Try again."] }]);
+    } finally {
+      setStreamingContent(null);
+      setIsStreaming(false);
+    }
+  }
+
   function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const val = e.target.value;
     setInput(val);
@@ -217,7 +254,13 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" && input.trim()) executeCommand(input.trim());
+    if (e.key === "Enter" && input.trim()) {
+      if (input.trim().startsWith("/")) {
+        executeCommand(input.trim());
+      } else if (!isStreaming) {
+        sendChatMessage(input.trim());
+      }
+    }
     if (e.key === "Escape") setShowSlashMenu(false);
   }
 
@@ -287,7 +330,7 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* ── Message history ── */}
-      {messages.length > 0 && (
+      {(messages.length > 0 || isStreaming) && (
         <div className={styles.messages} ref={messagesRef}>
           {messages.map(msg => (
             <div key={msg.id} className={msg.role === "user" ? styles.msgUser : styles.msgEli}>
@@ -297,6 +340,17 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
               </div>
             </div>
           ))}
+          {isStreaming && (
+            <div className={styles.msgEli}>
+              <span className={styles.msgPrompt}>eli ~ %</span>
+              <div className={styles.msgLines}>
+                {streamingContent
+                  ? streamingContent.split("\n").map((line, i) => <p key={i}>{line}</p>)
+                  : <p className={styles.thinking}>thinking<span className={styles.thinkingDots}>...</span></p>
+                }
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -325,7 +379,8 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
           <input
             ref={inputRef}
             className={styles.input}
-            placeholder="type / for quick commands…"
+            placeholder={isStreaming ? "eli is thinking…" : "type a message or / for commands…"}
+            disabled={isStreaming}
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
