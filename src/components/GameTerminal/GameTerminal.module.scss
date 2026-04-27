@@ -557,6 +557,15 @@ $crt-border: #256635;
   gap: 0.5rem;
 }
 
+.newRecord {
+  font-family: $font-mono;
+  font-size: 0.62rem;
+  color: $crt-amber;
+  letter-spacing: 0.22em;
+  text-shadow: 0 0 8px rgba(255, 213, 0, 0.7);
+  animation: blink 0.7s step-start infinite;
+}
+
 .resultTime {
   font-family: $font-mono;
   font-size: 3.8rem;
@@ -581,6 +590,21 @@ $crt-border: #256635;
   color: $crt-green;
   letter-spacing: 0.16em;
   text-shadow: 0 0 6px $crt-glow;
+}
+
+.scoreHistory {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 0.1rem;
+}
+
+.scoreHistoryItem {
+  font-family: $font-mono;
+  font-size: 0.62rem;
+  color: $crt-dim;
+  letter-spacing: 0.08em;
+  opacity: 0.6;
 }
 
 .retryHint {

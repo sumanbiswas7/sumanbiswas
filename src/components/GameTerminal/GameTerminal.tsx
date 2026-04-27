@@ -6,6 +6,23 @@ import styles from "./GameTerminal.module.scss";
 type GameView = "library" | "reaction";
 type ReactionState = "idle" | "waiting" | "ready" | "result" | "toosoon";
 
+const LS_BEST   = "reaction_best";
+const LS_SCORES = "reaction_scores";
+const MAX_SCORES = 5;
+
+function readBest(): number | null {
+  try {
+    const v = localStorage.getItem(LS_BEST);
+    return v ? parseInt(v, 10) : null;
+  } catch { return null; }
+}
+
+function readScores(): number[] {
+  try {
+    return JSON.parse(localStorage.getItem(LS_SCORES) ?? "[]");
+  } catch { return []; }
+}
+
 export default function GameTerminal() {
   const { isOpen, closeGame } = useGame();
   if (!isOpen) return null;
@@ -15,6 +32,24 @@ export default function GameTerminal() {
 function GameTerminalInner({ onClose }: { onClose: () => void }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [view, setView] = useState<GameView>("library");
+  const [hiScore, setHiScore] = useState<number | null>(null);
+  const [scores, setScores]   = useState<number[]>([]);
+
+  // Load from localStorage once on mount (client-only)
+  useEffect(() => {
+    setHiScore(readBest());
+    setScores(readScores());
+  }, []);
+
+  function recordScore(t: number) {
+    const newBest = hiScore === null ? t : Math.min(hiScore, t);
+    setHiScore(newBest);
+    localStorage.setItem(LS_BEST, String(newBest));
+
+    const newScores = [t, ...scores].slice(0, MAX_SCORES);
+    setScores(newScores);
+    localStorage.setItem(LS_SCORES, JSON.stringify(newScores));
+  }
 
   const termRef    = useRef<HTMLDivElement>(null);
   const dragging   = useRef(false);
@@ -94,16 +129,21 @@ function GameTerminalInner({ onClose }: { onClose: () => void }) {
       <div className={styles.body}>
         <div className={styles.scanlines} aria-hidden />
         {view === "library" ? (
-          <GameLibrary onSelect={() => setView("reaction")} />
+          <GameLibrary hiScore={hiScore} onSelect={() => setView("reaction")} />
         ) : (
-          <ReactionGame onBack={() => setView("library")} />
+          <ReactionGame
+            hiScore={hiScore}
+            scores={scores}
+            onScore={recordScore}
+            onBack={() => setView("library")}
+          />
         )}
       </div>
     </div>
   );
 }
 
-function GameLibrary({ onSelect }: { onSelect: () => void }) {
+function GameLibrary({ hiScore, onSelect }: { hiScore: number | null; onSelect: () => void }) {
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === " " || e.key === "Enter") { e.preventDefault(); onSelect(); }
@@ -111,6 +151,10 @@ function GameLibrary({ onSelect }: { onSelect: () => void }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onSelect]);
+
+  const hiDisplay = hiScore !== null
+    ? String(hiScore).padStart(6, "0")
+    : "------";
 
   return (
     <div className={styles.library}>
@@ -129,7 +173,7 @@ function GameLibrary({ onSelect }: { onSelect: () => void }) {
           <span className={styles.tp}>M</span>
         </h2>
         <p className={styles.libraryHiScore}>
-          HI&#8209;SCORE&nbsp;&nbsp;<span className={styles.hiScoreVal}>000000</span>
+          HI&#8209;SCORE&nbsp;&nbsp;<span className={styles.hiScoreVal}>{hiDisplay}</span>
         </p>
       </div>
 
@@ -169,10 +213,17 @@ function pad(n: number | null, len = 6): string {
   return String(n).padStart(len, "0");
 }
 
-function ReactionGame({ onBack }: { onBack: () => void }) {
-  const [state, setState] = useState<ReactionState>("idle");
+interface ReactionGameProps {
+  hiScore: number | null;
+  scores: number[];
+  onScore: (t: number) => void;
+  onBack: () => void;
+}
+
+function ReactionGame({ hiScore, scores, onScore, onBack }: ReactionGameProps) {
+  const [state, setState]           = useState<ReactionState>("idle");
   const [reactionTime, setReactionTime] = useState<number | null>(null);
-  const [best, setBest] = useState<number | null>(null);
+  const [isNewRecord, setIsNewRecord]   = useState(false);
   const timerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
   const startTime = useRef<number>(0);
   const stateRef  = useRef<ReactionState>("idle");
@@ -181,6 +232,7 @@ function ReactionGame({ onBack }: { onBack: () => void }) {
 
   function start() {
     setState("waiting");
+    setIsNewRecord(false);
     const delay = 1500 + Math.random() * 2500;
     timerRef.current = setTimeout(() => {
       setState("ready");
@@ -198,8 +250,10 @@ function ReactionGame({ onBack }: { onBack: () => void }) {
     }
     if (s === "ready") {
       const t = Date.now() - startTime.current;
+      const newRecord = hiScore === null || t < hiScore;
       setReactionTime(t);
-      setBest(prev => prev === null ? t : Math.min(prev, t));
+      setIsNewRecord(newRecord);
+      onScore(t);
       setState("result");
     }
   }
@@ -226,7 +280,7 @@ function ReactionGame({ onBack }: { onBack: () => void }) {
         </button>
         <div className={styles.scoreGroup}>
           <span className={styles.scoreLabel}>BEST</span>
-          <span className={styles.scoreVal}>{pad(best)}</span>
+          <span className={styles.scoreVal}>{pad(hiScore)}</span>
         </div>
       </div>
 
@@ -267,10 +321,18 @@ function ReactionGame({ onBack }: { onBack: () => void }) {
 
           {state === "result" && reactionTime !== null && (
             <div className={styles.stateResult}>
+              {isNewRecord && <span className={styles.newRecord}>▲ NEW RECORD</span>}
               <span className={styles.resultTime}>
                 {reactionTime}<span className={styles.resultUnit}>ms</span>
               </span>
               <span className={styles.resultRating}>{getRating(reactionTime)}</span>
+              {scores.length > 1 && (
+                <div className={styles.scoreHistory}>
+                  {scores.slice(1).map((s, i) => (
+                    <span key={i} className={styles.scoreHistoryItem}>{s}ms</span>
+                  ))}
+                </div>
+              )}
               <span className={styles.retryHint}>SPACE or CLICK to retry</span>
             </div>
           )}
