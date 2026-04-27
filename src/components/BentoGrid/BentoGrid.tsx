@@ -234,22 +234,41 @@ function PlayGameCard() {
     <Card className={styles.playGameCard}>
       <div className={styles.playGameLeft}>
         <Gamepad2 size={22} className={styles.playGameIcon} />
-        <h3 className={styles.playGameTitle}>Take a Break</h3>
+        <h3 className={styles.playGameTitle}>Arcade Room</h3>
         <p className={styles.playGameSub}>
-          Play a quick game and relax! Test your reaction speed and beat your
-          high score.
+          Step into the playground for a quick arcade break. Launch a game,
+          clear your head, and chase a new high score.
         </p>
-        <Button label="Play Game" icon={Play} variant="secondary" onClick={openGame} />
+        <Button
+          label="Open Playground"
+          icon={Play}
+          variant="secondary"
+          onClick={openGame}
+        />
       </div>
       <div className={styles.playGamePoster}>
-        <div className={styles.gameTarget}>
-          <div className={styles.gameRingOuter} />
-          <div className={styles.gameRingMid} />
-          <div className={styles.gameRingInner} />
-          <div className={styles.gameDot} />
+        <div className={styles.playGamePosterGlow} />
+        <div className={styles.playGamePosterCabinet}>
+          <div className={styles.playGamePosterPad}>
+            <div className={styles.playGamePosterDpad}>
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className={styles.playGamePosterCenter}>
+              <Gamepad2 size={18} />
+            </div>
+            <div className={styles.playGamePosterButtons}>
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+          <div className={styles.playGamePosterBase} />
         </div>
-        <div className={styles.gameCrosshairH} />
-        <div className={styles.gameCrosshairV} />
+        <div className={styles.playGamePosterLights} />
       </div>
     </Card>
   );
