@@ -211,6 +211,23 @@ function BioCard() {
   );
 }
 
+const PATTERNS = [
+  { id: "none", label: "None", svg: null },
+  { id: "dots", label: "Dots", svg: `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><circle cx='10' cy='10' r='2' fill='rgba(255,255,255,0.28)'/></svg>` },
+  { id: "grid", label: "Grid", svg: `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M24 0L0 0 0 24' fill='none' stroke='rgba(255,255,255,0.22)' stroke-width='1'/></svg>` },
+  { id: "diagonal", label: "Diagonal", svg: `<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><line x1='0' y1='16' x2='16' y2='0' stroke='rgba(255,255,255,0.26)' stroke-width='1.5'/></svg>` },
+  { id: "stars", label: "Stars", svg: `<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'><text x='6' y='26' font-size='20' fill='rgba(255,255,255,0.28)'>✦</text></svg>` },
+  { id: "circles", label: "Circles", svg: `<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30'><circle cx='15' cy='15' r='9' fill='none' stroke='rgba(255,255,255,0.24)' stroke-width='1'/></svg>` },
+  { id: "crosses", label: "Crosses", svg: `<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><line x1='10' y1='4' x2='10' y2='16' stroke='rgba(255,255,255,0.28)' stroke-width='1.5'/><line x1='4' y1='10' x2='16' y2='10' stroke='rgba(255,255,255,0.28)' stroke-width='1.5'/></svg>` },
+  { id: "zigzag", label: "Zigzag", svg: `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='12'><polyline points='0,10 8,2 16,10 24,2 32,10' fill='none' stroke='rgba(255,255,255,0.28)' stroke-width='1.5'/></svg>` },
+  { id: "triangles", label: "Triangles", svg: `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='24'><polygon points='14,3 26,21 2,21' fill='none' stroke='rgba(255,255,255,0.26)' stroke-width='1'/></svg>` },
+  { id: "noise", label: "Noise", svg: `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><circle cx='5' cy='8' r='1.2' fill='rgba(255,255,255,0.22)'/><circle cx='18' cy='3' r='0.8' fill='rgba(255,255,255,0.18)'/><circle cx='30' cy='15' r='1.5' fill='rgba(255,255,255,0.22)'/><circle cx='10' cy='25' r='0.9' fill='rgba(255,255,255,0.2)'/><circle cx='35' cy='30' r='1.2' fill='rgba(255,255,255,0.22)'/><circle cx='22' cy='35' r='0.7' fill='rgba(255,255,255,0.18)'/></svg>` },
+];
+
+function svgToDataUri(svg: string) {
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+}
+
 const BG_PRESETS = [
   "#9aa59a", "#b8a394", "#1e3a5f", "#3d2b1f",
   "#2d4a3e", "#4a2d5a", "#1e1e1e", "#c25e5e",
@@ -227,6 +244,7 @@ const CANVAS_H = 440;
 function MeHeroImgCard() {
   const [isEditing, setIsEditing] = useState(false);
   const [bgColor, setBgColor] = useState("#9aa59a");
+  const [bgPattern, setBgPattern] = useState("none");
   const [graffiti, setGraffiti] = useState<string | null>(null);
   const [drawColor, setDrawColor] = useState("#ffffff");
   const [brushSize, setBrushSize] = useState(4);
@@ -326,6 +344,12 @@ function MeHeroImgCard() {
         >
           <Pencil size={14} />
         </button>
+        {bgPattern !== "none" && (
+          <div
+            className={styles.meHeroPatternLayer}
+            style={{ backgroundImage: svgToDataUri(PATTERNS.find(p => p.id === bgPattern)!.svg!) }}
+          />
+        )}
         <div className={styles.meHeroImgWrapper}>
           <Image src="/me.png" alt="Suman Biswas" fill className={styles.meHeroImg} />
           {graffiti && (
@@ -343,6 +367,12 @@ function MeHeroImgCard() {
           <div className={styles.meHeroEditPanel}>
             {/* Left: canvas preview */}
             <div className={styles.meHeroEditPreview} style={{ backgroundColor: bgColor }}>
+              {bgPattern !== "none" && (
+                <div
+                  className={styles.meHeroPatternLayer}
+                  style={{ backgroundImage: svgToDataUri(PATTERNS.find(p => p.id === bgPattern)!.svg!) }}
+                />
+              )}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/me.png" alt="" className={styles.meHeroEditPreviewImg} />
               <canvas
@@ -381,6 +411,23 @@ function MeHeroImgCard() {
                       onClick={() => setBgColor(c)}
                       aria-label={c}
                     />
+                  ))}
+                </div>
+              </div>
+
+              <div className={styles.meHeroEditSection}>
+                <span className={styles.meHeroEditLabel}>Background Elements</span>
+                <div className={styles.meHeroPatternGrid}>
+                  {PATTERNS.map((p) => (
+                    <button
+                      key={p.id}
+                      title={p.label}
+                      className={`${styles.meHeroPatternBtn} ${bgPattern === p.id ? styles.meHeroPatternBtnActive : ""}`}
+                      style={p.svg ? { backgroundImage: svgToDataUri(p.svg), backgroundColor: bgColor } : {}}
+                      onClick={() => setBgPattern(p.id)}
+                    >
+                      {p.id === "none" && <span className={styles.meHeroPatternNone} />}
+                    </button>
                   ))}
                 </div>
               </div>

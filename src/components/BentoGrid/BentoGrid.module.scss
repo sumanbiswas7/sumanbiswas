@@ -962,6 +962,7 @@
 .meHeroImgWrapper {
   position: absolute;
   inset: 0;
+  z-index: 1;
 }
 
 .meHeroImg {
@@ -970,6 +971,14 @@
 }
 
 // ME HERO IMG EDIT MODAL
+.meHeroPatternLayer {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .meHeroGraffitiOverlay {
   position: absolute;
   inset: 0;
@@ -1059,6 +1068,8 @@
 }
 
 .meHeroEditPreviewImg {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -1109,6 +1120,59 @@
 .meHeroSwatchActive {
   border-color: $color-text-primary;
   transform: scale(1.15);
+}
+
+.meHeroPatternGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.4rem;
+}
+
+.meHeroPatternBtn {
+  aspect-ratio: 1;
+  border-radius: $border-radius-sm;
+  border: 2px solid $color-border;
+  background-color: $color-background-secondary;
+  background-repeat: repeat;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    border-color: $color-text-secondary;
+    transform: scale(1.06);
+  }
+}
+
+.meHeroPatternBtnActive {
+  border-color: $color-text-primary;
+}
+
+.meHeroPatternNone {
+  position: absolute;
+  inset: 0;
+  display: block;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    height: 1.5px;
+    background: $color-text-secondary;
+    transform-origin: center;
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
 }
 
 .meHeroEditTools {
