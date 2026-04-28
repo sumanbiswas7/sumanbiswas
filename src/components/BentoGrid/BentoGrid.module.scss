@@ -969,6 +969,229 @@
   object-position: top center;
 }
 
+// ME HERO IMG EDIT MODAL
+.meHeroGraffitiOverlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.meHeroEditModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.meHeroEditPanel {
+  background: $color-card-bg;
+  border: 1px solid $color-border;
+  border-radius: $bento-radius;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.5rem;
+  max-width: calc(100vw - 3rem);
+  max-height: calc(100vh - 3rem);
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+}
+
+.meHeroEditHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.meHeroEditTitle {
+  font-size: $font-size-lg;
+  font-weight: 600;
+  color: $color-text-primary;
+}
+
+.meHeroEditClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid $color-border;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+
+  &:hover {
+    background-color: $color-background-secondary;
+    color: $color-text-primary;
+  }
+}
+
+.meHeroEditControls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 280px;
+  flex-shrink: 0;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+.meHeroEditPreview {
+  position: relative;
+  width: 22.9rem;
+  height: 25rem;
+  border-radius: $border-radius-sm;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.meHeroEditPreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.meHeroDrawCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  touch-action: none;
+}
+
+.meHeroEditSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.meHeroEditLabel {
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+}
+
+.meHeroSwatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.meHeroSwatch {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  margin: 2px;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s;
+
+  &:hover {
+    transform: scale(1.15);
+  }
+}
+
+.meHeroSwatchActive {
+  border-color: $color-text-primary;
+  transform: scale(1.15);
+}
+
+.meHeroEditTools {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.meHeroToolBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.65rem;
+  font-size: $font-size-base;
+  border-radius: $border-radius-sm;
+  border: 1px solid $color-border;
+  background: transparent;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover {
+    background-color: $color-background-secondary;
+    color: $color-text-primary;
+  }
+}
+
+.meHeroToolBtnActive {
+  background-color: $color-background-secondary;
+  border-color: $color-text-secondary;
+  color: $color-text-primary;
+}
+
+.meHeroBrushRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.meHeroBrushSlider {
+  flex: 1;
+  accent-color: $color-sage;
+  cursor: pointer;
+}
+
+.meHeroEditActions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.meHeroEditCancelBtn {
+  padding: 0.45rem 1rem;
+  border-radius: $border-radius-sm;
+  border: 1px solid $color-border;
+  background: transparent;
+  color: $color-text-secondary;
+  font-size: $font-size-base;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+
+  &:hover {
+    background-color: $color-background-secondary;
+    color: $color-text-primary;
+  }
+}
+
+.meHeroEditSaveBtn {
+  padding: 0.45rem 1.25rem;
+  border-radius: $border-radius-sm;
+  border: none;
+  background: $color-sage;
+  color: #1e1e1e;
+  font-size: $font-size-base;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+
+  &:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+}
+
 // PLAY GAME CARD
 .playGameCard {
   display: flex;

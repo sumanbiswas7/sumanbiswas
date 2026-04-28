@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
-import { ArrowRight, Download, Pencil, Gamepad2, Play } from "lucide-react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { ArrowRight, Download, Pencil, Gamepad2, Play, X, Eraser, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Card from "./Card";
 import Button from "@/components/ui/Button";
@@ -210,21 +211,240 @@ function BioCard() {
   );
 }
 
+const BG_PRESETS = [
+  "#9aa59a", "#b8a394", "#1e3a5f", "#3d2b1f",
+  "#2d4a3e", "#4a2d5a", "#1e1e1e", "#c25e5e",
+];
+
+const BRUSH_COLORS = [
+  "#ffffff", "#000000", "#ff4444", "#ff8c00",
+  "#ffdd00", "#44cc44", "#4488ff", "#cc44ff", "#ff88cc",
+];
+
+const CANVAS_W = 320;
+const CANVAS_H = 440;
+
 function MeHeroImgCard() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [bgColor, setBgColor] = useState("#9aa59a");
+  const [graffiti, setGraffiti] = useState<string | null>(null);
+  const [drawColor, setDrawColor] = useState("#ffffff");
+  const [brushSize, setBrushSize] = useState(4);
+  const [tool, setTool] = useState<"pen" | "eraser">("pen");
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isDrawingRef = useRef(false);
+  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    if (!isEditing) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+    if (graffiti) {
+      const img = new window.Image();
+      img.onload = () => ctx.drawImage(img, 0, 0);
+      img.src = graffiti;
+    }
+  }, [isEditing]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const getPoint = (
+    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>,
+    canvas: HTMLCanvasElement,
+  ) => {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = CANVAS_W / rect.width;
+    const scaleY = CANVAS_H / rect.height;
+    if ("touches" in e) {
+      const touch = e.touches[0];
+      return { x: (touch.clientX - rect.left) * scaleX, y: (touch.clientY - rect.top) * scaleY };
+    }
+    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+  };
+
+  const startDraw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    isDrawingRef.current = true;
+    const pt = getPoint(e, canvas);
+    lastPointRef.current = pt;
+    const ctx = canvas.getContext("2d")!;
+    ctx.globalCompositeOperation = tool === "eraser" ? "destination-out" : "source-over";
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, (tool === "eraser" ? brushSize * 3 : brushSize) / 2, 0, Math.PI * 2);
+    ctx.fillStyle = drawColor;
+    ctx.fill();
+  };
+
+  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    if (!isDrawingRef.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d")!;
+    const pt = getPoint(e, canvas);
+    const last = lastPointRef.current ?? pt;
+    ctx.globalCompositeOperation = tool === "eraser" ? "destination-out" : "source-over";
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    ctx.lineTo(pt.x, pt.y);
+    ctx.strokeStyle = drawColor;
+    ctx.lineWidth = tool === "eraser" ? brushSize * 3 : brushSize;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.stroke();
+    lastPointRef.current = pt;
+  };
+
+  const endDraw = () => {
+    isDrawingRef.current = false;
+    lastPointRef.current = null;
+  };
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.getContext("2d")!.clearRect(0, 0, CANVAS_W, CANVAS_H);
+  };
+
+  const handleSave = () => {
+    const canvas = canvasRef.current;
+    setGraffiti(canvas ? canvas.toDataURL() : null);
+    setIsEditing(false);
+  };
+
   return (
-    <Card className={styles.meHeroImgCard}>
-      <button className={styles.meHeroEditBtn} aria-label="Edit photo">
-        <Pencil size={14} />
-      </button>
-      <div className={styles.meHeroImgWrapper}>
-        <Image
-          src="/me.png"
-          alt="Suman Biswas"
-          fill
-          className={styles.meHeroImg}
-        />
-      </div>
-    </Card>
+    <>
+      <Card className={styles.meHeroImgCard} style={{ backgroundColor: bgColor }}>
+        <button
+          className={styles.meHeroEditBtn}
+          aria-label="Edit photo"
+          onClick={() => setIsEditing(true)}
+        >
+          <Pencil size={14} />
+        </button>
+        <div className={styles.meHeroImgWrapper}>
+          <Image src="/me.png" alt="Suman Biswas" fill className={styles.meHeroImg} />
+          {graffiti && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={graffiti} alt="" className={styles.meHeroGraffitiOverlay} aria-hidden />
+          )}
+        </div>
+      </Card>
+
+      {isEditing && createPortal(
+        <div
+          className={styles.meHeroEditModal}
+          onMouseDown={(e) => { if (e.target === e.currentTarget) setIsEditing(false); }}
+        >
+          <div className={styles.meHeroEditPanel}>
+            {/* Left: canvas preview */}
+            <div className={styles.meHeroEditPreview} style={{ backgroundColor: bgColor }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/me.png" alt="" className={styles.meHeroEditPreviewImg} />
+              <canvas
+                ref={canvasRef}
+                width={CANVAS_W}
+                height={CANVAS_H}
+                className={styles.meHeroDrawCanvas}
+                style={{ cursor: tool === "eraser" ? "cell" : "crosshair" }}
+                onMouseDown={startDraw}
+                onMouseMove={draw}
+                onMouseUp={endDraw}
+                onMouseLeave={endDraw}
+                onTouchStart={startDraw}
+                onTouchMove={draw}
+                onTouchEnd={endDraw}
+              />
+            </div>
+
+            {/* Right: controls */}
+            <div className={styles.meHeroEditControls}>
+              <div className={styles.meHeroEditHeader}>
+                <span className={styles.meHeroEditTitle}>Edit Photo</span>
+                <button className={styles.meHeroEditClose} onClick={() => setIsEditing(false)}>
+                  <X size={16} />
+                </button>
+              </div>
+
+              <div className={styles.meHeroEditSection}>
+                <span className={styles.meHeroEditLabel}>Background</span>
+                <div className={styles.meHeroSwatches}>
+                  {BG_PRESETS.map((c) => (
+                    <button
+                      key={c}
+                      className={`${styles.meHeroSwatch} ${bgColor === c ? styles.meHeroSwatchActive : ""}`}
+                      style={{ backgroundColor: c }}
+                      onClick={() => setBgColor(c)}
+                      aria-label={c}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className={styles.meHeroEditSection}>
+                <span className={styles.meHeroEditLabel}>Brush Color</span>
+                <div className={styles.meHeroSwatches}>
+                  {BRUSH_COLORS.map((c) => (
+                    <button
+                      key={c}
+                      className={`${styles.meHeroSwatch} ${drawColor === c && tool === "pen" ? styles.meHeroSwatchActive : ""}`}
+                      style={{ backgroundColor: c }}
+                      onClick={() => { setDrawColor(c); setTool("pen"); }}
+                      aria-label={c}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <div className={styles.meHeroEditSection}>
+                <div className={styles.meHeroEditTools}>
+                  <button
+                    className={`${styles.meHeroToolBtn} ${tool === "pen" ? styles.meHeroToolBtnActive : ""}`}
+                    onClick={() => setTool("pen")}
+                  >
+                    <Pencil size={13} /> Pen
+                  </button>
+                  <button
+                    className={`${styles.meHeroToolBtn} ${tool === "eraser" ? styles.meHeroToolBtnActive : ""}`}
+                    onClick={() => setTool("eraser")}
+                  >
+                    <Eraser size={13} /> Eraser
+                  </button>
+                  <button className={styles.meHeroToolBtn} onClick={clearCanvas}>
+                    <Trash2 size={13} /> Clear
+                  </button>
+                </div>
+                <div className={styles.meHeroBrushRow}>
+                  <span className={styles.meHeroEditLabel}>Size {brushSize}px</span>
+                  <input
+                    type="range"
+                    min={2}
+                    max={24}
+                    value={brushSize}
+                    onChange={(e) => setBrushSize(Number(e.target.value))}
+                    className={styles.meHeroBrushSlider}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.meHeroEditActions}>
+                <button className={styles.meHeroEditCancelBtn} onClick={() => setIsEditing(false)}>
+                  Cancel
+                </button>
+                <button className={styles.meHeroEditSaveBtn} onClick={handleSave}>
+                  Apply
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
 
