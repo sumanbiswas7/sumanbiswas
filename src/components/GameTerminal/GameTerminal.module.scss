@@ -642,3 +642,258 @@ $crt-border: #256635;
   color: rgba(255, 26, 61, 0.65);
   letter-spacing: 0.14em;
 }
+
+// ─── Aim trainer ──────────────────────────────────────────────────────────────
+
+.aimScreen {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  background: $crt-bg;
+}
+
+.aimPlayArea {
+  position: absolute;
+  inset: 0;
+}
+
+@keyframes targetPop {
+  0%   { transform: translate(-50%, -50%) scale(0);    opacity: 0; }
+  60%  { transform: translate(-50%, -50%) scale(1.18); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1);    opacity: 1; }
+}
+
+@keyframes targetHit {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+}
+
+.aimTarget {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid $crt-green;
+  background: rgba(0, 255, 85, 0.05);
+  padding: 0;
+  cursor: crosshair;
+  animation: targetPop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  box-shadow:
+    0 0 10px rgba(0, 255, 85, 0.35),
+    inset 0 0 10px rgba(0, 255, 85, 0.06);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 55%;
+    height: 55%;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 85, 0.4);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18%;
+    height: 18%;
+    border-radius: 50%;
+    background: $crt-green;
+    box-shadow: 0 0 6px $crt-glow;
+  }
+
+  &:hover {
+    background: rgba(0, 255, 85, 0.14);
+    box-shadow:
+      0 0 18px rgba(0, 255, 85, 0.55),
+      inset 0 0 14px rgba(0, 255, 85, 0.12);
+  }
+}
+
+.gameRowMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.gameRowBest {
+  font-family: $font-mono;
+  font-size: 0.6rem;
+  color: $crt-amber;
+  letter-spacing: 0.14em;
+  opacity: 0.7;
+}
+
+.scoreValDanger {
+  color: $crt-red !important;
+  text-shadow: 0 0 8px rgba(255, 26, 61, 0.75) !important;
+  animation: blink 0.5s step-start infinite;
+}
+
+// second game row border collapse
+.gameRow + .gameRow {
+  border-top: 0;
+}
+
+// ─── Whack-a-mole ─────────────────────────────────────────────────────────────
+
+.moleScreen {
+  position: relative;
+  height: 340px;
+  background: $crt-bg;
+  overflow: hidden;
+}
+
+.moleGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 1.25rem 1.5rem;
+  position: relative;
+  z-index: 5;
+}
+
+.moleHole {
+  position: relative;
+  height: 88px;
+  background: #050f05;
+  border-radius: 8px;
+  border: 1px solid $crt-border;
+  overflow: hidden;
+  cursor: default;
+  padding: 0;
+  transition: border-color 0.1s ease, box-shadow 0.1s ease;
+
+  &.moleHoleActive {
+    border-color: $crt-green;
+    cursor: pointer;
+    box-shadow: 0 0 14px rgba(0, 255, 85, 0.3), inset 0 0 14px rgba(0, 255, 85, 0.06);
+  }
+}
+
+.holeKey {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: $font-mono;
+  font-size: 0.6rem;
+  color: $crt-border;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  z-index: 2;
+  transition: color 0.1s ease;
+
+  .moleHoleActive & {
+    color: $crt-dim;
+  }
+}
+
+@keyframes moleRise {
+  from { bottom: -100%; }
+  to   { bottom: -10%; }
+}
+
+@keyframes moleSmash {
+  0%   { bottom: -10%; transform: translateX(-50%) scale(1);    background: $crt-green; }
+  35%  { bottom:   4%; transform: translateX(-50%) scale(1.35); background: $crt-amber; }
+  100% { bottom: -100%; transform: translateX(-50%) scale(0.4); opacity: 0; }
+}
+
+.mole {
+  position: absolute;
+  left: 50%;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50% 50% 0 0;
+  background: $crt-green;
+  transform: translateX(-50%);
+  box-shadow:
+    0 0 18px rgba(0, 255, 85, 0.55),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.3);
+
+  // eyes
+  &::before {
+    content: '';
+    position: absolute;
+    top: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    display: flex;
+    height: 14%;
+    background:
+      radial-gradient(circle, #030803 40%, transparent 40%) 20% 0 / 30% 100% no-repeat,
+      radial-gradient(circle, #030803 40%, transparent 40%) 80% 0 / 30% 100% no-repeat;
+  }
+}
+
+.moleUp {
+  animation: moleRise 0.16s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+}
+
+.moleWhacked {
+  animation: moleSmash 0.22s ease-out forwards;
+}
+
+// ─── Car game ─────────────────────────────────────────────────────────────────
+
+.carScreen {
+  position: relative;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.carCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.carOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 8, 3, 0.78);
+  z-index: 5;
+  cursor: pointer;
+}
+
+.carControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1.5rem;
+  border-top: 1px solid $crt-border;
+  background: #070d07;
+}
+
+.carControlBtn {
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  color: $crt-green;
+  background: $crt-muted;
+  border: 1px solid $crt-border;
+  padding: 0.5rem 1.75rem;
+  cursor: pointer;
+  letter-spacing: 0.12em;
+  transition: background 0.1s ease, border-color 0.1s ease, transform 0.08s ease;
+  user-select: none;
+
+  &:hover   { background: rgba(0, 255, 85, 0.12); border-color: $crt-dim; }
+  &:active  { background: rgba(0, 255, 85, 0.22); transform: scale(0.95); }
+}
+
+.carControlHint {
+  font-family: $font-mono;
+  font-size: 0.58rem;
+  color: $crt-border;
+  letter-spacing: 0.1em;
+}
