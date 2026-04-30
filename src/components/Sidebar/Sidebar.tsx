@@ -152,7 +152,7 @@ export default function Sidebar({ expanded = false }: { expanded?: boolean }) {
         {/* Profile */}
         <div className={styles.profile}>
           <div className={styles.avatarWrap}>
-            <Image src="/me.webp" alt="Suman Biswas" fill sizes="48px" className={styles.avatar} />
+            <Image src="/me.webp" alt="Suman Biswas" fill sizes="112px" className={styles.avatar} />
           </div>
           <p className={styles.profileName}>Suman Biswas</p>
           <p className={styles.profileRole}>FullStack Engineer</p>
