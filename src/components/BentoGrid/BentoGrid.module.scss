@@ -1918,3 +1918,77 @@
     max-width: 100%;
   }
 }
+
+// PROJECT IDEAS CARD
+.projectIdeasCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 460px;
+  max-width: 460px;
+}
+
+.projectIdeasGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+
+.stickyNote {
+  background-color: $color-background-secondary;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--idea-accent, $color-sage);
+    border-radius: $border-radius-sm 0 0 $border-radius-sm;
+  }
+
+  padding-left: 1rem;
+}
+
+.stickyNoteTitle {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $color-text-primary;
+  line-height: 1.2;
+}
+
+.stickyNoteDesc {
+  font-size: 0.72rem;
+  color: $color-text-secondary;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.stickyNoteSuggest {
+  background-color: #1e1e1e;
+  border: 1.5px dashed $color-border;
+  border-radius: $border-radius-sm;
+  padding: 0.65rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+
+  &:hover {
+    border-color: $color-sage;
+    color: $color-text-primary;
+  }
+}

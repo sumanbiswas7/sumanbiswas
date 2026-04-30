@@ -17,10 +17,11 @@ export type CardId =
   | "bio"
   | "playGame"
   | "work"
-  | "eli";
+  | "eli"
+  | "projectIdeas";
 
 export const INITIAL_ROWS: CardId[][] = [
-  ["me", "meHero", "stacked", "gallery", "note"],
+  ["me", "meHero", "stacked", "gallery", "note", "projectIdeas"],
   ["bio", "playGame", "work", "eli"],
 ];
 

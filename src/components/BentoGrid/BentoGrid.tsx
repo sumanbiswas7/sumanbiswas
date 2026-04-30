@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { ArrowRight, Download, Pencil, Gamepad2, Play, X, Eraser, Trash2 } from "lucide-react";
+import { ArrowRight, Download, Pencil, Gamepad2, Play, X, Eraser, Trash2, Lightbulb, Plus } from "lucide-react";
 import Image from "next/image";
 import Card from "./Card";
 import Button from "@/components/ui/Button";
@@ -42,8 +42,8 @@ function renderCard(id: CardId) {
       );
     case "gallery":
       return <GalleryCard />;
-    case "note":
-      return <NoteCard />;
+    // case "note":
+    //   return <NoteCard />;
     case "bio":
       return <BioCard />;
     case "playGame":
@@ -52,6 +52,8 @@ function renderCard(id: CardId) {
       return <WorkCard />;
     case "eli":
       return <EliCard />;
+    case "projectIdeas":
+      return <ProjectIdeasCard />;
   }
 }
 
@@ -495,6 +497,40 @@ function MeHeroImgCard() {
         document.body
       )}
     </>
+  );
+}
+
+const PROJECT_IDEAS = [
+  { title: "AI Code Reviewer", description: "Reviews PRs using Claude with contextual inline comments.", accent: "#7a9e7e" },
+  { title: "Focus Timer", description: "Pomodoro timer with ambient sounds and session analytics.", accent: "#9e8a7a" },
+  { title: "Git Visualizer", description: "Interactive 3D graph of commit history and branches.", accent: "#7a8a9e" },
+  { title: "Recipe Scanner", description: "Point camera at a dish, get the recipe instantly.", accent: "#9e7a8a" },
+];
+
+function ProjectIdeasCard() {
+  return (
+    <Card className={styles.projectIdeasCard}>
+      <div className={styles.noteCardHeader}>
+        <div className={styles.noteCardTitle}>
+          <span className={styles.noteCardTitleIcon}>
+            <Lightbulb size={15} />
+          </span>
+          <span>Project Ideas</span>
+        </div>
+      </div>
+      <div className={styles.projectIdeasGrid}>
+        {PROJECT_IDEAS.map((idea) => (
+          <div key={idea.title} className={styles.stickyNote} style={{ "--idea-accent": idea.accent } as React.CSSProperties}>
+            <span className={styles.stickyNoteTitle}>{idea.title}</span>
+            <p className={styles.stickyNoteDesc}>{idea.description}</p>
+          </div>
+        ))}
+        <button className={styles.stickyNoteSuggest}>
+          <Plus size={14} />
+          <span>Suggest an idea</span>
+        </button>
+      </div>
+    </Card>
   );
 }
 
