@@ -5,53 +5,6 @@ import Card from "./Card";
 import Button from "@/components/ui/Button";
 import { useEli } from "@/context/EliContext";
 
-function EliRobot() {
-  return (
-    <svg
-      viewBox="0 0 200 220"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={styles.eliRobotSvg}
-    >
-      {/* Antenna */}
-      <line
-        x1="100"
-        y1="18"
-        x2="100"
-        y2="42"
-        stroke="#aaa"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <circle cx="100" cy="12" r="8" fill="#9aa59a" />
-      {/* Head */}
-      <rect x="38" y="42" width="124" height="110" rx="32" fill="#e8e8e8" />
-      {/* Ears */}
-      <rect x="20" y="78" width="20" height="32" rx="10" fill="#d0d0d0" />
-      <rect x="160" y="78" width="20" height="32" rx="10" fill="#d0d0d0" />
-      {/* Visor */}
-      <rect x="54" y="62" width="92" height="72" rx="18" fill="#111" />
-      {/* Eyes */}
-      <path
-        d="M76 106 Q84 94 92 106"
-        stroke="#9aa59a"
-        strokeWidth="5"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path
-        d="M108 106 Q116 94 124 106"
-        stroke="#9aa59a"
-        strokeWidth="5"
-        strokeLinecap="round"
-        fill="none"
-      />
-      {/* Neck */}
-      <rect x="86" y="152" width="28" height="16" rx="6" fill="#d0d0d0" />
-    </svg>
-  );
-}
-
 export default function EliCard() {
   const { openEli } = useEli();
   return (

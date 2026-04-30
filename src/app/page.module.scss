@@ -582,3 +582,56 @@
     padding: 3rem 1.5rem;
   }
 }
+
+@media (max-width: 640px) {
+  .projectRow {
+    padding: 0.6rem;
+  }
+
+  .projectLeft {
+    padding: 1rem;
+  }
+
+  .projectRight {
+    padding: 0 0.6rem 0.75rem;
+  }
+
+  .projectTitle {
+    font-size: $font-size-xl;
+  }
+
+  .projectDesc {
+    font-size: $font-size-sm;
+  }
+
+  .section3 {
+    padding: 2rem 1.25rem;
+  }
+
+  .sectionBreak {
+    padding: 1.25rem 1rem;
+  }
+
+  .likeBtn,
+  .commentToggle {
+    font-size: $font-size-sm;
+    padding: 0.4rem 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .commentText {
+    font-size: $font-size-sm;
+  }
+
+  .commentMeta {
+    font-size: 0.65rem;
+  }
+
+  .noComments {
+    font-size: $font-size-sm;
+  }
+
+  .composerInput {
+    font-size: $font-size-sm;
+  }
+}

@@ -26,8 +26,10 @@
   color: #1e1e1e;
   font-weight: 500;
 
-  &:hover {
-    background-color: #7d8f7d;
+  @media (hover: hover) {
+    &:hover {
+      background-color: #7d8f7d;
+    }
   }
 }
 
@@ -37,8 +39,17 @@
   border: 1px solid $color-border;
   background-color: $color-background-secondary;
 
-  &:hover {
-    background-color: $color-card-bg;
-    border-color: $color-text-secondary;
+  @media (hover: hover) {
+    &:hover {
+      background-color: $color-card-bg;
+      border-color: $color-text-secondary;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .btn {
+    font-size: 0.78rem;
+    padding: 0.5rem 0.85rem;
   }
 }

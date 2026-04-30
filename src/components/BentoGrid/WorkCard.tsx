@@ -14,7 +14,7 @@ export default function WorkCard() {
         <p className={styles.workCompany}>CloudChef Inc. · Series A $20M</p>
       </div>
 
-      <p className={styles.sub}>
+      <p className={`${styles.sub} ${styles.workDesc}`}>
         Building the core product suite — recipe studio, kitchen manager, and
         data platform. Leading architecture to deployment of the full JS/TS
         codebase. Remote, Bay Area.
