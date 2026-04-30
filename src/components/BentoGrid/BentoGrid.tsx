@@ -179,16 +179,18 @@ function MeCard() {
       </p>
 
       <div className={styles.actions}>
-        <Button label="View My Work" icon={ArrowRight} variant="primary" />
-        <Button label="Download CV" icon={Download} variant="secondary" />
+        <Button label="View My Work" icon={ArrowRight} variant="primary" href="#work" />
+        <Button label="Download CV" icon={Download} variant="secondary" href="https://sumanbiswas-website.s3.ap-south-1.amazonaws.com/Suman+Biswas.pdf" target="_blank" rel="noopener noreferrer" />
       </div>
     </Card>
   );
 }
 
 function BioCard() {
+  const { highlightedCard } = useBentoGrid();
+  const isHighlighted = highlightedCard === "bio";
   return (
-    <Card className={styles.bioCard}>
+    <Card className={`${styles.bioCard}${isHighlighted ? ` ${styles.bioCardHighlighted}` : ""}`}>
       <div className={styles.bioLeft}>
         <span className={styles.cardTitle}>BIO</span>
         <p className={`${styles.sub} ${styles.bioDesc}`}>

@@ -10,7 +10,7 @@ import { useGame } from "@/context/GameContext";
 import styles from "./Navbar.module.scss";
 
 export default function Navbar() {
-  const { shuffle } = useBentoGrid();
+  const { shuffle, highlightCard } = useBentoGrid();
   const { openEli } = useEli();
   const { openGame } = useGame();
   const [spinning, setSpinning] = useState(false);
@@ -32,7 +32,7 @@ export default function Navbar() {
       <div className={styles.right}>
         <div className={styles.links}>
           <a href="#work">work</a>
-          <a href="#about">about</a>
+          <a href="#home" onClick={() => { highlightCard("bio"); }}>about</a>
           <a href="#contact">contact</a>
         </div>
         <button

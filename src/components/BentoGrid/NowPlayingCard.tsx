@@ -76,7 +76,7 @@ function fmt(secs: number) {
 const music = {
   title: "DAISIES",
   artist: "Justin Bieber",
-  art: "/now-listening.jpeg",
+  art: "/now-listening.webp",
   spotifyUrl: "https://open.spotify.com/search/DAISIES%20Justin%20Bieber",
   audioUrl: "https://sumanbiswas-website.s3.ap-south-1.amazonaws.com/sumanbiswas-now-playing.mp3",
   startAt: 10,

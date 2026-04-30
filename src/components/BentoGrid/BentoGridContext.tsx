@@ -5,6 +5,7 @@ import {
   useContext,
   useState,
   useCallback,
+  useRef,
   ReactNode,
 } from "react";
 
@@ -39,6 +40,8 @@ type BentoContextValue = {
   setRows: React.Dispatch<React.SetStateAction<CardId[][]>>;
   shuffle: () => void;
   shuffleCount: number;
+  highlightedCard: CardId | null;
+  highlightCard: (id: CardId) => void;
 };
 
 const BentoContext = createContext<BentoContextValue | null>(null);
@@ -46,15 +49,22 @@ const BentoContext = createContext<BentoContextValue | null>(null);
 export function BentoGridProvider({ children }: { children: ReactNode }) {
   const [rows, setRows] = useState<CardId[][]>(INITIAL_ROWS);
   const [shuffleCount, setShuffleCount] = useState(0);
+  const [highlightedCard, setHighlightedCard] = useState<CardId | null>(null);
+  const highlightTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Shuffle each row independently so cards never switch rows
   const shuffle = useCallback(() => {
     setRows((prev) => prev.map((row) => shuffleArray(row)));
     setShuffleCount((c) => c + 1);
   }, []);
 
+  const highlightCard = useCallback((id: CardId) => {
+    if (highlightTimer.current) clearTimeout(highlightTimer.current);
+    setHighlightedCard(id);
+    highlightTimer.current = setTimeout(() => setHighlightedCard(null), 2500);
+  }, []);
+
   return (
-    <BentoContext.Provider value={{ rows, setRows, shuffle, shuffleCount }}>
+    <BentoContext.Provider value={{ rows, setRows, shuffle, shuffleCount, highlightedCard, highlightCard }}>
       {children}
     </BentoContext.Provider>
   );

@@ -19,13 +19,15 @@ export default function Home() {
           </div>
         </BentoGridProvider>
 
-        <div className={styles.sectionBreak}>
-          <span className={styles.sectionBreakLine} />
-          <span className={styles.sectionBreakLabel}>what i&apos;ve built &amp; building</span>
-          <span className={styles.sectionBreakLine} />
-        </div>
+        <div id="work">
+          <div className={styles.sectionBreak}>
+            <span className={styles.sectionBreakLine} />
+            <span className={styles.sectionBreakLabel}>what i&apos;ve built &amp; building</span>
+            <span className={styles.sectionBreakLine} />
+          </div>
 
-        <ProjectsSection />
+          <ProjectsSection />
+        </div>
 
         <div id="contact" className={styles.section3}>
           <div className={styles.sectionHeader}>
