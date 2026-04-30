@@ -116,6 +116,27 @@
   letter-spacing: 0.12em;
 }
 
+.projectYear {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  opacity: 0.45;
+  letter-spacing: 0.06em;
+}
+
+.ongoingBadge {
+  font-family: $font-body;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-sage;
+  border: 1px solid rgba(154, 165, 154, 0.35);
+  border-radius: 2rem;
+  padding: 0.15rem 0.55rem;
+  line-height: 1.4;
+}
+
 .projectTitle {
   font-family: $font-display;
   font-size: clamp(2.2rem, 3vw, 3.2rem);

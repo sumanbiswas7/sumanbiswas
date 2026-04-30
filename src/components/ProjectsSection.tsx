@@ -16,6 +16,8 @@ const PROJECTS = [
     github: "https://github.com/sumanbiswas7/marked",
     live: "https://marked-web.vercel.app/",
     org: "Personal",
+    year: "2023",
+    ongoing: false,
   },
   {
     id: 2,
@@ -27,6 +29,8 @@ const PROJECTS = [
     github: "https://github.com/sumanbiswas7",
     live: "https://signinlink.app",
     org: "Web-wizs",
+    year: "2024",
+    ongoing: true,
   },
   {
     id: 3,
@@ -38,6 +42,8 @@ const PROJECTS = [
     github: "https://github.com/sumanbiswas7/poshkit",
     live: "https://www.npmjs.com/package/poshkit",
     org: "Personal",
+    year: "2023",
+    ongoing: false,
   },
   {
     id: 4,
@@ -49,6 +55,8 @@ const PROJECTS = [
     github: "https://github.com/sumanbiswas7/cinematic",
     live: "https://cinematic-web.vercel.app",
     org: "Personal",
+    year: "2022",
+    ongoing: false,
   },
   {
     id: 5,
@@ -60,6 +68,8 @@ const PROJECTS = [
     github: "https://github.com/sumanbiswas7/vivid",
     live: "https://play.google.com/store/apps/details?id=com.suman_biswas.vivid&pli=1",
     org: "Personal",
+    year: "2022",
+    ongoing: false,
   },
 ];
 
@@ -141,6 +151,8 @@ export default function ProjectsSection() {
                   <div className={styles.projectMeta}>
                     <span className={styles.projectIndex}>{String(i + 1).padStart(2, "0")}</span>
                     <span className={styles.projectOrg}>{p.org}</span>
+                    <span className={styles.projectYear}>{p.year}</span>
+                    {p.ongoing && <span className={styles.ongoingBadge}>Ongoing</span>}
                   </div>
                   <h3 className={styles.projectTitle}>{p.title}</h3>
                   <p className={styles.projectDesc}>{p.description}</p>
