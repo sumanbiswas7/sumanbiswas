@@ -501,13 +501,53 @@ function MeHeroImgCard() {
 }
 
 const PROJECT_IDEAS = [
-  { title: "AI Code Reviewer", description: "Reviews PRs using Claude with contextual inline comments.", accent: "#7a9e7e" },
-  { title: "Focus Timer", description: "Pomodoro timer with ambient sounds and session analytics.", accent: "#9e8a7a" },
-  { title: "Git Visualizer", description: "Interactive 3D graph of commit history and branches.", accent: "#7a8a9e" },
-  { title: "Recipe Scanner", description: "Point camera at a dish, get the recipe instantly.", accent: "#9e7a8a" },
+  // {
+  //   title: "Cashback App",
+  //   short: "Pick the best card/UPI app for every payment to maximize cashback.",
+  //   full: "You select the apps and cards you use — Axis Bank, HDFC, GPay, PhonePe, credit cards etc. The app tells you which one to use when paying bills, doing recharges, or shopping online, so you never miss a discount or cashback offer.",
+  //   accent: "#7a9e7e",
+  // },
+  {
+    title: "Lottery Authenticity",
+    short: "Verify if random reward systems (like CRED) are actually fair.",
+    full: "Apps like CRED claim 1-in-1000 odds on rewards — but how authentic is that? This tool audits the randomness and fairness of lottery/reward systems, similar to the verification scans banks do, and gives users a transparency score.",
+    accent: "#8a9e7a",
+  },
+  {
+    title: "Regex Generator for VSCode",
+    short: "Describe what to search in plain English, get a regex for VSCode.",
+    full: "A free local AI model that lives in VSCode. You tell it what you're looking for in plain English and it generates the right regex for the search bar. Can also do simple utility tasks like find-and-replace patterns across the codebase.",
+    accent: "#9e8a7a",
+  },
+  {
+    title: "Smart Bookmark Manager",
+    short: "Chrome/Firefox extension that uses AI to organize browsing history.",
+    full: "AI categorizes every page you visit (work, research, entertainment). Search past history using natural language. Auto-bookmarks important pages based on your behavior. Syncs across devices. Freemium model — basic free, advanced AI organization paid.",
+    accent: "#7a8a9e",
+  },
+  {
+    title: "Website Legitimacy Checker",
+    short: "Chrome extension that flags scam sites before you enter card details.",
+    full: "Any website can ask for your card info — this extension verifies legitimacy by checking against known safe payment auth providers and inspecting web requests in real time to detect if sensitive data like CVV is being sent in plaintext.",
+    accent: "#9e7a8a",
+  },
 ];
 
+type TooltipState = { title: string; full: string; x: number; y: number } | null;
+
 function ProjectIdeasCard() {
+  const [tooltip, setTooltip] = useState<TooltipState>(null);
+
+  function showTooltip(e: React.MouseEvent, idea: typeof PROJECT_IDEAS[0]) {
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    setTooltip({
+      title: idea.title,
+      full: idea.full,
+      x: rect.left + rect.width / 2,
+      y: rect.top - 8,
+    });
+  }
+
   return (
     <Card className={styles.projectIdeasCard}>
       <div className={styles.noteCardHeader}>
@@ -515,14 +555,20 @@ function ProjectIdeasCard() {
           <span className={styles.noteCardTitleIcon}>
             <Lightbulb size={15} />
           </span>
-          <span>Project Ideas</span>
+          <span>Things I plan to work on</span>
         </div>
       </div>
       <div className={styles.projectIdeasGrid}>
         {PROJECT_IDEAS.map((idea) => (
-          <div key={idea.title} className={styles.stickyNote} style={{ "--idea-accent": idea.accent } as React.CSSProperties}>
+          <div
+            key={idea.title}
+            className={styles.stickyNote}
+            style={{ "--idea-accent": idea.accent } as React.CSSProperties}
+            onMouseEnter={(e) => showTooltip(e, idea)}
+            onMouseLeave={() => setTooltip(null)}
+          >
             <span className={styles.stickyNoteTitle}>{idea.title}</span>
-            <p className={styles.stickyNoteDesc}>{idea.description}</p>
+            <p className={styles.stickyNoteDesc}>{idea.short}</p>
           </div>
         ))}
         <button className={styles.stickyNoteSuggest}>
@@ -530,6 +576,17 @@ function ProjectIdeasCard() {
           <span>Suggest an idea</span>
         </button>
       </div>
+
+      {tooltip && createPortal(
+        <div
+          className={styles.ideaTooltip}
+          style={{ left: tooltip.x, top: tooltip.y }}
+        >
+          <span className={styles.ideaTooltipTitle}>{tooltip.title}</span>
+          <p className={styles.ideaTooltipBody}>{tooltip.full}</p>
+        </div>,
+        document.body
+      )}
     </Card>
   );
 }

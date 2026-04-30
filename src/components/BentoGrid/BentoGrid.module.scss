@@ -1938,7 +1938,7 @@
   background-color: $color-background-secondary;
   border: 1px solid $color-border;
   border-radius: $border-radius-sm;
-  padding: 0.6rem 0.75rem;
+  padding: 0.6rem 0.75rem 0.6rem 0.85rem;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -1955,8 +1955,6 @@
     background-color: var(--idea-accent, $color-sage);
     border-radius: $border-radius-sm 0 0 $border-radius-sm;
   }
-
-  padding-left: 1rem;
 }
 
 .stickyNoteTitle {
@@ -1970,6 +1968,48 @@
   font-size: 0.72rem;
   color: $color-text-secondary;
   line-height: 1.4;
+  margin: 0;
+}
+
+.ideaTooltip {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  z-index: 9999;
+  background-color: #2a2a2a;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-sm;
+  padding: 0.75rem 0.9rem;
+  width: 260px;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #2a2a2a;
+    border-right: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+    rotate: 45deg;
+  }
+}
+
+.ideaTooltipTitle {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $color-text-primary;
+  margin-bottom: 0.35rem;
+}
+
+.ideaTooltipBody {
+  font-size: 0.72rem;
+  color: $color-text-secondary;
+  line-height: 1.5;
   margin: 0;
 }
 
