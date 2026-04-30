@@ -43,6 +43,37 @@ $crt-border: #256635;
   transform: none !important;
 }
 
+@media (max-width: 640px) {
+  .terminal {
+    width: 100vw;
+    height: 100dvh;
+    left: 0;
+    top: 0;
+    transform: none;
+    border-radius: 0;
+    border: none;
+  }
+
+  .titleBar {
+    padding: 0.85rem 1.25rem;
+    cursor: default;
+  }
+
+  .trafficLights {
+    gap: 0.65rem;
+  }
+
+  .light {
+    width: 22px;
+    height: 22px;
+  }
+
+  .lightIcon {
+    font-size: 12px;
+    opacity: 1;
+  }
+}
+
 // ─── Title bar ────────────────────────────────────────────────────────────────
 
 .titleBar {
