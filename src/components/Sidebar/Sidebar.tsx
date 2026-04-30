@@ -104,8 +104,8 @@ function IconLinkedin() {
 
 const SOCIALS = [
   { label: "GitHub",     href: "https://github.com/sumanbiswas7", icon: IconGithub   },
-  { label: "X / Twitter", href: "https://x.com",                  icon: IconX        },
-  { label: "LinkedIn",   href: "https://linkedin.com",             icon: IconLinkedin },
+  { label: "X / Twitter", href: "https://x.com/hellosumanx",                  icon: IconX        },
+  { label: "LinkedIn",   href: "https://www.linkedin.com/in/sumanbiswas7",             icon: IconLinkedin },
 ];
 
 function renderIcon(set: IconSet, color: string, size: number) {

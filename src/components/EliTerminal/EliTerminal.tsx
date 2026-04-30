@@ -198,7 +198,7 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
         addMsg(["Opening LinkedIn profile..."]);
         break;
       case "__TWITTER__":
-        window.open("https://x.com/sumanbiswas7", "_blank");
+        window.open("https://x.com/hellosumanx", "_blank");
         addMsg(["Opening Twitter / X profile..."]);
         break;
       case "__CLEAR__":
