@@ -85,7 +85,7 @@ const music = {
 const game = {
   title: "FC 25",
   artist: "PS5",
-  art: "/game-poster-1.png",
+  art: "/game-poster-1.webp",
   spotifyUrl: null as string | null,
   previewUrl: null as string | null,
 };

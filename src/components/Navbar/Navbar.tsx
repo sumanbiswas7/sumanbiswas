@@ -2,14 +2,16 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Shuffle } from "lucide-react";
+import { Gamepad2, Shuffle } from "lucide-react";
 import { useBentoGrid } from "@/components/BentoGrid/BentoGridContext";
 import { useEli } from "@/context/EliContext";
+import { useGame } from "@/context/GameContext";
 import styles from "./Navbar.module.scss";
 
 export default function Navbar() {
   const { shuffle } = useBentoGrid();
   const { openEli } = useEli();
+  const { openGame } = useGame();
   const [spinning, setSpinning] = useState(false);
 
   function handleShuffle() {
@@ -41,6 +43,13 @@ export default function Navbar() {
             size={16}
             className={spinning ? styles.shuffleIconSpin : ""}
           />
+        </button>
+        <button
+          className={styles.gameBtn}
+          aria-label="Open playground"
+          onClick={openGame}
+        >
+          <Gamepad2 size={18} />
         </button>
         <button className={styles.botBtn} aria-label="Chat bot" onClick={openEli}>
           <svg
