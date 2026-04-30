@@ -30,6 +30,7 @@ export default function GalleryCard() {
         alt={photos[index].alt}
         fill
         priority={index === 0}
+        sizes="(max-width: 768px) 100vw, 400px"
         className={styles.galleryImg}
       />
       <button

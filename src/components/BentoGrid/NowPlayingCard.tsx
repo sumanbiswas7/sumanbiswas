@@ -226,6 +226,7 @@ export default function NowPlayingCard() {
               src={nowPlaying.art}
               alt={nowPlaying.title}
               fill
+              sizes="56px"
               className={styles.nowPlayingAlbum}
             />
           </div>
@@ -251,6 +252,7 @@ export default function NowPlayingCard() {
                 src={nowPlaying.art}
                 alt={nowPlaying.title}
                 fill
+                sizes="200px"
                 className={styles.nowPlayingAlbum}
               />
               <div className={styles.nowPlayingPopupArtOverlay} />

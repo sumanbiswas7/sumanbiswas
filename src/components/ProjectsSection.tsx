@@ -242,7 +242,7 @@ export default function ProjectsSection() {
                     </div>
                   </div>
                   <div className={styles.browserContent}>
-                    <Image src={p.img} alt={p.title} fill className={styles.projectCover} />
+                    <Image src={p.img} alt={p.title} fill sizes="(max-width: 768px) 100vw, 50vw" className={styles.projectCover} />
                   </div>
                 </div>
               </div>

@@ -351,7 +351,7 @@ function MeHeroImgCard() {
           />
         )}
         <div className={styles.meHeroImgWrapper}>
-          <Image src="/me.png" alt="Suman Biswas" fill className={styles.meHeroImg} />
+          <Image src="/me.png" alt="Suman Biswas" fill priority sizes="(max-width: 768px) 100vw, 50vw" className={styles.meHeroImg} />
           {graffiti && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={graffiti} alt="" className={styles.meHeroGraffitiOverlay} aria-hidden />
