@@ -7,10 +7,14 @@ import Card from "./Card";
 import styles from "./BentoGrid.module.scss";
 
 const photos = [
-  { src: "/photo-parrot.png", alt: "Parrot at the aviary" },
-  { src: "/photo-parrot.png", alt: "Blue macaw up close" },
-  { src: "/photo-parrot.png", alt: "Golden hour at the park" },
-  { src: "/photo-parrot.png", alt: "Street photography" },
+  { src: "/gallery/gallery-9.png", alt: "Dareeling Zoo, November 2023" },
+  { src: "/gallery/gallery-1.jpg", alt: "Darjeeling, November 2023" },
+  { src: "/gallery/gallery-2.jpg", alt: "Most beautiful village in India - Kalpa" },
+  { src: "/gallery/gallery-3.jpg", alt: "Streets of Sangla" },
+  { src: "/gallery/gallery-4.jpg", alt: "Sangla Medows" },
+  { src: "/gallery/gallery-5.jpg", alt: "Tehatta 2019" },
+  { src: "/gallery/gallery-7.jpg", alt: "Dareeling Zoo, November 2023" },
+  { src: "/gallery/gallery-8.jpg", alt: "Dareeling Zoo, November 2023" },
 ];
 
 export default function GalleryCard() {
@@ -22,10 +26,10 @@ export default function GalleryCard() {
   return (
     <Card className={styles.galleryCard}>
       <Image
-        key={index}
         src={photos[index].src}
         alt={photos[index].alt}
         fill
+        priority={index === 0}
         className={styles.galleryImg}
       />
       <button
