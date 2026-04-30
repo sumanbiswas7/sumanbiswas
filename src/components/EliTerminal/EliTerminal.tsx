@@ -63,10 +63,10 @@ function getResponse(cmd: string): string[] | SpecialResult {
     "  /clear    — Clear terminal",
   ];
   if (c === "/who") return [
-    "Suman Biswas — FullStack Engineer.",
-    "Builds products end-to-end: React, Next.js,",
-    "Node.js, React Native, Postgres, AWS, and more.",
-    "Based in India. Open to interesting work.",
+    "Suman Biswas — Self-taught Fullstack Engineer.",
+    "TypeScript is my main tool, but I use whatever fits best.",
+    "Outside of code — football, photography, and the mountains.",
+    "Real Madrid is part of who I am. Based in India.",
   ];
   if (c === "/contact")  return "__CONTACT__";
   if (c === "/email")    return "__EMAIL__";

@@ -169,13 +169,11 @@ function MeCard() {
       </div>
 
       <h1 className={styles.headline}>
-        I build digital <span className={styles.accent}>experiences</span> that
-        make an impact.
+        I build <span className={styles.accent}>digital</span> products that are <span className={styles.accent}>worth using.</span>
       </h1>
 
       <p className={styles.sub}>
-        FullStack Developer crafting modern, responsive and scalable web
-        applications.
+        Full-stack engineer building modern, impactful products that solve real problems.
       </p>
 
       <div className={styles.actions}>
@@ -192,19 +190,24 @@ function BioCard() {
       <div className={styles.bioLeft}>
         <span className={styles.cardTitle}>BIO</span>
         <p className={`${styles.sub} ${styles.bioDesc}`}>
-          I&apos;m a self-taught full-stack developer who loves building cool
-          apps and constantly leveling up. Outside coding, I&apos;m into
-          football (Hala Madrid ⚽), photography, and exploring new places. a
-          self-taught full-stack developer, constantly on the journey of
-          learning and all.
+          Self-taught Full-stack Engineer who loves building modern, impactful products that solve real problems.
+          TypeScript is my main tool, but I use whatever fits best.
+          <br/>
+          <br/>
+          Outside of code — football, photography, and the mountains.{" "}
+          <a href="https://www.instagram.com/realmadrid" target="_blank" rel="noopener noreferrer" className={styles.bioLink}>Real Madrid</a>{" "}
+          is part of who I am, and {" "}
+          <a href="https://bernabeu.realmadrid.com/en-US" target="_blank" rel="noopener noreferrer" className={styles.bioLink}>Santiago Bernabéu</a>{" "}
+          is my second home.
         </p>
       </div>
-      <div className={styles.bioParrotWrap}>
+      <div className={styles.bioCoverWrap}>
         <Image
-          src="/photo-parrot.png"
+          src="/gallery/gallery-4.jpg"
           alt="Parrot"
           fill
-          className={styles.bioParrotImg}
+          sizes="200px"
+          className={styles.bioCoverImg}
         />
       </div>
     </Card>
@@ -244,7 +247,7 @@ const CANVAS_H = 440;
 function MeHeroImgCard() {
   const [isEditing, setIsEditing] = useState(false);
   const [bgColor, setBgColor] = useState("#9aa59a");
-  const [bgPattern, setBgPattern] = useState("none");
+  const [bgPattern, setBgPattern] = useState("zigzag");
   const [graffiti, setGraffiti] = useState<string | null>(null);
   const [drawColor, setDrawColor] = useState("#ffffff");
   const [brushSize, setBrushSize] = useState(4);
