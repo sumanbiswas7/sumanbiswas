@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Gamepad2, Shuffle } from "lucide-react";
 import { useBentoGrid } from "@/components/BentoGrid/BentoGridContext";
 import { useEli } from "@/context/EliContext";
@@ -23,7 +24,7 @@ export default function Navbar() {
   return (
     <nav className={styles.navbar}>
       <div className={styles.left}>
-        <Image src="/logo.svg" alt="Suman Biswas logo" width={40} height={40} />
+        <Link href="/" onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); history.pushState("", "", "/"); }}><Image src="/logo.svg" alt="Suman Biswas logo" width={40} height={40} /></Link>
         <div className={styles.identity}>
           <span className={styles.name}>Suman Biswas</span>
         </div>
