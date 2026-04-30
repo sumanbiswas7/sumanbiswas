@@ -356,7 +356,7 @@ function MeHeroImgCard() {
           />
         )}
         <div className={styles.meHeroImgWrapper}>
-          <Image src="/me.png" alt="Suman Biswas" fill priority sizes="(max-width: 768px) 100vw, 50vw" className={styles.meHeroImg} />
+          <Image src="/me.webp" alt="Suman Biswas" fill priority sizes="(max-width: 768px) 100vw, 50vw" className={styles.meHeroImg} />
           {graffiti && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={graffiti} alt="" className={styles.meHeroGraffitiOverlay} aria-hidden />
@@ -379,7 +379,7 @@ function MeHeroImgCard() {
                 />
               )}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/me.png" alt="" className={styles.meHeroEditPreviewImg} />
+              <img src="/me.webp" alt="" className={styles.meHeroEditPreviewImg} />
               <canvas
                 ref={canvasRef}
                 width={CANVAS_W}

@@ -7,14 +7,14 @@ import Card from "./Card";
 import styles from "./BentoGrid.module.scss";
 
 const photos = [
-  { src: "/gallery/gallery-6.jpg", alt: "Dareeling Zoo, November 2023" },
-  { src: "/gallery/gallery-7.jpg", alt: "Dareeling Zoo, November 2023" },
-  { src: "/gallery/gallery-1.jpg", alt: "Peace Pagoda, Darjeeling, November 2023" },
-  { src: "/gallery/gallery-8.jpg", alt: "Dareeling Zoo, November 2023" },
-  { src: "/gallery/gallery-2.jpg", alt: "Most beautiful village in India - Kalpa" },
-  { src: "/gallery/gallery-3.jpg", alt: "Streets of Sangla" },
-  { src: "/gallery/gallery-4.jpg", alt: "Sangla Meadows" },
-  { src: "/gallery/gallery-5.jpg", alt: "Tehatta 2019" },
+  { src: "/gallery/gallery-6.webp", alt: "Dareeling Zoo, November 2023" },
+  { src: "/gallery/gallery-7.webp", alt: "Dareeling Zoo, November 2023" },
+  { src: "/gallery/gallery-1.webp", alt: "Peace Pagoda, Darjeeling, November 2023" },
+  { src: "/gallery/gallery-8.webp", alt: "Dareeling Zoo, November 2023" },
+  { src: "/gallery/gallery-2.webp", alt: "Most beautiful village in India - Kalpa" },
+  { src: "/gallery/gallery-3.webp", alt: "Streets of Sangla" },
+  { src: "/gallery/gallery-4.webp", alt: "Sangla Meadows" },
+  { src: "/gallery/gallery-5.webp", alt: "Tehatta 2019" },
 ];
 
 export default function GalleryCard() {
