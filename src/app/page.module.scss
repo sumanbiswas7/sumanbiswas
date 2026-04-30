@@ -18,10 +18,34 @@
 
 /* ─── Section 1 — bento grid ─── */
 .section1 {
-  height: 100vh;
+  // height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+/* ─── Section break ─── */
+.sectionBreak {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 2rem 2rem;
+}
+
+.sectionBreakLine {
+  flex: 1;
+  height: 1px;
+  background: $color-border;
+}
+
+.sectionBreakLabel {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  opacity: 0.5;
 }
 
 /* ─── Section 2 — work ─── */
