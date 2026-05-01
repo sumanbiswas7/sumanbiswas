@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Bricolage_Grotesque, DM_Sans, DM_Mono } from 'next/font/google';
 import '@/styles/globals.scss';
 import { GameProvider } from '@/context/GameContext';
@@ -25,9 +25,15 @@ const dmMono = DM_Mono({
   display: 'swap',
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
-  title: 'Suman Biswas — FullStack Dev',
-  description: 'Portfolio of Suman Biswas, FullStack Developer',
+  title: 'Suman Biswas — Fullstack Engineer',
+  description: 'Fullstack Engineer building modern, impactful products. TypeScript is my main tool, but I use whatever fits best. Outside of code — football, photography, and the mountains. Real Madrid is part of who I am. Based in India.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
