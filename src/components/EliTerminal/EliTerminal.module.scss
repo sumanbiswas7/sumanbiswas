@@ -446,3 +446,184 @@
   flex-shrink: 0;
   letter-spacing: 0.03em;
 }
+
+// ─── Write mode ───────────────────────────────────────────────────────────────
+
+.writeModeWrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.writeModeHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #1e1e1e;
+  background: #161616;
+  flex-shrink: 0;
+}
+
+.writeModeBack {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: $font-mono;
+  font-size: 0.72rem;
+  color: #555;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: color 0.1s ease, background 0.1s ease;
+
+  &:hover {
+    color: #999;
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.writeModeTitle {
+  flex: 1;
+  font-family: $font-mono;
+  font-size: 0.72rem;
+  color: #444;
+  letter-spacing: 0.03em;
+}
+
+.writeToneToggle {
+  display: flex;
+  gap: 0.2rem;
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 0.18rem;
+  flex-shrink: 0;
+}
+
+.writeToneBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  color: #555;
+  padding: 0.22rem 0.65rem;
+  border-radius: 4px;
+  transition: color 0.1s ease, background 0.1s ease;
+
+  &:hover { color: #888; }
+}
+
+.writeToneBtnActive {
+  background: rgba(154, 165, 154, 0.12);
+  color: $color-sage !important;
+}
+
+.writeInputArea {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #1e1e1e;
+  flex-shrink: 0;
+}
+
+.writeTextarea {
+  width: 100%;
+  background: #0f0f0f;
+  border: 1px solid #242424;
+  border-radius: 6px;
+  color: #d8d8d8;
+  font-family: $font-mono;
+  font-size: 0.78rem;
+  line-height: 1.65;
+  padding: 0.65rem 0.8rem;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  caret-color: $color-sage;
+  user-select: text;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+  &::placeholder { color: #2e2e2e; }
+  &:focus { border-color: #333; }
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
+}
+
+.writeSubmitRow {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #1e1e1e;
+  flex-shrink: 0;
+}
+
+.writeSubmitBtn {
+  background: rgba(154, 165, 154, 0.07);
+  border: 1px solid rgba(154, 165, 154, 0.18);
+  color: $color-sage;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.12s ease, border-color 0.12s ease;
+
+  &:hover {
+    background: rgba(154, 165, 154, 0.13);
+    border-color: rgba(154, 165, 154, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.writeOutputArea {
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  border-top: 1px solid #1e1e1e;
+}
+
+.writeOutputHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.writeOutputLabel {
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  color: $color-sage;
+}
+
+.writeCopyBtn {
+  background: rgba(154, 165, 154, 0.06);
+  border: 1px solid rgba(154, 165, 154, 0.14);
+  color: #666;
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.1s ease, background 0.1s ease, border-color 0.1s ease;
+
+  &:hover {
+    color: $color-sage;
+    background: rgba(154, 165, 154, 0.1);
+    border-color: rgba(154, 165, 154, 0.24);
+  }
+}
+
+.writeOutputText {
+  font-family: $font-mono;
+  font-size: 0.78rem;
+  color: #aaa;
+  line-height: 1.7;
+  margin: 0;
+  white-space: pre-wrap;
+  user-select: text;
+}

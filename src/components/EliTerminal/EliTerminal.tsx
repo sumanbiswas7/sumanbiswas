@@ -39,14 +39,15 @@ const ALL_COMMANDS = [
   { cmd: "/github",   desc: "Open GitHub profile" },
   { cmd: "/connect",  desc: "Open LinkedIn profile" },
   { cmd: "/twitter",  desc: "Open Twitter / X profile" },
+  { cmd: "/write",    desc: "Rewrite emails & messages" },
   { cmd: "/clear",    desc: "Clear terminal" },
 ];
 
-const PANEL_COMMANDS = ["/help", "/email", "/github", "/connect", "/contact"];
+const PANEL_COMMANDS = ["/help", "/email", "/github", "/connect", "/write"];
 const SUMAN_EMAIL = "textsumanb@gmail.com";
 
 type Message = { id: number; role: "user" | "eli"; lines: string[] };
-type SpecialResult = "__CONTACT__" | "__EMAIL__" | "__GITHUB__" | "__CONNECT__" | "__TWITTER__" | "__CLEAR__";
+type SpecialResult = "__CONTACT__" | "__EMAIL__" | "__GITHUB__" | "__CONNECT__" | "__TWITTER__" | "__WRITE__" | "__CLEAR__";
 
 function getResponse(cmd: string): string[] | SpecialResult {
   const c = cmd.trim().toLowerCase();
@@ -60,6 +61,7 @@ function getResponse(cmd: string): string[] | SpecialResult {
     "  /github   — Open GitHub profile",
     "  /connect  — Open LinkedIn profile",
     "  /twitter  — Open Twitter / X profile",
+    "  /write    — Rewrite emails & messages",
     "  /clear    — Clear terminal",
   ];
   if (c === "/who") return [
@@ -73,6 +75,7 @@ function getResponse(cmd: string): string[] | SpecialResult {
   if (c === "/github")   return "__GITHUB__";
   if (c === "/connect")  return "__CONNECT__";
   if (c === "/twitter")  return "__TWITTER__";
+  if (c === "/write")    return "__WRITE__";
   if (c === "/clear")    return "__CLEAR__";
   if (c === "/projects") return [
     "Projects:",
@@ -102,6 +105,14 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
   const [toast, setToast] = useState<string | null>(null);
   const [streamingContent, setStreamingContent] = useState<string | null>(null);
   const [isStreaming, setIsStreaming] = useState(false);
+
+  // Write mode
+  const [writeMode, setWriteMode] = useState(false);
+  const [writeTone, setWriteTone] = useState<"human" | "ceo">("human");
+  const [writeInput, setWriteInput] = useState("");
+  const [writeOutput, setWriteOutput] = useState<string | null>(null);
+  const [writeLoading, setWriteLoading] = useState(false);
+  const [writeStreamingContent, setWriteStreamingContent] = useState<string | null>(null);
 
   const termRef    = useRef<HTMLDivElement>(null);
   const messagesRef = useRef<HTMLDivElement>(null);
@@ -171,6 +182,45 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
     setIsFullscreen(f => !f);
   }
 
+  function exitWriteMode() {
+    setWriteMode(false);
+    setWriteInput("");
+    setWriteOutput(null);
+    setWriteStreamingContent(null);
+    setWriteLoading(false);
+    setTimeout(() => inputRef.current?.focus(), 0);
+  }
+
+  async function handleRewrite() {
+    if (!writeInput.trim() || writeLoading) return;
+    setWriteLoading(true);
+    setWriteOutput(null);
+    setWriteStreamingContent("");
+
+    try {
+      const res = await fetch("/api/eli/rewrite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: writeInput.trim(), tone: writeTone }),
+      });
+      const { content, error } = await res.json();
+      if (error) throw new Error(error);
+
+      let displayed = "";
+      for (const char of content as string) {
+        displayed += char;
+        setWriteStreamingContent(displayed);
+        await new Promise(r => setTimeout(r, 12));
+      }
+      setWriteOutput(content);
+    } catch {
+      setWriteOutput("Something went wrong. Try again.");
+    } finally {
+      setWriteStreamingContent(null);
+      setWriteLoading(false);
+    }
+  }
+
   const executeCommand = useCallback((cmd: string) => {
     const result  = getResponse(cmd);
     const id1     = ++msgCounter.current;
@@ -201,6 +251,9 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
         window.open("https://x.com/hellosumanx", "_blank");
         addMsg(["Opening Twitter / X profile..."]);
         break;
+      case "__WRITE__":
+        setWriteMode(true);
+        break;
       case "__CLEAR__":
         setMessages([]);
         break;
@@ -230,7 +283,6 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
       const { content, error } = await res.json();
       if (error) throw new Error(error);
 
-      // Typewriter effect — stream the full response char by char
       let displayed = "";
       for (const char of content as string) {
         displayed += char;
@@ -272,7 +324,7 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
     <div
       ref={termRef}
       className={`${styles.terminal} ${isFullscreen ? styles.fullscreen : ""}`}
-      onClick={() => inputRef.current?.focus()}
+      onClick={() => !writeMode && inputRef.current?.focus()}
     >
       {/* ── Toast ── */}
       {toast && <div className={styles.toast}>{toast}</div>}
@@ -329,67 +381,147 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
         </div>
       </div>
 
-      {/* ── Message history ── */}
-      {(messages.length > 0 || isStreaming) && (
-        <div className={styles.messages} ref={messagesRef}>
-          {messages.map(msg => (
-            <div key={msg.id} className={msg.role === "user" ? styles.msgUser : styles.msgEli}>
-              <span className={styles.msgPrompt}>{msg.role === "user" ? "you@eli ~ %" : "eli ~ %"}</span>
-              <div className={styles.msgLines}>
-                {msg.lines.map((line, i) => <p key={i}>{line}</p>)}
-              </div>
+      {/* ── Write mode ── */}
+      {writeMode ? (
+        <div className={styles.writeModeWrapper}>
+          <div className={styles.writeModeHeader}>
+            <button className={styles.writeModeBack} onClick={exitWriteMode}>
+              ← back
+            </button>
+            <span className={styles.writeModeTitle}>email / message rewriter</span>
+            <div className={styles.writeToneToggle}>
+              <button
+                className={`${styles.writeToneBtn} ${writeTone === "human" ? styles.writeToneBtnActive : ""}`}
+                onClick={() => setWriteTone("human")}
+              >
+                human
+              </button>
+              <button
+                className={`${styles.writeToneBtn} ${writeTone === "ceo" ? styles.writeToneBtnActive : ""}`}
+                onClick={() => setWriteTone("ceo")}
+              >
+                ceo
+              </button>
             </div>
-          ))}
-          {isStreaming && (
-            <div className={styles.msgEli}>
-              <span className={styles.msgPrompt}>eli ~ %</span>
-              <div className={styles.msgLines}>
-                {streamingContent
-                  ? streamingContent.split("\n").map((line, i) => <p key={i}>{line}</p>)
-                  : <p className={styles.thinking}>thinking<span className={styles.thinkingDots}>...</span></p>
-                }
+          </div>
+
+          <div className={styles.writeInputArea}>
+            <textarea
+              className={styles.writeTextarea}
+              placeholder="paste your message or email here..."
+              value={writeInput}
+              onChange={e => setWriteInput(e.target.value)}
+              disabled={writeLoading}
+              rows={5}
+              spellCheck={false}
+            />
+          </div>
+
+          <div className={styles.writeSubmitRow}>
+            <button
+              className={styles.writeSubmitBtn}
+              onClick={handleRewrite}
+              disabled={writeLoading || !writeInput.trim()}
+            >
+              {writeLoading ? "rewriting..." : "rewrite →"}
+            </button>
+          </div>
+
+          {(writeOutput !== null || writeStreamingContent !== null) && (
+            <div className={styles.writeOutputArea}>
+              <div className={styles.writeOutputHeader}>
+                <span className={styles.writeOutputLabel}>eli ~ %</span>
+                {writeOutput !== null && !writeLoading && (
+                  <button
+                    className={styles.writeCopyBtn}
+                    onClick={() => {
+                      navigator.clipboard.writeText(writeOutput!);
+                      showToast("Copied!");
+                    }}
+                  >
+                    copy
+                  </button>
+                )}
               </div>
+              {writeStreamingContent !== null ? (
+                writeStreamingContent ? (
+                  <p className={styles.writeOutputText}>{writeStreamingContent}</p>
+                ) : (
+                  <p className={`${styles.writeOutputText} ${styles.thinking}`}>
+                    rewriting<span className={styles.thinkingDots}>...</span>
+                  </p>
+                )
+              ) : (
+                <p className={styles.writeOutputText}>{writeOutput}</p>
+              )}
             </div>
           )}
         </div>
-      )}
+      ) : (
+        <>
+          {/* ── Message history ── */}
+          {(messages.length > 0 || isStreaming) && (
+            <div className={styles.messages} ref={messagesRef}>
+              {messages.map(msg => (
+                <div key={msg.id} className={msg.role === "user" ? styles.msgUser : styles.msgEli}>
+                  <span className={styles.msgPrompt}>{msg.role === "user" ? "you@eli ~ %" : "eli ~ %"}</span>
+                  <div className={styles.msgLines}>
+                    {msg.lines.map((line, i) => <p key={i}>{line}</p>)}
+                  </div>
+                </div>
+              ))}
+              {isStreaming && (
+                <div className={styles.msgEli}>
+                  <span className={styles.msgPrompt}>eli ~ %</span>
+                  <div className={styles.msgLines}>
+                    {streamingContent
+                      ? streamingContent.split("\n").map((line, i) => <p key={i}>{line}</p>)
+                      : <p className={styles.thinking}>thinking<span className={styles.thinkingDots}>...</span></p>
+                    }
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
-      {/* ── Input ── */}
-      <div className={styles.inputArea}>
-        {showSlashMenu && filteredCmds.length > 0 && (
-          <div className={styles.slashMenu}>
-            {filteredCmds.map(c => (
-              <button
-                key={c.cmd}
-                className={styles.slashItem}
-                onMouseDown={() => {
-                  setInput(c.cmd);
-                  setShowSlashMenu(false);
-                  setTimeout(() => inputRef.current?.focus(), 0);
-                }}
-              >
-                <span className={styles.slashCmdLabel}>{c.cmd}</span>
-                <span className={styles.slashDescLabel}>{c.desc}</span>
-              </button>
-            ))}
+          {/* ── Input ── */}
+          <div className={styles.inputArea}>
+            {showSlashMenu && filteredCmds.length > 0 && (
+              <div className={styles.slashMenu}>
+                {filteredCmds.map(c => (
+                  <button
+                    key={c.cmd}
+                    className={styles.slashItem}
+                    onMouseDown={() => {
+                      setInput(c.cmd);
+                      setShowSlashMenu(false);
+                      setTimeout(() => inputRef.current?.focus(), 0);
+                    }}
+                  >
+                    <span className={styles.slashCmdLabel}>{c.cmd}</span>
+                    <span className={styles.slashDescLabel}>{c.desc}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className={styles.inputRow}>
+              <span className={styles.inputPrompt}>you@eli ~ %</span>
+              <input
+                ref={inputRef}
+                className={styles.input}
+                placeholder={isStreaming ? "eli is thinking…" : "type a message or / for commands…"}
+                disabled={isStreaming}
+                value={input}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                autoFocus
+                spellCheck={false}
+              />
+              <span className={styles.inputHint}>↵ enter</span>
+            </div>
           </div>
-        )}
-        <div className={styles.inputRow}>
-          <span className={styles.inputPrompt}>you@eli ~ %</span>
-          <input
-            ref={inputRef}
-            className={styles.input}
-            placeholder={isStreaming ? "eli is thinking…" : "type a message or / for commands…"}
-            disabled={isStreaming}
-            value={input}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-            autoFocus
-            spellCheck={false}
-          />
-          <span className={styles.inputHint}>↵ enter</span>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }
