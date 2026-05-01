@@ -770,7 +770,7 @@
 
 .bioCoverImg {
   object-fit: cover;
-  object-position: center;
+  object-position: bottom center;
   transform: scale(1.1);
   filter: saturate(0.55);
   transition:
@@ -1867,6 +1867,17 @@
     flex-shrink: 0;
     align-self: auto;
   }
+
+  // explicit card order: me → meHero+stacked → bio → work → rest
+  .draggableCard:has(.meGrid)          { order: 1; }
+  .draggableCard:has(.meHeroImgCard)   { order: 2; }
+  .draggableCard:has(.stackedCards)    { order: 3; }
+  .draggableCard:has(.bioCard)         { order: 4; }
+  .draggableCard:has(.workCard)        { order: 5; }
+  .draggableCard:has(.galleryCard)     { order: 6; }
+  .draggableCard:has(.playGameCard)    { order: 7; }
+  .draggableCard:has(.eliCard)         { order: 8; }
+  .draggableCard:has(.projectIdeasCard){ order: 9; }
 
   // meHero + stacked side by side
   .draggableCard:has(.meHeroImgCard) {

@@ -149,10 +149,14 @@ export default function ProjectsSection() {
               <div className={styles.projectLeft}>
                 <div className={styles.projectTop}>
                   <div className={styles.projectMeta}>
-                    <span className={styles.projectIndex}>{String(i + 1).padStart(2, "0")}</span>
-                    <span className={styles.projectOrg}>{p.org}</span>
-                    <span className={styles.projectYear}>{p.year}</span>
-                    {p.ongoing && <span className={styles.ongoingBadge}>Ongoing</span>}
+                    <div className={styles.projectMetaLeft}>
+                      <span className={styles.projectIndex}>{String(i + 1).padStart(2, "0")}</span>
+                      <span className={styles.projectOrg}>{p.org}</span>
+                    </div>
+                    <div className={styles.projectMetaRight}>
+                      <span className={styles.projectYear}>{p.year}</span>
+                      {p.ongoing && <span className={styles.ongoingBadge}>Ongoing</span>}
+                    </div>
                   </div>
                   <h3 className={styles.projectTitle}>{p.title}</h3>
                   <p className={styles.projectDesc}>{p.description}</p>

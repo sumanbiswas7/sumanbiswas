@@ -80,6 +80,35 @@ $crt-border: #256635;
   .titleBar .titleSpacer {
     width: 2.65rem;
   }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .library {
+    flex: 1;
+    min-height: unset;
+  }
+
+  .game {
+    flex: 1;
+  }
+
+  .screen {
+    flex: 1;
+    min-height: unset;
+  }
+
+  .aimScreen {
+    flex: 1;
+    height: unset;
+  }
+
+  .moleScreen {
+    flex: 1;
+    height: unset;
+  }
 }
 
 // ─── Title bar ────────────────────────────────────────────────────────────────

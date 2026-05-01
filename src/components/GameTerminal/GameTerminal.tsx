@@ -957,8 +957,10 @@ function drawScene(ctx: CanvasRenderingContext2D, gs: CarGS) {
   ctx.strokeStyle = "#256635"; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(1, 0); ctx.lineTo(1, CANVAS_H); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(CANVAS_W - 1, 0); ctx.lineTo(CANVAS_W - 1, CANVAS_H); ctx.stroke();
-  for (const c of gs.cars) drawTrafficCar(ctx, laneX(c.lane), c.y, c.colorIdx);
-  drawPlayerCar(ctx, gs.playerX, CANVAS_H - CAR_H - PLAYER_BOTTOM, gs.status === "dead");
+  if (gs.status !== "idle") {
+    for (const c of gs.cars) drawTrafficCar(ctx, laneX(c.lane), c.y, c.colorIdx);
+    drawPlayerCar(ctx, gs.playerX, CANVAS_H - CAR_H - PLAYER_BOTTOM, gs.status === "dead");
+  }
   if (gs.status === "playing") {
     ctx.font = "bold 11px monospace";
     ctx.textAlign = "right"; ctx.fillStyle = "#3aaa52";
