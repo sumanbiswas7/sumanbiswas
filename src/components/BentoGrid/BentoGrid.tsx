@@ -207,8 +207,8 @@ function BioCard() {
       </div>
       <div className={styles.bioCoverWrap}>
         <Image
-          src="/gallery/gallery-4.jpg"
-          alt="Parrot"
+          src="/gallery/gallery-4.webp"
+          alt="Me in Sangla, Himachal Pradesh, India"
           fill
           sizes="200px"
           className={styles.bioCoverImg}
