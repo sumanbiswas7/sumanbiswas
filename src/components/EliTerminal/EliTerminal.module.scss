@@ -739,26 +739,15 @@
     display: none;
   }
 
-  .title        { font-size: 0.82rem; }
-  .mobileLogo   { font-size: 1.15rem; }
+  .welcomeSub {
+    font-size: 0.67rem;
+    margin: 0;
+  }
 
-  .welcomeSub   { font-size: 0.82rem; margin: 0; }
-  .welcomeHint  { font-size: 0.76rem; margin: 0; }
-  .mobileInfoDesc { font-size: 0.74rem; }
-
-  .infoHeading  { font-size: 0.84rem; }
-  .infoText     { font-size: 0.82rem; }
-  .quickCmd     { font-size: 0.82rem; }
-  .quickDesc    { font-size: 0.78rem; }
-
-  .msgPrompt    { font-size: 0.82rem; }
-  .msgLines p   { font-size: 0.88rem; }
-
-  .inputPrompt  { font-size: 0.88rem; }
-  .inputHint    { font-size: 0.74rem; }
-
-  .slashCmdLabel  { font-size: 0.88rem; }
-  .slashDescLabel { font-size: 0.82rem; }
+  .welcomeHint {
+    font-size: 0.62rem;
+    margin: 0;
+  }
 
   .welcomeRight > .infoBlock:first-of-type,
   .welcomeRight > .infoDivider {
@@ -768,5 +757,4 @@
   .quickList > *:nth-child(n+4) {
     display: none;
   }
-
 }
