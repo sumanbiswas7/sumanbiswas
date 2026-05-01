@@ -367,9 +367,17 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className={styles.welcomeRight}>
+          <div className={styles.mobileEliHeader}>
+            <span className={styles.mobileLogo}>ELI</span>
+            <div className={styles.mobileEliMeta}>
+              <p className={styles.welcomeSub}>v1.0 · Portfolio Assistant</p>
+              <p className={styles.welcomeHint}>suman&apos;s personal AI · ask anything</p>
+              <p className={styles.mobileInfoDesc}>Projects, skills, experience &amp; how to reach him.</p>
+            </div>
+          </div>
           <div className={styles.infoBlock}>
-            <p className={styles.infoHeading}>What I know</p>
-            <p className={styles.infoText}>
+            <p className={`${styles.infoHeading} ${styles.hideOnMobile}`}>What I know</p>
+            <p className={`${styles.infoText} ${styles.hideOnMobile}`}>
               Everything about Suman — his projects, skills,{"\n"}
               experience, and how to reach him.
             </p>
