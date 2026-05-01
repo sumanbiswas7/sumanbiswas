@@ -5,68 +5,98 @@ import { ExternalLink, GitFork } from "lucide-react";
 import Button from "@/components/ui/Button";
 import styles from "@/app/page.module.scss";
 
+
 const PROJECTS = [
   {
     id: 1,
-    title: "Marked",
+    title: "Beam",
     description:
-      "A versatile solution for link management, task tracking, note-taking, and expense management with convenient reminders.",
-    img: "/work/cover-marked.webp",
-    tags: ["NextJS", "NodeJs", "Turborepo", "Express"],
-    github: "https://github.com/sumanbiswas7/marked",
-    live: "https://marked-web.vercel.app/",
+      "AI coding assistant for VS Code. Run local models with Ollama for free, bring your own OpenAI key, or stay fully offline — no mandatory subscription.",
+    media: [
+      { type: "image" as const, src: "/products/beam-cover.webp" },
+      { type: "video" as const, src: "https://sumanbiswas-website.s3.ap-south-1.amazonaws.com/beam-demo-explain.MP4" },
+      { type: "video" as const, src: "https://sumanbiswas-website.s3.ap-south-1.amazonaws.com/beam-demo-stock-fetch.MP4" },
+      { type: "image" as const, src: "/products/beam-2.webp" },
+    ],
+    tags: ["VS Code Extension", "Ollama", "OpenAI", "TypeScript"],
+    github: null as string | null,
+    live: "https://getbeam.vercel.app" as string | null,
     org: "Personal",
-    year: "2023",
-    ongoing: false,
+    year: "2025",
+    ongoing: true,
   },
   {
     id: 2,
-    title: "Signinlink",
+    title: "Prayash",
     description:
-      "Transform your business: Go paperless, digitize operations, and slash costs from up to $6000 to just $20 per month!",
-    img: "/work/cover-signinlink.webp",
-    tags: ["Rollup", "Storybook", "NPM", "React"],
-    github: "https://github.com/sumanbiswas7",
-    live: "https://signinlink.app",
-    org: "Web-wizs",
-    year: "2024",
+      "An initiative supporting underprivileged students through book donations, community connections, and an annual event with Quiz, Drawings, and Abbriti competitions.",
+    media: [
+      { type: "image" as const, src: "/products/prayash-cover.webp" },
+      { type: "image" as const, src: "/products/prayash-2.webp" },
+      { type: "image" as const, src: "/products/prayash-3.webp" },
+    ],
+    tags: ["Community", "Education", "Social Impact"],
+    github: null as string | null,
+    live: null as string | null,
+    org: "Prayash",
+    year: "2023",
     ongoing: true,
   },
   {
     id: 3,
-    title: "Poshkit",
+    title: "Marked",
     description:
-      "A collection of modern, fancy components with amazing hover effects for React applications. Easily add stylish and interactive UI elements to your webapps.",
-    img: "/work/cover-poshkit.webp",
-    tags: ["Rollup", "Storybook", "NPM", "React"],
-    github: "https://github.com/sumanbiswas7/poshkit",
-    live: "https://www.npmjs.com/package/poshkit",
+      "A versatile solution for link management, task tracking, note-taking, and expense management with convenient reminders.",
+    media: [
+      { type: "image" as const, src: "/products/marked-cover.webp" },
+      { type: "image" as const, src: "/products/marked-2.webp" },
+    ],
+    tags: ["NextJS", "NodeJs", "Turborepo", "Express"],
+    github: "https://github.com/sumanbiswas7/marked" as string | null,
+    live: "https://marked-web.vercel.app/" as string | null,
     org: "Personal",
     year: "2023",
     ongoing: false,
   },
   {
     id: 4,
-    title: "Cinematic",
+    title: "Signinlink",
     description:
-      "A platform that provides movie lovers with an immersive experience to discover, share, and indulge in their favorite movies.",
-    img: "/work/cover-cinematic.webp",
-    tags: ["NextJS", "Postgres", "AWS", "Sass", "GraphQL"],
-    github: "https://github.com/sumanbiswas7/cinematic",
-    live: "https://cinematic-web.vercel.app",
-    org: "Personal",
-    year: "2022",
+      "Transform your business: Go paperless, digitize operations, and slash costs from up to $6000 to just $20 per month!",
+    media: [
+      { type: "image" as const, src: "/products/signinlink-cover.webp" },
+      { type: "image" as const, src: "/products/signinlink-2.webp" },
+      { type: "image" as const, src: "/products/signinlink-3.webp" },
+    ],
+    tags: ["Rollup", "Storybook", "NPM", "React"],
+    github: "https://github.com/sumanbiswas7" as string | null,
+    live: "https://signinlink.app" as string | null,
+    org: "Web-wizs",
+    year: "2024",
     ongoing: false,
   },
   {
     id: 5,
+    title: "Poshkit",
+    description:
+      "A collection of modern, fancy components with amazing hover effects for React applications. Easily add stylish and interactive UI elements to your webapps.",
+    media: [{ type: "image" as const, src: "/products/poshkit-cover.webp" }],
+    tags: ["Rollup", "Storybook", "NPM", "React"],
+    github: "https://github.com/sumanbiswas7/poshkit" as string | null,
+    live: "https://www.npmjs.com/package/poshkit" as string | null,
+    org: "Personal",
+    year: "2023",
+    ongoing: false,
+  },
+  {
+    id: 7,
     title: "Vivid",
     description:
       "A social media app for mobile where people can share images, like, comment, and many more.",
-    img: "/work/cover-vivid.webp",
+    media: [{ type: "image" as const, src: "/products/vivid-cover.webp" }],
     tags: ["React Native", "Redux", "Cloudinary", "Firebase"],
-    github: "https://github.com/sumanbiswas7/vivid",
-    live: "https://play.google.com/store/apps/details?id=com.suman_biswas.vivid&pli=1",
+    github: "https://github.com/sumanbiswas7/vivid" as string | null,
+    live: "https://play.google.com/store/apps/details?id=com.suman_biswas.vivid&pli=1" as string | null,
     org: "Personal",
     year: "2022",
     ongoing: false,
@@ -76,7 +106,8 @@ const PROJECTS = [
 type Comment = { id: number; text: string; ts: number };
 type Reactions = Record<number, { liked: boolean; likes: number; comments: Comment[] }>;
 
-function getDomain(url: string) {
+function getDomain(url: string | null) {
+  if (!url) return "—";
   try {
     return new URL(url).hostname;
   } catch {
@@ -90,6 +121,11 @@ function timeAgo(ts: number): string {
   if (s < 3600) return `${Math.floor(s / 60)}m ago`;
   if (s < 86400) return `${Math.floor(s / 3600)}h ago`;
   return `${Math.floor(s / 86400)}d ago`;
+}
+
+function getYoutubeEmbedUrl(url: string): string | null {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?]+)/);
+  return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1&loop=1&playlist=${match[1]}` : null;
 }
 
 function initReactions(): Reactions {
@@ -110,6 +146,7 @@ export default function ProjectsSection() {
   });
   const [openComposer, setOpenComposer] = useState<Record<number, boolean>>({});
   const [commentInputs, setCommentInputs] = useState<Record<number, string>>({});
+  const [slides, setSlides] = useState<Record<number, number>>({});
 
   function toggleLike(id: number) {
     setReactions((prev) => {
@@ -138,11 +175,21 @@ export default function ProjectsSection() {
     setCommentInputs((prev) => ({ ...prev, [id]: "" }));
   }
 
+  function goSlide(id: number, dir: 1 | -1, total: number) {
+    setSlides((prev) => ({
+      ...prev,
+      [id]: ((prev[id] ?? 0) + dir + total) % total,
+    }));
+  }
+
   return (
     <div id="work" className={styles.section2}>
       {PROJECTS.map((p, i) => {
         const r = reactions[p.id];
         const isCommentsOpen = r.comments.length > 0;
+        const currentSlide = slides[p.id] ?? 0;
+        const hasMultiple = p.media.length > 1;
+
         return (
           <div key={p.id} className={styles.projectRow}>
             <div className={styles.projectCard}>
@@ -166,8 +213,12 @@ export default function ProjectsSection() {
                     ))}
                   </div>
                   <div className={styles.projectLinks}>
-                    <Button label="Live site" icon={ExternalLink} variant="primary" href={p.live} target="_blank" rel="noopener noreferrer" />
-                    <Button label="GitHub" icon={GitFork} variant="secondary" href={p.github} target="_blank" rel="noopener noreferrer" />
+                    {p.live && (
+                      <Button label="Live site" icon={ExternalLink} variant="primary" href={p.live} target="_blank" rel="noopener noreferrer" />
+                    )}
+                    {p.github && (
+                      <Button label="GitHub" icon={GitFork} variant="secondary" href={p.github} target="_blank" rel="noopener noreferrer" />
+                    )}
                   </div>
                 </div>
 
@@ -254,11 +305,86 @@ export default function ProjectsSection() {
                       <span>{getDomain(p.live)}</span>
                     </div>
                     <div className={styles.browserActions}>
-                      <a href={p.live} target="_blank" rel="noopener noreferrer" className={styles.browserOpenBtn} title="Open site">↗</a>
+                      {p.live && (
+                        <a href={p.live} target="_blank" rel="noopener noreferrer" className={styles.browserOpenBtn} title="Open site">↗</a>
+                      )}
                     </div>
                   </div>
+
                   <div className={styles.browserContent}>
-                    <Image src={p.img} alt={p.title} fill sizes="(max-width: 768px) 100vw, 50vw" className={styles.projectCover} />
+                    {p.media.map((item, idx) => {
+                      const isActive = idx === currentSlide;
+                      const slideClass = `${styles.carouselSlide} ${isActive ? styles.carouselSlideActive : ""}`;
+                      if (item.type === "image") {
+                        return (
+                          <div key={idx} className={slideClass}>
+                            <Image
+                              src={item.src}
+                              alt={`${p.title} screenshot ${idx + 1}`}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 50vw"
+                              className={styles.projectCover}
+                            />
+                          </div>
+                        );
+                      }
+                      const embedUrl = getYoutubeEmbedUrl(item.src);
+                      return embedUrl ? (
+                        <div key={idx} className={slideClass}>
+                          <iframe
+                            src={embedUrl}
+                            className={styles.videoEmbed}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title={`${p.title} demo ${idx + 1}`}
+                          />
+                        </div>
+                      ) : (
+                        <div key={idx} className={slideClass}>
+                          <video
+                            src={item.src}
+                            className={styles.videoEmbed}
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                          />
+                        </div>
+                      );
+                    })}
+
+                    {hasMultiple && (
+                      <>
+                        <button
+                          className={`${styles.carouselArrow} ${styles.carouselPrev}`}
+                          onClick={() => goSlide(p.id, -1, p.media.length)}
+                          aria-label="Previous slide"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <polyline points="15 18 9 12 15 6" />
+                          </svg>
+                        </button>
+                        <button
+                          className={`${styles.carouselArrow} ${styles.carouselNext}`}
+                          onClick={() => goSlide(p.id, 1, p.media.length)}
+                          aria-label="Next slide"
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <polyline points="9 18 15 12 9 6" />
+                          </svg>
+                        </button>
+                        <div className={styles.carouselDots}>
+                          {p.media.map((_, idx) => (
+                            <button
+                              key={idx}
+                              className={`${styles.carouselDot} ${idx === currentSlide ? styles.carouselDotActive : ""}`}
+                              onClick={() => setSlides((prev) => ({ ...prev, [p.id]: idx }))}
+                              aria-label={`Go to slide ${idx + 1}`}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

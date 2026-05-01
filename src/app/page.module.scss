@@ -67,6 +67,7 @@
   display: flex;
   flex-direction: row;
   gap: 0;
+  position: relative;
   background: $color-card-bg;
   border: 1px solid $color-border;
   border-radius: $border-radius-md;
@@ -110,6 +111,9 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  position: absolute;
+  top: 2.5rem;
+  right: 2rem;
 }
 
 .projectIndex {
@@ -516,7 +520,134 @@
 
 .projectCover {
   object-fit: cover;
-  object-position: bottom left;
+  object-position: top center;
+}
+
+.videoEmbed {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.videoOverlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  text-decoration: none;
+  color: $color-text-secondary;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: $color-text-primary;
+  }
+}
+
+.playBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background 0.15s ease;
+
+  .videoOverlay:hover & {
+    background: rgba(255, 255, 255, 0.14);
+  }
+}
+
+.videoLabel {
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  letter-spacing: 0.04em;
+}
+
+.carouselSlide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.carouselSlideActive {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carouselArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+  }
+}
+
+.carouselPrev {
+  left: 0.6rem;
+}
+
+.carouselNext {
+  right: 0.6rem;
+}
+
+.carouselDots {
+  position: absolute;
+  bottom: 0.65rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  padding: 0.3rem 0.55rem;
+  border-radius: 2rem;
+}
+
+.carouselDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background 0.2s ease, width 0.2s ease, border-radius 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.carouselDotActive {
+  width: 14px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.95);
 }
 
 /* ─── Section 3 — contact ─── */
@@ -605,6 +736,10 @@
   .projectLeft {
     flex: none;
     padding: 2rem 1.75rem;
+  }
+
+  .projectMetaRight {
+    position: static;
   }
 
   .projectRight {
