@@ -59,8 +59,12 @@ $crt-border: #256635;
     cursor: default;
   }
 
-  .trafficLights {
-    gap: 0.65rem;
+  .titleBar .trafficLights {
+    display: none;
+  }
+
+  .titleBar .mobileCloseBtn {
+    display: inline-flex;
   }
 
   .light {
@@ -71,6 +75,10 @@ $crt-border: #256635;
   .lightIcon {
     font-size: 12px;
     opacity: 1;
+  }
+
+  .titleBar .titleSpacer {
+    width: 2.65rem;
   }
 }
 
@@ -93,6 +101,35 @@ $crt-border: #256635;
   align-items: center;
   gap: 0.45rem;
   flex-shrink: 0;
+}
+
+.mobileCloseBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin-right: 0.4rem;
+  flex-shrink: 0;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.7rem;
+  background: #161616;
+  color: #d7d7d7;
+  font-family: $font-mono;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
+
+  &:hover {
+    background: #242424;
+    border-color: #3a3a3a;
+    transform: scale(1.04);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
 }
 
 .light {

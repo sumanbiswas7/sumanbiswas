@@ -188,6 +188,14 @@ function GameTerminalInner({ onClose }: { onClose: () => void }) {
             <span className={styles.lightIcon}>⤢</span>
           </button>
         </div>
+        <button
+          className={styles.mobileCloseBtn}
+          onMouseDown={e => e.stopPropagation()}
+          onClick={onClose}
+          aria-label="Close terminal"
+        >
+          ×
+        </button>
         <span className={styles.title}>{titleMap[view]}</span>
         <span className={styles.titleSpacer} />
       </div>

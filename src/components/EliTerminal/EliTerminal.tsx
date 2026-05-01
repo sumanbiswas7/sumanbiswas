@@ -342,6 +342,14 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
             <span className={styles.lightIcon}>{isFullscreen ? "↙" : "↗"}</span>
           </button>
         </div>
+        <button
+          className={styles.mobileCloseBtn}
+          onMouseDown={e => e.stopPropagation()}
+          onClick={onClose}
+          aria-label="Close terminal"
+        >
+          ×
+        </button>
         <span className={styles.title}>eli — portfolio assistant</span>
         <div className={styles.titleSpacer} />
       </div>
