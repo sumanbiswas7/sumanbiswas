@@ -1,3 +1,4 @@
+import { MapPin } from "lucide-react";
 import Card from "./Card";
 import styles from "./BentoGrid.module.scss";
 
@@ -11,13 +12,20 @@ export default function WorkCard() {
 
       <div>
         <p className={styles.workRole}>Full Stack Engineer</p>
-        <p className={styles.workCompany}>CloudChef Inc. · Series A $20M</p>
+        <div className={styles.workCompanyRow}>
+          <p className={styles.workCompany}>CloudChef Inc. · Series A $20M</p>
+          <span className={styles.workLocation}>
+            <MapPin size={11} strokeWidth={2} />
+            Bay Area, Remote
+          </span>
+        </div>
       </div>
 
       <p className={`${styles.sub} ${styles.workDesc}`}>
-        Building the core product suite — recipe studio, kitchen manager, and
-        data platform. Leading architecture to deployment of the full JS/TS
-        codebase. Remote, Bay Area.
+        Building the full TS product suite: recording studio, kitchen manager, zippy.
+        own entire ts lifecycle from architecture to deployment. all systems
+        integrated with iot using mqtt/zmq, typescript, react, android, node,
+        docker etc.
       </p>
     </Card>
   );
