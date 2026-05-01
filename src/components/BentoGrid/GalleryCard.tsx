@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Card from "./Card";
@@ -19,47 +19,26 @@ const photos = [
 
 export default function GalleryCard() {
   const [current, setCurrent] = useState(0);
-  const [next, setNext] = useState<number | null>(null);
-  const [fading, setFading] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function navigate(dir: 1 | -1) {
-    if (fading) return;
-    const nextIdx = (current + dir + photos.length) % photos.length;
-    setNext(nextIdx);
-    setFading(true);
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      setCurrent(nextIdx);
-      setNext(null);
-      setFading(false);
-    }, 380);
+    setCurrent((c) => (c + dir + photos.length) % photos.length);
   }
 
   return (
     <Card className={styles.galleryCard}>
-      {/* Base image (current) */}
-      <Image
-        src={photos[current].src}
-        alt={photos[current].alt}
-        fill
-        priority={current === 0}
-        sizes="(max-width: 768px) 100vw, 400px"
-        className={styles.galleryImg}
-      />
-
-      {/* Incoming image — fades in on top */}
-      {next !== null && (
+      {photos.map((p, i) => (
         <Image
-          src={photos[next].src}
-          alt={photos[next].alt}
+          key={p.src}
+          src={p.src}
+          alt={p.alt}
           fill
+          priority={i === 0}
+          loading={i === 0 ? undefined : "eager"}
           sizes="(max-width: 768px) 100vw, 400px"
-          className={`${styles.galleryImg} ${styles.galleryImgFading}`}
+          className={`${styles.galleryImg}${i === current ? ` ${styles.galleryImgActive}` : ""}`}
         />
-      )}
+      ))}
 
-      {/* Caption */}
       <div className={styles.galleryCaption}>
         <span>{photos[current].alt}</span>
       </div>
