@@ -6,7 +6,6 @@ import { ArrowRight, Download, Pencil, Gamepad2, Play, X, Eraser, Trash2, Lightb
 import Image from "next/image";
 import Card from "./Card";
 import Button from "@/components/ui/Button";
-import NoteCard from "./NoteCard";
 import EliCard from "./EliCard";
 import GalleryCard from "./GalleryCard";
 import WorkCard from "./WorkCard";
@@ -236,13 +235,11 @@ function svgToDataUri(svg: string) {
 }
 
 const BG_PRESETS = [
-  "#9aa59a", "#b8a394", "#1e3a5f", "#3d2b1f",
-  "#2d4a3e", "#4a2d5a", "#1e1e1e", "#c25e5e",
+  "#9aa59a", "#b8a394", "#1e3a5f", "#3d2b1f", "#2d4a3e", "#4a2d5a",
 ];
 
 const BRUSH_COLORS = [
-  "#ffffff", "#000000", "#ff4444", "#ff8c00",
-  "#ffdd00", "#44cc44", "#4488ff", "#cc44ff", "#ff88cc",
+  "#ffffff", "#000000", "#ff4444", "#ff8c00", "#ffdd00", "#44cc44",
 ];
 
 const CANVAS_W = 320;
@@ -256,6 +253,7 @@ function MeHeroImgCard() {
   const [drawColor, setDrawColor] = useState("#ffffff");
   const [brushSize, setBrushSize] = useState(4);
   const [tool, setTool] = useState<"pen" | "eraser">("pen");
+  const [activeTab, setActiveTab] = useState<"bg" | "pattern" | "brush">("bg");
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isDrawingRef = useRef(false);
@@ -408,82 +406,112 @@ function MeHeroImgCard() {
               </div>
 
               <div className={styles.meHeroEditSection}>
-                <span className={styles.meHeroEditLabel}>Background</span>
-                <div className={styles.meHeroSwatches}>
-                  {BG_PRESETS.map((c) => (
+                <div className={styles.meHeroTabs}>
+                  {(["bg", "pattern", "brush"] as const).map((tab) => (
                     <button
-                      key={c}
-                      className={`${styles.meHeroSwatch} ${bgColor === c ? styles.meHeroSwatchActive : ""}`}
-                      style={{ backgroundColor: c }}
-                      onClick={() => setBgColor(c)}
-                      aria-label={c}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div className={styles.meHeroEditSection}>
-                <span className={styles.meHeroEditLabel}>Background Elements</span>
-                <div className={styles.meHeroPatternGrid}>
-                  {PATTERNS.map((p) => (
-                    <button
-                      key={p.id}
-                      title={p.label}
-                      className={`${styles.meHeroPatternBtn} ${bgPattern === p.id ? styles.meHeroPatternBtnActive : ""}`}
-                      style={p.svg ? { backgroundImage: svgToDataUri(p.svg), backgroundColor: bgColor } : {}}
-                      onClick={() => setBgPattern(p.id)}
+                      key={tab}
+                      className={`${styles.meHeroTab} ${activeTab === tab ? styles.meHeroTabActive : ""}`}
+                      onClick={() => setActiveTab(tab)}
                     >
-                      {p.id === "none" && <span className={styles.meHeroPatternNone} />}
+                      {tab === "bg" ? "BG Color" : tab === "pattern" ? "BG Elements" : "Brush Color"}
                     </button>
                   ))}
                 </div>
+                <div className={styles.meHeroTabPanel}>
+                  {activeTab === "bg" && (
+                    <div className={styles.meHeroSwatches}>
+                      {BG_PRESETS.map((c) => (
+                        <button
+                          key={c}
+                          className={`${styles.meHeroSwatch} ${bgColor === c ? styles.meHeroSwatchActive : ""}`}
+                          style={{ backgroundColor: c }}
+                          onClick={() => setBgColor(c)}
+                          aria-label={c}
+                        />
+                      ))}
+                      <label
+                        className={`${styles.meHeroSwatch} ${styles.meHeroColorPicker} ${!BG_PRESETS.includes(bgColor) ? styles.meHeroSwatchActive : ""}`}
+                        style={!BG_PRESETS.includes(bgColor) ? { backgroundColor: bgColor } : {}}
+                        aria-label="Custom color"
+                        title="Custom color"
+                      >
+                        <Pencil size={11} className={styles.meHeroColorPickerIcon} />
+                        <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} className={styles.meHeroColorPickerInput} />
+                      </label>
+                    </div>
+                  )}
+                  {activeTab === "pattern" && (
+                    <div className={styles.meHeroPatternGrid}>
+                      {PATTERNS.map((p) => (
+                        <button
+                          key={p.id}
+                          title={p.label}
+                          className={`${styles.meHeroPatternBtn} ${bgPattern === p.id ? styles.meHeroPatternBtnActive : ""}`}
+                          style={p.svg ? { backgroundImage: svgToDataUri(p.svg), backgroundColor: bgColor } : {}}
+                          onClick={() => setBgPattern(p.id)}
+                        >
+                          {p.id === "none" && <span className={styles.meHeroPatternNone} />}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                  {activeTab === "brush" && (
+                    <div className={styles.meHeroSwatches}>
+                      {BRUSH_COLORS.map((c) => (
+                        <button
+                          key={c}
+                          className={`${styles.meHeroSwatch} ${drawColor === c && tool === "pen" ? styles.meHeroSwatchActive : ""}`}
+                          style={{ backgroundColor: c }}
+                          onClick={() => { setDrawColor(c); setTool("pen"); }}
+                          aria-label={c}
+                        />
+                      ))}
+                      <label
+                        className={`${styles.meHeroSwatch} ${styles.meHeroColorPicker} ${tool === "pen" && !BRUSH_COLORS.includes(drawColor) ? styles.meHeroSwatchActive : ""}`}
+                        style={tool === "pen" && !BRUSH_COLORS.includes(drawColor) ? { backgroundColor: drawColor } : {}}
+                        aria-label="Custom color"
+                        title="Custom color"
+                      >
+                        <Pencil size={11} className={styles.meHeroColorPickerIcon} />
+                        <input type="color" value={drawColor} onChange={(e) => { setDrawColor(e.target.value); setTool("pen"); }} className={styles.meHeroColorPickerInput} />
+                      </label>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              <div className={styles.meHeroEditSection}>
-                <span className={styles.meHeroEditLabel}>Brush Color</span>
-                <div className={styles.meHeroSwatches}>
-                  {BRUSH_COLORS.map((c) => (
+              {activeTab !== "pattern" && (
+                <div className={styles.meHeroEditSection}>
+                  <div className={styles.meHeroEditTools}>
                     <button
-                      key={c}
-                      className={`${styles.meHeroSwatch} ${drawColor === c && tool === "pen" ? styles.meHeroSwatchActive : ""}`}
-                      style={{ backgroundColor: c }}
-                      onClick={() => { setDrawColor(c); setTool("pen"); }}
-                      aria-label={c}
+                      className={`${styles.meHeroToolBtn} ${tool === "pen" ? styles.meHeroToolBtnActive : ""}`}
+                      onClick={() => setTool("pen")}
+                    >
+                      <Pencil size={13} /> Pen
+                    </button>
+                    <button
+                      className={`${styles.meHeroToolBtn} ${tool === "eraser" ? styles.meHeroToolBtnActive : ""}`}
+                      onClick={() => setTool("eraser")}
+                    >
+                      <Eraser size={13} /> Eraser
+                    </button>
+                    <button className={styles.meHeroToolBtn} onClick={clearCanvas}>
+                      <Trash2 size={13} /> Clear
+                    </button>
+                  </div>
+                  <div className={styles.meHeroBrushRow}>
+                    <span className={styles.meHeroEditLabel}>Size {brushSize}px</span>
+                    <input
+                      type="range"
+                      min={2}
+                      max={24}
+                      value={brushSize}
+                      onChange={(e) => setBrushSize(Number(e.target.value))}
+                      className={styles.meHeroBrushSlider}
                     />
-                  ))}
+                  </div>
                 </div>
-              </div>
-
-              <div className={styles.meHeroEditSection}>
-                <div className={styles.meHeroEditTools}>
-                  <button
-                    className={`${styles.meHeroToolBtn} ${tool === "pen" ? styles.meHeroToolBtnActive : ""}`}
-                    onClick={() => setTool("pen")}
-                  >
-                    <Pencil size={13} /> Pen
-                  </button>
-                  <button
-                    className={`${styles.meHeroToolBtn} ${tool === "eraser" ? styles.meHeroToolBtnActive : ""}`}
-                    onClick={() => setTool("eraser")}
-                  >
-                    <Eraser size={13} /> Eraser
-                  </button>
-                  <button className={styles.meHeroToolBtn} onClick={clearCanvas}>
-                    <Trash2 size={13} /> Clear
-                  </button>
-                </div>
-                <div className={styles.meHeroBrushRow}>
-                  <span className={styles.meHeroEditLabel}>Size {brushSize}px</span>
-                  <input
-                    type="range"
-                    min={2}
-                    max={24}
-                    value={brushSize}
-                    onChange={(e) => setBrushSize(Number(e.target.value))}
-                    className={styles.meHeroBrushSlider}
-                  />
-                </div>
-              </div>
+              )}
 
               <div className={styles.meHeroEditActions}>
                 <button className={styles.meHeroEditCancelBtn} onClick={() => setIsEditing(false)}>
@@ -573,10 +601,13 @@ function ProjectIdeasCard() {
             <p className={styles.stickyNoteDesc}>{idea.short}</p>
           </div>
         ))}
-        <button className={styles.stickyNoteSuggest}>
+        <a
+          className={styles.stickyNoteSuggest}
+          href={`mailto:textsumanb@gmail.com?subject=${encodeURIComponent("Project Idea Suggestion")}&body=${encodeURIComponent("Hi Suman,\n\nI have a project idea for you:\n\nTitle:\n\nDescription:\n\nWhy it's worth building:\n")}`}
+        >
           <Plus size={14} />
           <span>Suggest an idea</span>
-        </button>
+        </a>
       </div>
 
       {tooltip && createPortal(

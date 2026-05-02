@@ -675,6 +675,28 @@
 .section3 {
   min-height: 60vh;
   padding: 5rem 4.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.pageFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 3rem;
+  font-family: $font-body;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  letter-spacing: 0.06em;
+  opacity: 0.35;
+  user-select: none;
+}
+
+.pageFooterViews {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .contactContent {

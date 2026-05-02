@@ -6,6 +6,7 @@ import EliTerminal from "@/components/EliTerminal/EliTerminal";
 import ScrollLayout from "@/components/ScrollLayout";
 import ProjectsSection from "@/components/ProjectsSection";
 import styles from "./page.module.scss";
+import { Eye } from "lucide-react";
 
 export default function Home() {
   return (
@@ -53,6 +54,13 @@ export default function Home() {
               </a>
             </div>
           </div>
+          <footer className={styles.pageFooter}>
+            <div className={styles.pageFooterViews}>
+              <Eye size={11} />
+              <span>4,089 visits</span>
+            </div>
+            <span>© {new Date().getFullYear()} Suman Biswas</span>
+          </footer>
         </div>
       </ScrollLayout>
     </EliProvider>
