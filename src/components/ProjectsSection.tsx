@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { ExternalLink, GitFork } from "lucide-react";
 import Button from "@/components/ui/Button";
@@ -35,7 +35,7 @@ const PROJECTS = [
       { type: "image" as const, src: "/products/prayash-2.webp" },
       { type: "image" as const, src: "/products/prayash-3.webp" },
     ],
-    tags: ["Community", "Education", "Social Impact"],
+    tags: ["React", "Vite"],
     github: null as string | null,
     live: null as string | null,
     org: "Prayash",
@@ -105,6 +105,7 @@ const PROJECTS = [
 
 type Comment = { id: number; text: string; ts: number };
 type Reactions = Record<number, { liked: boolean; likes: number; comments: Comment[] }>;
+type MediaItem = { type: "image" | "video"; src: string };
 
 function getDomain(url: string | null) {
   if (!url) return "—";
@@ -134,6 +135,146 @@ function initReactions(): Reactions {
   );
 }
 
+const IMAGE_DWELL_MS = 3000;
+
+function MediaCarousel({ media, title }: { media: MediaItem[]; title: string }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isInView, setIsInView] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hasMultiple = media.length > 1;
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setIsInView(entry.isIntersecting),
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (timerRef.current !== null) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    Object.values(videoRefs.current).forEach(v => v?.pause());
+
+    if (!isInView || !hasMultiple) return;
+
+    const slide = media[currentSlide];
+    if (slide.type === "image") {
+      timerRef.current = setTimeout(() => {
+        setCurrentSlide(prev => (prev + 1) % media.length);
+      }, IMAGE_DWELL_MS);
+    } else {
+      const videoEl = videoRefs.current[currentSlide];
+      if (videoEl) {
+        videoEl.currentTime = 0;
+        videoEl.play().catch(() => {});
+      }
+    }
+
+    return () => {
+      if (timerRef.current !== null) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [isInView, currentSlide, hasMultiple, media]);
+
+  function goSlide(dir: 1 | -1) {
+    setCurrentSlide(prev => ((prev + dir) + media.length) % media.length);
+  }
+
+  return (
+    <div className={styles.browserContent} ref={containerRef}>
+      {media.map((item, idx) => {
+        const isActive = idx === currentSlide;
+        const slideClass = `${styles.carouselSlide} ${isActive ? styles.carouselSlideActive : ""}`;
+        if (item.type === "image") {
+          return (
+            <div key={idx} className={slideClass}>
+              <Image
+                src={item.src}
+                alt={`${title} screenshot ${idx + 1}`}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className={styles.projectCover}
+              />
+            </div>
+          );
+        }
+        const embedUrl = getYoutubeEmbedUrl(item.src);
+        return embedUrl ? (
+          <div key={idx} className={slideClass}>
+            <iframe
+              src={embedUrl}
+              className={styles.videoEmbed}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={`${title} demo ${idx + 1}`}
+            />
+          </div>
+        ) : (
+          <div key={idx} className={slideClass}>
+            <video
+              ref={el => { videoRefs.current[idx] = el; }}
+              src={item.src}
+              className={styles.videoEmbed}
+              autoPlay={!hasMultiple}
+              muted
+              playsInline
+              loop={!hasMultiple}
+              onEnded={() => {
+                if (isInView && hasMultiple) {
+                  setCurrentSlide(prev => (prev + 1) % media.length);
+                }
+              }}
+            />
+          </div>
+        );
+      })}
+
+      {hasMultiple && (
+        <>
+          <button
+            className={`${styles.carouselArrow} ${styles.carouselPrev}`}
+            onClick={() => goSlide(-1)}
+            aria-label="Previous slide"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+          <button
+            className={`${styles.carouselArrow} ${styles.carouselNext}`}
+            onClick={() => goSlide(1)}
+            aria-label="Next slide"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+          <div className={styles.carouselDots}>
+            {media.map((_, idx) => (
+              <button
+                key={idx}
+                className={`${styles.carouselDot} ${idx === currentSlide ? styles.carouselDotActive : ""}`}
+                onClick={() => setCurrentSlide(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function ProjectsSection() {
   const [reactions, setReactions] = useState<Reactions>(() => {
     if (typeof window === "undefined") return initReactions();
@@ -146,7 +287,6 @@ export default function ProjectsSection() {
   });
   const [openComposer, setOpenComposer] = useState<Record<number, boolean>>({});
   const [commentInputs, setCommentInputs] = useState<Record<number, string>>({});
-  const [slides, setSlides] = useState<Record<number, number>>({});
 
   function toggleLike(id: number) {
     setReactions((prev) => {
@@ -175,20 +315,11 @@ export default function ProjectsSection() {
     setCommentInputs((prev) => ({ ...prev, [id]: "" }));
   }
 
-  function goSlide(id: number, dir: 1 | -1, total: number) {
-    setSlides((prev) => ({
-      ...prev,
-      [id]: ((prev[id] ?? 0) + dir + total) % total,
-    }));
-  }
-
   return (
     <div id="work" className={styles.section2}>
       {PROJECTS.map((p, i) => {
         const r = reactions[p.id];
         const isCommentsOpen = r.comments.length > 0;
-        const currentSlide = slides[p.id] ?? 0;
-        const hasMultiple = p.media.length > 1;
 
         return (
           <div key={p.id} className={styles.projectRow}>
@@ -306,86 +437,12 @@ export default function ProjectsSection() {
                     </div>
                     <div className={styles.browserActions}>
                       {p.live && (
-                        <a href={p.live} target="_blank" rel="noopener noreferrer" className={styles.browserOpenBtn} title="Open site">↗</a>
+                        <a href={p.live} target="_blank" rel="noopener noreferrer" className={styles.browserOpenBtn} title="Open site"><ExternalLink size={14} /></a>
                       )}
                     </div>
                   </div>
 
-                  <div className={styles.browserContent}>
-                    {p.media.map((item, idx) => {
-                      const isActive = idx === currentSlide;
-                      const slideClass = `${styles.carouselSlide} ${isActive ? styles.carouselSlideActive : ""}`;
-                      if (item.type === "image") {
-                        return (
-                          <div key={idx} className={slideClass}>
-                            <Image
-                              src={item.src}
-                              alt={`${p.title} screenshot ${idx + 1}`}
-                              fill
-                              sizes="(max-width: 768px) 100vw, 50vw"
-                              className={styles.projectCover}
-                            />
-                          </div>
-                        );
-                      }
-                      const embedUrl = getYoutubeEmbedUrl(item.src);
-                      return embedUrl ? (
-                        <div key={idx} className={slideClass}>
-                          <iframe
-                            src={embedUrl}
-                            className={styles.videoEmbed}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            title={`${p.title} demo ${idx + 1}`}
-                          />
-                        </div>
-                      ) : (
-                        <div key={idx} className={slideClass}>
-                          <video
-                            src={item.src}
-                            className={styles.videoEmbed}
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                          />
-                        </div>
-                      );
-                    })}
-
-                    {hasMultiple && (
-                      <>
-                        <button
-                          className={`${styles.carouselArrow} ${styles.carouselPrev}`}
-                          onClick={() => goSlide(p.id, -1, p.media.length)}
-                          aria-label="Previous slide"
-                        >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                            <polyline points="15 18 9 12 15 6" />
-                          </svg>
-                        </button>
-                        <button
-                          className={`${styles.carouselArrow} ${styles.carouselNext}`}
-                          onClick={() => goSlide(p.id, 1, p.media.length)}
-                          aria-label="Next slide"
-                        >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                            <polyline points="9 18 15 12 9 6" />
-                          </svg>
-                        </button>
-                        <div className={styles.carouselDots}>
-                          {p.media.map((_, idx) => (
-                            <button
-                              key={idx}
-                              className={`${styles.carouselDot} ${idx === currentSlide ? styles.carouselDotActive : ""}`}
-                              onClick={() => setSlides((prev) => ({ ...prev, [p.id]: idx }))}
-                              aria-label={`Go to slide ${idx + 1}`}
-                            />
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </div>
+                  <MediaCarousel media={p.media} title={p.title} />
                 </div>
               </div>
             </div>
