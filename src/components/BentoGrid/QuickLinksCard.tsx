@@ -39,7 +39,7 @@ const links = [
   { label: "GitHub", Icon: GitHubIcon, href: "https://github.com/sumanbiswas7", color: "#9aa59a" },
   { label: "LinkedIn", Icon: LinkedInIcon, href: "https://linkedin.com/in/sumanbiswas7", color: "#9aa59a" },
   { label: "Twitter", Icon: XIcon, href: "https://twitter.com/hellosumanx", color: "#9aa59a" },
-  { label: "Email", Icon: MailIcon, href: "mailto:textsumanb@gmail.com", color: "#9aa59a" },
+  { label: "Email", Icon: MailIcon, href: "mailto:hello@sumanx.com", color: "#9aa59a" },
 ];
 
 export default function QuickLinksCard() {

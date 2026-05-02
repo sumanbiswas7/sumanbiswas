@@ -28,7 +28,7 @@ const SOCIALS = [
     ),
   },
   {
-    label: "X / Twitter",
+    label: "Twitter",
     href: "https://x.com/hellosumanx",
     icon: () => (
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
