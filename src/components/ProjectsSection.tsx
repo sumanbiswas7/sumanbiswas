@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { ExternalLink, GitFork } from "lucide-react";
 import Button from "@/components/ui/Button";
@@ -290,6 +291,7 @@ export default function ProjectsSection() {
   const [reactions, setReactions] = useState<Reactions>(initReactions);
   const [openComposer, setOpenComposer] = useState<Record<number, boolean>>({});
   const [commentInputs, setCommentInputs] = useState<Record<number, string>>({});
+  const [commentsSheetId, setCommentsSheetId] = useState<number | null>(null);
 
   useEffect(() => {
     const liked = loadLiked();
@@ -417,7 +419,13 @@ export default function ProjectsSection() {
 
                     <button
                       className={`${styles.commentToggle} ${openComposer[p.id] ? styles.commentToggleActive : ""}`}
-                      onClick={() => setOpenComposer((prev) => ({ ...prev, [p.id]: !prev[p.id] }))}
+                      onClick={() => {
+                        if (window.innerWidth <= 640) {
+                          setCommentsSheetId(p.id);
+                        } else {
+                          setOpenComposer((prev) => ({ ...prev, [p.id]: !prev[p.id] }));
+                        }
+                      }}
                     >
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -487,6 +495,68 @@ export default function ProjectsSection() {
           </div>
         );
       })}
+
+      {commentsSheetId !== null && createPortal(
+        <div
+          className={styles.commentsSheetOverlay}
+          onClick={() => setCommentsSheetId(null)}
+        >
+          <div className={styles.commentsSheet} onClick={e => e.stopPropagation()}>
+            <div className={styles.commentsSheetHandle} />
+            <div className={styles.commentsSheetHeader}>
+              <span className={styles.commentsSheetTitle}>
+                {PROJECTS.find(p => p.id === commentsSheetId)?.title} — Comments
+              </span>
+              <button
+                className={styles.commentsSheetClose}
+                onClick={() => setCommentsSheetId(null)}
+                aria-label="Close"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div className={styles.commentsSheetBody}>
+              {reactions[commentsSheetId].comments.length === 0 ? (
+                <p className={styles.noComments}>No comments yet. Be the first!</p>
+              ) : (
+                reactions[commentsSheetId].comments.map(c => (
+                  <div key={c.id} className={styles.commentBubble}>
+                    <p className={styles.commentText}>{c.text}</p>
+                    <span className={styles.commentMeta}>{timeAgo(c.ts)}</span>
+                  </div>
+                ))
+              )}
+            </div>
+            <div className={styles.commentsSheetComposer}>
+              <input
+                autoFocus
+                className={styles.sheetComposerInput}
+                placeholder="Write a comment…"
+                value={commentInputs[commentsSheetId] ?? ""}
+                onChange={e => setCommentInputs(prev => ({ ...prev, [commentsSheetId!]: e.target.value }))}
+                onKeyDown={e => {
+                  if (e.key === "Enter") addComment(commentsSheetId!);
+                  if (e.key === "Escape") setCommentsSheetId(null);
+                }}
+              />
+              <button
+                className={styles.sendBtn}
+                onClick={() => addComment(commentsSheetId!)}
+                aria-label="Post comment"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
