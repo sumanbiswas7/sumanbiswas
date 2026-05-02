@@ -7,11 +7,16 @@ import ScrollLayout from "@/components/ScrollLayout";
 import ProjectsSection from "@/components/ProjectsSection";
 import styles from "./page.module.scss";
 import { Eye } from "lucide-react";
+import { redis } from "@/lib/redis";
+import VisitTracker from "@/components/VisitTracker";
 
-export default function Home() {
+export default async function Home() {
+  const views = (await redis.get<number>("sumanv4:views")) ?? 0;
+
   return (
     <EliProvider>
       <EliTerminal />
+      <VisitTracker />
       <ScrollLayout>
         <BentoGridProvider>
           <div id="home" className={styles.section1}>
@@ -57,7 +62,7 @@ export default function Home() {
           <footer className={styles.pageFooter}>
             <div className={styles.pageFooterViews}>
               <Eye size={11} />
-              <span>4,089 visits</span>
+              <span>{views.toLocaleString()} visits</span>
             </div>
             <span>© {new Date().getFullYear()} Suman Biswas</span>
           </footer>

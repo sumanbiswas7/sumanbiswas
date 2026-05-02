@@ -103,7 +103,7 @@ const PROJECTS = [
   },
 ];
 
-type Comment = { id: number; text: string; ts: number };
+type Comment = { id: string | number; text: string; ts: number };
 type Reactions = Record<number, { liked: boolean; likes: number; comments: Comment[] }>;
 type MediaItem = { type: "image" | "video"; src: string };
 
@@ -275,44 +275,82 @@ function MediaCarousel({ media, title }: { media: MediaItem[]; title: string }) 
   );
 }
 
+function loadLiked(): Record<number, boolean> {
+  try {
+    const s = localStorage.getItem("sumanv4:liked");
+    return s ? JSON.parse(s) : {};
+  } catch { return {}; }
+}
+
+function saveLiked(liked: Record<number, boolean>) {
+  localStorage.setItem("sumanv4:liked", JSON.stringify(liked));
+}
+
 export default function ProjectsSection() {
-  const [reactions, setReactions] = useState<Reactions>(() => {
-    if (typeof window === "undefined") return initReactions();
-    try {
-      const s = localStorage.getItem("project-reactions");
-      return s ? { ...initReactions(), ...JSON.parse(s) } : initReactions();
-    } catch {
-      return initReactions();
-    }
-  });
+  const [reactions, setReactions] = useState<Reactions>(initReactions);
   const [openComposer, setOpenComposer] = useState<Record<number, boolean>>({});
   const [commentInputs, setCommentInputs] = useState<Record<number, string>>({});
 
+  useEffect(() => {
+    const liked = loadLiked();
+    fetch("/api/reactions")
+      .then((r) => r.json())
+      .then((data: Record<number, { likes: number; comments: Comment[] }>) => {
+        setReactions((prev) => {
+          const next = { ...prev };
+          for (const id of PROJECTS.map((p) => p.id)) {
+            const server = data[id];
+            if (server) {
+              next[id] = { liked: liked[id] ?? false, likes: server.likes, comments: server.comments };
+            } else {
+              next[id] = { ...next[id], liked: liked[id] ?? false };
+            }
+          }
+          return next;
+        });
+      })
+      .catch(() => {});
+  }, []);
+
   function toggleLike(id: number) {
-    setReactions((prev) => {
-      const r = prev[id];
-      const next = {
-        ...prev,
-        [id]: { ...r, liked: !r.liked, likes: r.liked ? r.likes - 1 : r.likes + 1 },
-      };
-      localStorage.setItem("project-reactions", JSON.stringify(next));
-      return next;
-    });
+    const r = reactions[id];
+    const nowLiked = !r.liked;
+    const liked = loadLiked();
+    liked[id] = nowLiked;
+    saveLiked(liked);
+    setReactions((prev) => ({
+      ...prev,
+      [id]: { ...prev[id], liked: nowLiked, likes: nowLiked ? prev[id].likes + 1 : Math.max(0, prev[id].likes - 1) },
+    }));
+    fetch(`/api/projects/${id}/likes`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: nowLiked ? "like" : "unlike" }),
+    })
+      .then((res) => res.json())
+      .then(({ count }: { count: number }) => {
+        setReactions((p) => ({ ...p, [id]: { ...p[id], likes: count } }));
+      })
+      .catch(() => {});
   }
 
   function addComment(id: number) {
     const text = (commentInputs[id] ?? "").trim();
     if (!text) return;
-    setReactions((prev) => {
-      const r = prev[id];
-      const next = {
-        ...prev,
-        [id]: { ...r, comments: [...r.comments, { id: Date.now(), text, ts: Date.now() }] },
-      };
-      localStorage.setItem("project-reactions", JSON.stringify(next));
-      return next;
-    });
     setCommentInputs((prev) => ({ ...prev, [id]: "" }));
+    fetch(`/api/projects/${id}/comments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    })
+      .then((res) => res.json())
+      .then(({ comment }: { comment: Comment }) => {
+        setReactions((prev) => ({
+          ...prev,
+          [id]: { ...prev[id], comments: [comment, ...prev[id].comments] },
+        }));
+      })
+      .catch(() => {});
   }
 
   return (
@@ -359,7 +397,7 @@ export default function ProjectsSection() {
                       {r.comments.map((c) => (
                         <div key={c.id} className={styles.commentBubble}>
                           <p className={styles.commentText}>{c.text}</p>
-                          <span className={styles.commentMeta}>anon · {timeAgo(c.ts)}</span>
+                          <span className={styles.commentMeta}>{timeAgo(c.ts)}</span>
                         </div>
                       ))}
                     </div>
