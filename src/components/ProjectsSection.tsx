@@ -22,7 +22,7 @@ const PROJECTS = [
     github: null as string | null,
     live: "https://getbeam.vercel.app" as string | null,
     org: "Personal",
-    year: "2025",
+    year: "2026",
     ongoing: true,
   },
   {
@@ -39,27 +39,11 @@ const PROJECTS = [
     github: null as string | null,
     live: null as string | null,
     org: "Prayash",
-    year: "2023",
+    year: "2026",
     ongoing: true,
   },
   {
     id: 3,
-    title: "Marked",
-    description:
-      "A versatile solution for link management, task tracking, note-taking, and expense management with convenient reminders.",
-    media: [
-      { type: "image" as const, src: "/products/marked-cover.webp" },
-      { type: "image" as const, src: "/products/marked-2.webp" },
-    ],
-    tags: ["NextJS", "NodeJs", "Turborepo", "Express"],
-    github: "https://github.com/sumanbiswas7/marked" as string | null,
-    live: "https://marked-web.vercel.app/" as string | null,
-    org: "Personal",
-    year: "2023",
-    ongoing: false,
-  },
-  {
-    id: 4,
     title: "Signinlink",
     description:
       "Transform your business: Go paperless, digitize operations, and slash costs from up to $6000 to just $20 per month!",
@@ -73,6 +57,22 @@ const PROJECTS = [
     live: "https://signinlink.app" as string | null,
     org: "Web-wizs",
     year: "2024",
+    ongoing: false,
+  },
+  {
+    id: 4,
+    title: "Marked",
+    description:
+      "A versatile solution for link management, task tracking, note-taking, and expense management with convenient reminders.",
+    media: [
+      { type: "image" as const, src: "/products/marked-cover.webp" },
+      { type: "image" as const, src: "/products/marked-2.webp" },
+    ],
+    tags: ["NextJS", "NodeJs", "Turborepo", "Express"],
+    github: "https://github.com/sumanbiswas7/marked" as string | null,
+    live: "https://marked-web.vercel.app/" as string | null,
+    org: "Personal",
+    year: "2023",
     ongoing: false,
   },
   {
