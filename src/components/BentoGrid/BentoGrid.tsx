@@ -603,7 +603,7 @@ function ProjectIdeasCard() {
         ))}
         <a
           className={styles.stickyNoteSuggest}
-          href={`mailto:textsumanb@gmail.com?subject=${encodeURIComponent("Project Idea Suggestion")}&body=${encodeURIComponent("Hi Suman,\n\nI have a project idea for you:\n\nTitle:\n\nDescription:\n\nWhy it's worth building:\n")}`}
+          href={`mailto:hello@sumanx.com?subject=${encodeURIComponent("Project Idea Suggestion")}&body=${encodeURIComponent("Hi Suman,\n\nI have a project idea for you:\n\nTitle:\n\nDescription:\n\nWhy it's worth building:\n")}`}
         >
           <Plus size={14} />
           <span>Suggest an idea</span>

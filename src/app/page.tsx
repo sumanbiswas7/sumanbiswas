@@ -45,14 +45,14 @@ export default async function Home() {
               Open to interesting projects, collaborations, and conversations.
             </p>
             <div className={styles.contactLinks}>
-              <a className={styles.contactLink} href="mailto:textsumanb@gmail.com">
-                textsumanb@gmail.com
+              <a className={styles.contactLink} href="mailto:hello@sumanx.com">
+                hello@sumanx.com
               </a>
               <a className={styles.contactLink} href="https://github.com/sumanbiswas7" target="_blank" rel="noopener noreferrer">
                 GitHub
               </a>
               <a className={styles.contactLink} href="https://x.com/hellosumanx" target="_blank" rel="noopener noreferrer">
-                Twitter / X
+                Twitter
               </a>
               <a className={styles.contactLink} href="https://www.linkedin.com/in/sumanbiswas7" target="_blank" rel="noopener noreferrer">
                 LinkedIn

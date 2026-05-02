@@ -38,13 +38,13 @@ const ALL_COMMANDS = [
   { cmd: "/email",    desc: "Copy email to clipboard" },
   { cmd: "/github",   desc: "Open GitHub profile" },
   { cmd: "/connect",  desc: "Open LinkedIn profile" },
-  { cmd: "/twitter",  desc: "Open Twitter / X profile" },
+  { cmd: "/twitter",  desc: "Open Twitter profile" },
   { cmd: "/write",    desc: "Rewrite emails & messages" },
   { cmd: "/clear",    desc: "Clear terminal" },
 ];
 
 const PANEL_COMMANDS = ["/help", "/email", "/github", "/connect", "/write"];
-const SUMAN_EMAIL = "textsumanb@gmail.com";
+const SUMAN_EMAIL = "hello@sumanx.com";
 
 type Message = { id: number; role: "user" | "eli"; lines: string[] };
 type SpecialResult = "__CONTACT__" | "__EMAIL__" | "__GITHUB__" | "__CONNECT__" | "__TWITTER__" | "__WRITE__" | "__CLEAR__";
@@ -60,7 +60,7 @@ function getResponse(cmd: string): string[] | SpecialResult {
     "  /email    — Copy email to clipboard",
     "  /github   — Open GitHub profile",
     "  /connect  — Open LinkedIn profile",
-    "  /twitter  — Open Twitter / X profile",
+    "  /twitter  — Open Twitter profile",
     "  /write    — Rewrite emails & messages",
     "  /clear    — Clear terminal",
   ];
@@ -249,7 +249,7 @@ function EliTerminalInner({ onClose }: { onClose: () => void }) {
         break;
       case "__TWITTER__":
         window.open("https://x.com/hellosumanx", "_blank");
-        addMsg(["Opening Twitter / X profile..."]);
+        addMsg(["Opening Twitter profile..."]);
         break;
       case "__WRITE__":
         setWriteMode(true);
