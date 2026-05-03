@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { ExternalLink, GitFork } from "lucide-react";
+import { ExternalLink, GitFork, Maximize2, X } from "lucide-react";
 import Button from "@/components/ui/Button";
 import styles from "@/app/page.module.scss";
 
@@ -141,10 +141,20 @@ const IMAGE_DWELL_MS = 3000;
 function MediaCarousel({ media, title }: { media: MediaItem[]; title: string }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isInView, setIsInView] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hasMultiple = media.length > 1;
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setIsFullscreen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isFullscreen]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -271,6 +281,92 @@ function MediaCarousel({ media, title }: { media: MediaItem[]; title: string }) 
             ))}
           </div>
         </>
+      )}
+
+      <button
+        className={styles.fullscreenToggle}
+        onClick={() => setIsFullscreen(true)}
+        aria-label="Fullscreen"
+      >
+        <Maximize2 size={13} />
+      </button>
+
+      {isFullscreen && createPortal(
+        <div className={styles.fullscreenOverlay} onClick={() => setIsFullscreen(false)}>
+          <button className={styles.fullscreenClose} onClick={() => setIsFullscreen(false)} aria-label="Close fullscreen">
+            <X size={18} />
+          </button>
+
+          <div className={styles.fullscreenMedia} onClick={e => e.stopPropagation()}>
+            {(() => {
+              const item = media[currentSlide];
+              if (item.type === "image") {
+                return (
+                  <Image
+                    src={item.src}
+                    alt={`${title} screenshot ${currentSlide + 1}`}
+                    fill
+                    sizes="100vw"
+                    className={styles.fullscreenImage}
+                  />
+                );
+              }
+              const embedUrl = getYoutubeEmbedUrl(item.src);
+              return embedUrl ? (
+                <iframe
+                  src={embedUrl}
+                  className={styles.fullscreenVideo}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title={`${title} demo ${currentSlide + 1}`}
+                />
+              ) : (
+                <video
+                  src={item.src}
+                  className={styles.fullscreenVideo}
+                  autoPlay
+                  muted
+                  playsInline
+                  controls
+                />
+              );
+            })()}
+          </div>
+
+          {hasMultiple && (
+            <>
+              <button
+                className={`${styles.fullscreenArrow} ${styles.fullscreenPrev}`}
+                onClick={e => { e.stopPropagation(); goSlide(-1); }}
+                aria-label="Previous"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+              <button
+                className={`${styles.fullscreenArrow} ${styles.fullscreenNext}`}
+                onClick={e => { e.stopPropagation(); goSlide(1); }}
+                aria-label="Next"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+              <div className={styles.fullscreenDots} onClick={e => e.stopPropagation()}>
+                {media.map((_, idx) => (
+                  <button
+                    key={idx}
+                    className={`${styles.fullscreenDot} ${idx === currentSlide ? styles.fullscreenDotActive : ""}`}
+                    onClick={() => setCurrentSlide(idx)}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+        </div>,
+        document.body
       )}
     </div>
   );

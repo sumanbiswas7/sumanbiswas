@@ -764,6 +764,152 @@
   background: rgba(255, 255, 255, 0.95);
 }
 
+/* ─── Fullscreen toggle button ─── */
+.fullscreenToggle {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 0.35rem;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease;
+  z-index: 10;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+  }
+}
+
+.browserContent:hover .fullscreenToggle {
+  opacity: 1;
+}
+
+/* ─── Fullscreen overlay ─── */
+.fullscreenOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fsIn 0.18s ease;
+}
+
+@keyframes fsIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.fullscreenClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  z-index: 10;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.fullscreenMedia {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1400px;
+
+  @media (max-width: 640px) {
+    width: 100vw;
+    height: 60vh;
+  }
+}
+
+.fullscreenImage {
+  object-fit: contain;
+}
+
+.fullscreenVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fullscreenArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  z-index: 10;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  @media (max-width: 640px) {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.fullscreenPrev { left: 1rem; }
+.fullscreenNext { right: 1rem; }
+
+.fullscreenDots {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.fullscreenDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, width 0.15s ease;
+}
+
+.fullscreenDotActive {
+  width: 18px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
 /* ─── Section 3 — contact ─── */
 .sectionHeader {
   margin-bottom: 3rem;
