@@ -34,6 +34,20 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'Suman Biswas — Fullstack Engineer',
   description: 'Fullstack Engineer building modern, impactful products. TypeScript is my main tool, but I use whatever fits best. Outside of code — football, photography, and the mountains. Real Madrid is part of who I am. Based in India.',
+  openGraph: {
+    title: 'Suman Biswas — Fullstack Engineer',
+    description: 'Fullstack Engineer building modern, impactful products. TypeScript is my main tool, but I use whatever fits best. Outside of code — football, photography, and the mountains. Real Madrid is part of who I am. Based in India.',
+    url: 'https://sumanx.com',
+    siteName: 'Suman Biswas',
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Suman Biswas — Fullstack Engineer',
+    description: 'Fullstack Engineer building modern, impactful products. TypeScript is my main tool, but I use whatever fits best. Outside of code — football, photography, and the mountains. Real Madrid is part of who I am. Based in India.',
+    images: ['/og-image.png'],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
