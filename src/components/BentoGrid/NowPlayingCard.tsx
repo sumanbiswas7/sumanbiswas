@@ -163,7 +163,15 @@ export default function NowPlayingCard() {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    setPopupStyle({ top: rect.top, left: rect.left, width: rect.width });
+    const isMobile = window.innerWidth <= 640;
+    if (isMobile) {
+      const w = Math.min(300, window.innerWidth - 32);
+      const left = Math.round((window.innerWidth - w) / 2);
+      const top = Math.min(rect.bottom + 8, window.innerHeight - 340);
+      setPopupStyle({ top, left, width: w });
+    } else {
+      setPopupStyle({ top: rect.top, left: rect.left, width: rect.width });
+    }
     setHovered(true);
   }
 
@@ -173,6 +181,11 @@ export default function NowPlayingCard() {
 
   function cancelClose() {
     if (closeTimer.current) clearTimeout(closeTimer.current);
+  }
+
+  function togglePopup() {
+    if (hovered) setHovered(false);
+    else openPopup();
   }
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
@@ -220,6 +233,8 @@ export default function NowPlayingCard() {
           className={styles.nowPlayingBottom}
           onMouseEnter={openPopup}
           onMouseLeave={scheduleClose}
+          onClick={() => { if (!window.matchMedia("(hover: hover)").matches) togglePopup(); }}
+          style={{ cursor: "pointer" }}
         >
           <div className={styles.nowPlayingAlbumWrap}>
             <Image
@@ -240,12 +255,14 @@ export default function NowPlayingCard() {
 
       {hovered &&
         createPortal(
-          <div
-            className={styles.nowPlayingPopup}
-            style={popupStyle}
-            onMouseEnter={cancelClose}
-            onMouseLeave={scheduleClose}
-          >
+          <>
+            <div className={styles.nowPlayingBackdrop} onClick={() => setHovered(false)} />
+            <div
+              className={styles.nowPlayingPopup}
+              style={popupStyle}
+              onMouseEnter={cancelClose}
+              onMouseLeave={scheduleClose}
+            >
             {/* Art */}
             <div className={styles.nowPlayingPopupArt}>
               <Image
@@ -348,7 +365,8 @@ export default function NowPlayingCard() {
                 </div>
               )}
             </div>
-          </div>,
+          </div>
+          </>,
           document.body
         )}
     </>

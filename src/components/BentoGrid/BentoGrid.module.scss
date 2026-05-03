@@ -142,6 +142,10 @@
   }
 }
 
+.mobileNowPlayingSlot {
+  display: none;
+}
+
 // NOW PLAYING CARD
 .nowPlayingCard {
   display: flex;
@@ -234,6 +238,16 @@
 }
 
 // NOW PLAYING POPUP
+.nowPlayingBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+
+  @media (hover: hover) {
+    display: none;
+  }
+}
+
 .nowPlayingPopup {
   position: fixed;
   z-index: 9999;
@@ -269,6 +283,25 @@
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom, transparent 50%, $color-card-bg 100%);
+}
+
+@media (max-width: 640px) {
+  .nowPlayingPopupArt {
+    aspect-ratio: unset;
+    height: 160px;
+    background: $color-background-secondary;
+    padding: 1rem;
+
+    .nowPlayingAlbum {
+      object-fit: contain;
+      object-position: center;
+      border-radius: $border-radius-sm;
+    }
+  }
+
+  .nowPlayingPopupArtOverlay {
+    display: none;
+  }
 }
 
 .nowPlayingPopupBody {
@@ -2004,8 +2037,8 @@
   .draggableCard:has(.workCard)        { order: 5; }
   .draggableCard:has(.galleryCard)     { order: 6; }
   .draggableCard:has(.playGameCard)    { order: 7; }
-  .draggableCard:has(.eliCard)         { order: 8; }
-  .draggableCard:has(.projectIdeasCard){ order: 9; }
+  .draggableCard:has(.eliCard)         { order: 9; }
+  .draggableCard:has(.projectIdeasCard){ order: 10; }
 
   // meHero + stacked side by side
   .draggableCard:has(.meHeroImgCard) {
@@ -2018,9 +2051,36 @@
     align-self: stretch;
   }
 
-  // hide now playing in the narrow column, only show quick links
+  // hide now playing in the narrow stacked column — shown via mobileNowPlayingSlot instead
   .nowPlayingCard {
     display: none;
+  }
+
+  .mobileNowPlayingSlot {
+    display: flex;
+    width: 100%;
+    flex-shrink: 0;
+    order: 8;
+
+    > * { flex: 1; min-width: 0; }
+
+    .nowPlayingCard {
+      display: flex;
+    }
+
+    .nowPlayingAlbumWrap {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .nowPlayingTitle {
+      font-size: $font-size-base;
+    }
+
+    .nowPlayingSub {
+      font-size: $font-size-sm;
+    }
+
   }
 
   .stackedCards {

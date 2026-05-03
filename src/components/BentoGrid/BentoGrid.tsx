@@ -158,6 +158,9 @@ export default function BentoGrid() {
           })}
         </div>
       ))}
+      <div className={styles.mobileNowPlayingSlot}>
+        <NowPlayingCard />
+      </div>
     </div>
   );
 }
