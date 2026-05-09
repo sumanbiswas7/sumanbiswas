@@ -3,6 +3,7 @@ import { Bricolage_Grotesque, DM_Sans, DM_Mono } from 'next/font/google';
 import '@/styles/globals.scss';
 import { GameProvider } from '@/context/GameContext';
 import GameTerminal from '@/components/GameTerminal/GameTerminal';
+import { Analytics } from "@vercel/analytics/next"
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <GameTerminal />
         </GameProvider>
+        <Analytics />
       </body>
     </html>
   );
