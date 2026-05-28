@@ -10,6 +10,22 @@ import styles from "@/app/page.module.scss";
 const PROJECTS = [
   {
     id: 1,
+    title: "Doppel",
+    description: "Doppel is a digital clone of you — initially built from your social media exports, but evolving to learn from your ongoing digital footprint. It can chat, post, comment, and more, all in your unique style.",
+    media: [
+      { type: "image" as const, src: "/products/doppel-cover.webp" },
+      { type: "image" as const, src: "/products/doppel-3.webp" },
+      { type: "image" as const, src: "/products/doppel-2.webp" },
+    ],
+    tags: ["Electron", "Ollama", "OpenAI", "TypeScript", "Docker"],
+    github: "https://github.com/sumanbiswas7/doppel" as string | null,
+    live: "https://thedoppel.vercel.app" as string | null,
+    org: "Personal",
+    year: "2026",
+    ongoing: true,
+  },
+  {
+    id: 2,
     title: "Beam",
     description:
       "AI coding assistant for VS Code. Run local models with Ollama for free, bring your own OpenAI or Nvidia Apikey, or stay fully offline — no mandatory subscription.",
@@ -27,7 +43,7 @@ const PROJECTS = [
     ongoing: true,
   },
   {
-    id: 2,
+    id: 3,
     title: "Proyash",
     description:
       "An initiative supporting underprivileged students through book donations, community connections, and an annual event with Quiz, Drawings, and Abbriti competitions.",
@@ -44,7 +60,7 @@ const PROJECTS = [
     ongoing: true,
   },
   {
-    id: 3,
+    id: 4,
     title: "Signinlink",
     description:
       "Transform your business: Go paperless, digitize operations, and slash costs from up to $6000 to just $20 per month!",
@@ -61,7 +77,7 @@ const PROJECTS = [
     ongoing: false,
   },
   {
-    id: 4,
+    id: 5,
     title: "Marked",
     description:
       "A versatile solution for link management, task tracking, note-taking, and expense management with convenient reminders.",
@@ -77,7 +93,7 @@ const PROJECTS = [
     ongoing: false,
   },
   {
-    id: 5,
+    id: 6,
     title: "Poshkit",
     description:
       "A collection of modern, fancy components with amazing hover effects for React applications. Easily add stylish and interactive UI elements to your webapps.",
@@ -90,7 +106,7 @@ const PROJECTS = [
     ongoing: false,
   },
   {
-    id: 7,
+    id: 8,
     title: "Vivid",
     description:
       "A social media app for mobile where people can share images, like, comment, and many more.",
