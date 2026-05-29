@@ -14,8 +14,11 @@ const PROJECTS = [
     description: "Doppel is a digital clone of you — initially built from your social media exports, but evolving to learn from your ongoing digital footprint. It can chat, post, comment, and more, all in your unique style.",
     media: [
       { type: "image" as const, src: "/products/doppel-cover.webp" },
-      { type: "image" as const, src: "/products/doppel-3.webp" },
       { type: "image" as const, src: "/products/doppel-2.webp" },
+      { type: "image" as const, src: "/products/doppel-3.webp" },
+      { type: "image" as const, src: "/products/doppel-4.webp" },
+      { type: "image" as const, src: "/products/doppel-5.webp" },
+      { type: "image" as const, src: "/products/doppel-6.webp" },
     ],
     tags: ["Electron", "Ollama", "OpenAI", "TypeScript", "Docker"],
     github: "https://github.com/sumanbiswas7/doppel" as string | null,
