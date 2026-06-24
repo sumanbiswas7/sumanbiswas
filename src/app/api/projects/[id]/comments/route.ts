@@ -5,9 +5,15 @@ type Comment = { id: string; text: string; ts: number };
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
   const raw = await redis.lrange(`sumanv4:project:${id}:comments`, 0, 49);
-  const comments: Comment[] = raw.map((c: unknown) =>
-    typeof c === "string" ? JSON.parse(c) : (c as Comment)
-  );
+  const comments: Comment[] = raw.flatMap((c: unknown) => {
+    if (typeof c !== "string") return [c as Comment];
+    if (!c) return [];
+    try {
+      return [JSON.parse(c)];
+    } catch {
+      return [];
+    }
+  });
   return Response.json({ comments });
 }
 

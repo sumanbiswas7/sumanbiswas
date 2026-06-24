@@ -16,9 +16,15 @@ export async function GET() {
   PROJECT_IDS.forEach((id, i) => {
     const likes = (results[i * 2] as number | null) ?? 0;
     const rawComments = (results[i * 2 + 1] as unknown[]) ?? [];
-    const comments: Comment[] = rawComments.map((c) =>
-      typeof c === "string" ? JSON.parse(c) : (c as Comment)
-    );
+    const comments: Comment[] = rawComments.flatMap((c) => {
+      if (typeof c !== "string") return [c as Comment];
+      if (!c) return [];
+      try {
+        return [JSON.parse(c)];
+      } catch {
+        return [];
+      }
+    });
     data[id] = { likes, comments };
   });
 
