@@ -9,23 +9,20 @@ import styles from "@/app/page.module.scss";
 
 const PROJECTS = [
   {
-    id: 1,
-    title: "Doppel",
-    description: "Doppel is a digital clone of you — initially built from your social media exports, but evolving to learn from your ongoing digital footprint. It can chat, post, comment, and more, all in your unique style.",
+    id: 9,
+    title: "Scout",
+    description: "The tool I built to automate my own job search. It scans YC, Wellfound, LinkedIn, and X for companies hiring, finds who to reach, and sends them outreach — connection requests, emails, and more.",
     media: [
-      { type: "image" as const, src: "/products/doppel-cover.webp" },
-      { type: "image" as const, src: "/products/doppel-2.webp" },
-      { type: "image" as const, src: "/products/doppel-3.webp" },
-      { type: "image" as const, src: "/products/doppel-4.webp" },
-      { type: "image" as const, src: "/products/doppel-5.webp" },
-      { type: "image" as const, src: "/products/doppel-6.webp" },
+      { type: "image" as const, src: "/products/scout-cover.webp" },
+      { type: "video" as const, src: "https://sumanbiswas-website.s3.ap-south-1.amazonaws.com/scout-demo-1.2x.mp4" },
+      { type: "image" as const, src: "/products/scout-2.webp" },
     ],
-    tags: ["Electron", "Ollama", "OpenAI", "TypeScript", "Docker"],
-    github: "https://github.com/sumanbiswas7/doppel" as string | null,
-    live: "https://thedoppel.vercel.app" as string | null,
+    tags: [] as string[],
     org: "Personal",
     year: "2026",
     ongoing: true,
+    github: "https://github.com/sumanbiswas7/scout" as string | null,
+    live: "https://scout.vercel.app" as string | null,
   },
   {
     id: 2,
@@ -41,6 +38,25 @@ const PROJECTS = [
     tags: ["VS Code Extension", "Ollama", "Ink", "OpenAI", "TypeScript"],
     github: "https://github.com/sumanbiswas7/beam" as string | null,
     live: "https://getbeam.vercel.app" as string | null,
+    org: "Personal",
+    year: "2026",
+    ongoing: true,
+  },
+  {
+    id: 1,
+    title: "Doppel",
+    description: "Doppel is a digital clone of you — initially built from your social media exports, but evolving to learn from your ongoing digital footprint. It can chat, post, comment, and more, all in your unique style.",
+    media: [
+      { type: "image" as const, src: "/products/doppel-cover.webp" },
+      { type: "image" as const, src: "/products/doppel-2.webp" },
+      { type: "image" as const, src: "/products/doppel-3.webp" },
+      { type: "image" as const, src: "/products/doppel-4.webp" },
+      { type: "image" as const, src: "/products/doppel-5.webp" },
+      { type: "image" as const, src: "/products/doppel-6.webp" },
+    ],
+    tags: ["Electron", "Ollama", "OpenAI", "TypeScript", "Docker"],
+    github: "https://github.com/sumanbiswas7/doppel" as string | null,
+    live: "https://thedoppel.vercel.app" as string | null,
     org: "Personal",
     year: "2026",
     ongoing: true,
@@ -157,7 +173,7 @@ function initReactions(): Reactions {
 
 const IMAGE_DWELL_MS = 3000;
 
-function MediaCarousel({ media, title }: { media: MediaItem[]; title: string }) {
+function MediaCarousel({ media, title, muted = true }: { media: MediaItem[]; title: string; muted?: boolean }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isInView, setIsInView] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -256,7 +272,7 @@ function MediaCarousel({ media, title }: { media: MediaItem[]; title: string }) 
               src={item.src}
               className={styles.videoEmbed}
               autoPlay={!hasMultiple}
-              muted
+              muted={muted}
               playsInline
               loop={!hasMultiple}
               onEnded={() => {
@@ -344,7 +360,7 @@ function MediaCarousel({ media, title }: { media: MediaItem[]; title: string }) 
                   src={item.src}
                   className={styles.fullscreenVideo}
                   autoPlay
-                  muted
+                  muted={muted}
                   playsInline
                   controls
                 />
@@ -603,7 +619,7 @@ export default function ProjectsSection() {
                     </div>
                   </div>
 
-                  <MediaCarousel media={p.media} title={p.title} />
+                  <MediaCarousel media={p.media} title={p.title} muted={p.id !== 9} />
                 </div>
               </div>
             </div>

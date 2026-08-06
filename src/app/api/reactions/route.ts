@@ -1,6 +1,6 @@
 import { redis } from "@/lib/redis";
 
-const PROJECT_IDS = [1, 2, 3, 4, 5, 7];
+const PROJECT_IDS = [9, 1, 2, 3, 4, 5, 7];
 
 type Comment = { id: string; text: string; ts: number };
 
