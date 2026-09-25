@@ -9,22 +9,6 @@ import styles from "@/app/page.module.scss";
 
 const PROJECTS = [
   {
-    id: 9,
-    title: "Scout",
-    description: "The tool I built to automate my own job search. It scans YC, Wellfound, LinkedIn, and X for companies hiring, finds who to reach, and sends them outreach — connection requests, emails, and more.",
-    media: [
-      { type: "image" as const, src: "/products/scout-cover.webp" },
-      { type: "video" as const, src: "https://sumanbiswas-website.s3.ap-south-1.amazonaws.com/scout-demo-1.2x.mp4" },
-      { type: "image" as const, src: "/products/scout-2.webp" },
-    ],
-    tags: [] as string[],
-    org: "Personal",
-    year: "2026",
-    ongoing: true,
-    github: "https://github.com/sumanbiswas7/scout" as string | null,
-    live: "https://scout.vercel.app" as string | null,
-  },
-  {
     id: 2,
     title: "Beam",
     description:
@@ -41,6 +25,22 @@ const PROJECTS = [
     org: "Personal",
     year: "2026",
     ongoing: true,
+  },
+  {
+    id: 9,
+    title: "Scout",
+    description: "The tool I built to automate my own job search. It scans YC, Wellfound, LinkedIn, and X for companies hiring, finds who to reach, and sends them outreach — connection requests, emails, and more.",
+    media: [
+      { type: "image" as const, src: "/products/scout-cover.webp" },
+      { type: "video" as const, src: "https://sumanbiswas-website.s3.ap-south-1.amazonaws.com/scout-demo-1.2x.mp4" },
+      { type: "image" as const, src: "/products/scout-2.webp" },
+    ],
+    tags: [] as string[],
+    org: "Personal",
+    year: "2026",
+    ongoing: true,
+    github: "https://github.com/sumanbiswas7/scout" as string | null,
+    live: "https://scout.vercel.app" as string | null,
   },
   {
     id: 1,
